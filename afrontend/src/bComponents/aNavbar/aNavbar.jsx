@@ -10,9 +10,10 @@ function Navbar() {
   const location = useLocation();
 
   const searchContext = useContext(SearchContext);
+  const cartContext = useContext(CartContext);
+
   const setSearchTerm = searchContext?.setSearchTerm;
 
-  const cartContext = useContext(CartContext);
   const cartItems = cartContext?.cartItems ?? [];
 
   const totalItems = Array.isArray(cartItems)
@@ -22,34 +23,27 @@ function Navbar() {
       )
     : 0;
 
-  // LOCAL INPUT STATE
   const [localSearch, setLocalSearch] = useState("");
 
-  // INPUT HANDLER
+  // sync search globally (debounced safe)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchTerm?.(localSearch);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [localSearch, setSearchTerm]);
+
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setLocalSearch(value);
 
-    // immediate UX update
-    if (setSearchTerm) {
-      setSearchTerm(value);
-    }
+    setSearchTerm?.(value);
 
-    if (value.trim() !== "" && location.pathname !== "/search") {
+    if (value.trim() && location.pathname !== "/search") {
       navigate("/search");
     }
   };
-
-  // DEBOUNCE GLOBAL SEARCH UPDATE
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (setSearchTerm) {
-        setSearchTerm(localSearch);
-      }
-    }, 400);
-
-    return () => clearTimeout(timer);
-  }, [localSearch, setSearchTerm]);
 
   const linkClass = (path) =>
     location.pathname === path
@@ -84,10 +78,6 @@ function Navbar() {
 
           <Link to="/activities" className={linkClass("/activities")}>
             Activities
-          </Link>
-
-          <Link to="/wishlist" className={linkClass("/wishlist")}>
-            Wishlist
           </Link>
 
           <Link to="/cart" className={`relative ${linkClass("/cart")}`}>
