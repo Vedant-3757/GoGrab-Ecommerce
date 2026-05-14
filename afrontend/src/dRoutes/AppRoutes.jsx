@@ -15,7 +15,7 @@ import OrderSuccess from "../cPages/kOrderSuccess/OrderSuccess.jsx";
 import OrderDetails from "../cPages/kOrderSuccess/OrderDetails.jsx";
 import Wishlist from "../cPages/lWishlist/Wishlist.jsx";
 
-import PageTransition from "../animations/PageTransition.jsx";
+import PageTransition from "../kAnimation/PageTransition.jsx";
 
 function AppRoutes() {
 
