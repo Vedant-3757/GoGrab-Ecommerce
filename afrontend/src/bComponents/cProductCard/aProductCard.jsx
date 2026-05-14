@@ -1,5 +1,6 @@
-import { useContext, useMemo } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import CartContext from "../../fContext/aCartContext.jsx";
 import AuthContext from "../../fContext/eAuthContext.jsx";
@@ -21,11 +22,11 @@ function ProductCard({ product }) {
   const toggleWishlist = wishlistContext?.toggleWishlist;
   const isInWishlist = wishlistContext?.isInWishlist;
 
-  // SAFELY COMPUTE LIKE STATUS
-  const liked = useMemo(() => {
-    if (!isInWishlist || !product?.id) return false;
-    return isInWishlist(product.id);
-  }, [isInWishlist, product?.id]);
+  // LIKE STATUS
+  const liked =
+    isInWishlist && product?.id
+      ? isInWishlist(product.id)
+      : false;
 
   // ADD TO CART
   const handleAddToCart = () => {
@@ -36,6 +37,8 @@ function ProductCard({ product }) {
     }
 
     addToCart(product);
+
+    toast.success("Added to cart");
   };
 
   // WISHLIST TOGGLE
@@ -49,6 +52,12 @@ function ProductCard({ product }) {
     if (!toggleWishlist) return;
 
     toggleWishlist(product);
+
+    toast.success(
+      liked
+        ? "Removed from wishlist"
+        : "Added to wishlist"
+    );
   };
 
   if (!product) return null;
@@ -103,6 +112,7 @@ function ProductCard({ product }) {
         </div>
 
       </div>
+
     </div>
   );
 }

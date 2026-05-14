@@ -1,10 +1,13 @@
 import { useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import toast from "react-hot-toast";
+
 import CartContext from "../../fContext/aCartContext.jsx";
 import OrderContext from "../../fContext/hOrderContext.jsx";
 
 function Checkout() {
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -29,13 +32,18 @@ function Checkout() {
   const [pincode, setPincode] = useState("");
 
   const handlePlaceOrder = () => {
+
     if (finalProducts.length === 0) {
-      alert("Cart is empty");
+
+      toast.error("Cart is empty");
+
       return;
     }
 
     if (!fullName || !address || !city || !pincode) {
-      alert("Please fill all details");
+
+      toast.error("Please fill all details");
+
       return;
     }
 
@@ -45,6 +53,7 @@ function Checkout() {
       total: totalPrice,
       status: "Packed",
       createdAt: new Date().toISOString(),
+
       shipping: {
         fullName,
         address,
@@ -53,15 +62,15 @@ function Checkout() {
       },
     };
 
-    // SAVE ORDER VIA CONTEXT
+    // SAVE ORDER
     addOrder(orderData);
 
-    // CLEAR CART IF NOT BUY NOW
+    // CLEAR CART
     if (!buyNowProduct) {
       clearCart();
     }
 
-    alert("Order placed successfully");
+    toast.success("Order placed successfully");
 
     navigate("/order-success");
   };
@@ -118,23 +127,35 @@ function Checkout() {
           <div className="space-y-4">
 
             {finalProducts.map((item) => (
+
               <div
                 key={item.id}
                 className="flex gap-4 border-b pb-3"
               >
+
                 <img
                   src={item.image}
                   className="w-16 h-16 object-cover rounded-lg"
                 />
 
                 <div>
+
                   <h3 className="font-semibold">
                     {item.name}
                   </h3>
-                  <p>Qty: {item.quantity}</p>
-                  <p>₹ {item.price}</p>
+
+                  <p>
+                    Qty: {item.quantity}
+                  </p>
+
+                  <p>
+                    ₹ {item.price}
+                  </p>
+
                 </div>
+
               </div>
+
             ))}
 
           </div>
