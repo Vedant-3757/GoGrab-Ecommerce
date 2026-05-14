@@ -1,151 +1,140 @@
-import { useContext } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import WishlistContext from "../../fContext/gWishlistContext.jsx";
-import AuthContext from "../../fContext/eAuthContext.jsx";
-import OrderContext from "../../fContext/hOrderContext.jsx";
+import CartContext from "../../fContext/aCartContext.jsx";
 
 function Activities() {
 
   const navigate = useNavigate();
 
-  const user = useContext(AuthContext)?.user;
+  const wishlistContext = useContext(WishlistContext);
+  const cartContext = useContext(CartContext);
 
-  const wishlistItems =
-    useContext(WishlistContext)?.wishlistItems || [];
+  const wishlist = wishlistContext?.wishlist ?? [];
+  const removeFromWishlist = wishlistContext?.removeFromWishlist;
 
-  const orders =
-    useContext(OrderContext)?.orders || [];
+  const orders = cartContext?.orders ?? []; // fallback (if you store orders later)
 
-  if (!user) {
-    return <Navigate to="/login" />;
-  }
+  const [tab, setTab] = useState("wishlist");
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-6">
+    <div className="min-h-screen bg-gray-100 p-6">
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-6xl mx-auto">
 
-        <h1 className="text-3xl sm:text-5xl font-bold mb-10">
+        <h1 className="text-3xl font-bold mb-6">
           Activities
         </h1>
 
-        {/* ORDER TRACKING */}
-        <div className="bg-white rounded-3xl p-5 sm:p-8 shadow-md mb-10">
+        {/* TABS */}
+        <div className="flex gap-4 mb-8">
 
-          <h2 className="text-2xl sm:text-3xl font-bold mb-6">
-            Order Tracking
-          </h2>
+          <button
+            onClick={() => setTab("wishlist")}
+            className={`px-4 py-2 rounded-xl ${
+              tab === "wishlist"
+                ? "bg-black text-white"
+                : "bg-white"
+            }`}
+          >
+            Wishlist
+          </button>
 
-          {orders.length === 0 ? (
-
-            <p className="text-gray-500">
-              No orders yet. Start shopping!
-            </p>
-
-          ) : (
-
-            <div className="space-y-6">
-
-              {orders.map((order) => (
-
-                <div
-                  key={order.id}
-                  onClick={() =>
-                    navigate(`/order/${order.id}`)
-                  }
-                  className="border-b pb-4 cursor-pointer hover:bg-gray-50 p-4 rounded-xl transition"
-                >
-
-                  <h3 className="font-semibold text-lg sm:text-xl">
-                    Order #{order.id}
-                  </h3>
-
-                  <p
-                    className={
-                      order.status === "Packed"
-                        ? "text-yellow-600 font-semibold"
-                        : order.status === "Shipped"
-                        ? "text-blue-600 font-semibold"
-                        : "text-green-600 font-semibold"
-                    }
-                  >
-                    Status: {order.status}
-                  </p>
-
-                  <p className="text-gray-600">
-                    Items: {order.items?.length || 0}
-                  </p>
-
-                  <p className="font-bold">
-                    Total: ₹ {order.total}
-                  </p>
-
-                </div>
-
-              ))}
-
-            </div>
-
-          )}
+          <button
+            onClick={() => setTab("orders")}
+            className={`px-4 py-2 rounded-xl ${
+              tab === "orders"
+                ? "bg-black text-white"
+                : "bg-white"
+            }`}
+          >
+            Orders
+          </button>
 
         </div>
 
-        {/* WISHLIST */}
-        <div className="bg-white rounded-3xl p-5 sm:p-8 shadow-md">
+        {/* WISHLIST TAB */}
+        {tab === "wishlist" && (
+          <div className="space-y-4">
 
-          <h2 className="text-2xl sm:text-3xl font-bold mb-8">
-            Wishlist
-          </h2>
-
-          {wishlistItems.length === 0 ? (
-
-            <p className="text-gray-500 text-lg">
-              No wishlist products yet.
-            </p>
-
-          ) : (
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-              {wishlistItems.map((item) => (
-
+            {wishlist.length === 0 ? (
+              <p className="text-gray-500">
+                No items in wishlist ❤️
+              </p>
+            ) : (
+              wishlist.map((item) => (
                 <div
                   key={item.id}
-                  className="border rounded-2xl p-4"
+                  className="bg-white p-4 rounded-xl flex justify-between items-center shadow"
                 >
 
-                  <img
-                    src={item.image}
-                    className="w-full h-52 object-cover rounded-xl mb-4"
-                  />
+                  <div>
+                    <h2 className="font-semibold">
+                      {item.name}
+                    </h2>
 
-                  <h3 className="text-xl font-semibold mb-2">
-                    {item.name}
-                  </h3>
+                    <p className="text-gray-500">
+                      ₹ {item.price}
+                    </p>
+                  </div>
 
-                  <p className="text-gray-600 mb-4">
-                    ₹ {item.price}
-                  </p>
+                  <div className="flex gap-3">
 
-                  <button
-                    onClick={() =>
-                      navigate(`/product/${item.id}`)
-                    }
-                    className="bg-black text-white px-5 py-2 rounded-xl w-full"
-                  >
-                    View Product
-                  </button>
+                    <button
+                      onClick={() =>
+                        navigate(`/product/${item.id}`)
+                      }
+                      className="text-blue-600"
+                    >
+                      View
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        removeFromWishlist?.(item.id)
+                      }
+                      className="text-red-500"
+                    >
+                      Remove
+                    </button>
+
+                  </div>
 
                 </div>
+              ))
+            )}
 
-              ))}
+          </div>
+        )}
 
-            </div>
+        {/* ORDERS TAB */}
+        {tab === "orders" && (
+          <div className="space-y-4">
 
-          )}
+            {orders.length === 0 ? (
+              <p className="text-gray-500">
+                No orders yet 📦
+              </p>
+            ) : (
+              orders.map((order, i) => (
+                <div
+                  key={i}
+                  className="bg-white p-4 rounded-xl shadow"
+                >
+                  <h2 className="font-semibold">
+                    Order #{i + 1}
+                  </h2>
 
-        </div>
+                  <p className="text-gray-500">
+                    Total: ₹ {order.total || 0}
+                  </p>
+                </div>
+              ))
+            )}
+
+          </div>
+        )}
 
       </div>
 
