@@ -1,14 +1,33 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import WishlistContext from "../../fContext/gWishlistContext.jsx";
+import CartContext from "../../fContext/aCartContext.jsx";
 
 function Wishlist() {
 
   const navigate = useNavigate();
 
-  const { wishlistItems, toggleWishlist } =
-    useContext(WishlistContext);
+  const wishlistContext = useContext(WishlistContext);
+  const cartContext = useContext(CartContext);
+
+  const wishlistItems = wishlistContext?.wishlistItems ?? [];
+  const toggleWishlist = wishlistContext?.toggleWishlist;
+
+  const { addToCart } = cartContext;
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    toast.success("Added to cart");
+  };
+
+  const handleRemove = (product) => {
+    if (!toggleWishlist) return;
+
+    toggleWishlist(product);
+    toast.success("Removed from wishlist");
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -19,73 +38,70 @@ function Wishlist() {
           Your Wishlist
         </h1>
 
-        {/* EMPTY STATE */}
         {wishlistItems.length === 0 ? (
 
-          <div className="text-center py-20">
-
-            <div className="text-6xl mb-4">💔</div>
-
-            <h2 className="text-2xl font-bold mb-2">
-              Wishlist is empty
-            </h2>
-
-            <p className="text-gray-500 mb-6">
-              Save products you like for later
-            </p>
-
-            <button
-              onClick={() => navigate("/")}
-              className="bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition"
-            >
-              Explore Products
-            </button>
-
+          <div className="text-center py-20 text-gray-500 text-lg">
+            Your wishlist is empty 💔
           </div>
 
         ) : (
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="space-y-6">
 
             {wishlistItems.map((item) => (
 
               <div
                 key={item.id}
-                className="bg-white rounded-2xl shadow-md p-4 hover:shadow-xl transition"
+                className="bg-white rounded-2xl shadow-md p-4 flex flex-col sm:flex-row items-center gap-6"
               >
 
+                {/* IMAGE */}
                 <img
                   src={item.image}
-                  className="w-full h-52 object-cover rounded-xl mb-4"
+                  alt={item.name}
+                  className="w-32 h-32 object-cover rounded-xl"
                 />
 
-                <h2 className="text-lg font-semibold mb-2 line-clamp-1">
-                  {item.name}
-                </h2>
+                {/* DETAILS */}
+                <div className="flex-1 text-center sm:text-left">
 
-                <p className="text-gray-600 mb-4">
-                  ₹ {item.price}
-                </p>
+                  <h2 className="text-xl font-semibold">
+                    {item.name}
+                  </h2>
 
-                <div className="flex flex-col gap-2">
+                  <p className="text-gray-600 mt-2">
+                    ₹ {item.price}
+                  </p>
 
-                  <button
-                    onClick={() =>
-                      navigate(`/product/${item.id}`)
-                    }
-                    className="bg-black text-white py-2 rounded-lg"
-                  >
-                    View Product
-                  </button>
+                  <div className="flex gap-3 mt-4 justify-center sm:justify-start">
 
-                  <button
-                    onClick={() => toggleWishlist(item)}
-                    className="border border-red-500 text-red-500 py-2 rounded-lg hover:bg-red-500 hover:text-white transition"
-                  >
-                    Remove
-                  </button>
+                    <button
+                      onClick={() => handleAddToCart(item)}
+                      className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800"
+                    >
+                      Add To Cart
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        navigate(`/product/${item.id}`)
+                      }
+                      className="border border-black px-4 py-2 rounded-lg hover:bg-black hover:text-white"
+                    >
+                      View
+                    </button>
+
+                  </div>
 
                 </div>
+
+                {/* REMOVE */}
+                <button
+                  onClick={() => handleRemove(item)}
+                  className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600"
+                >
+                  Remove
+                </button>
 
               </div>
 
