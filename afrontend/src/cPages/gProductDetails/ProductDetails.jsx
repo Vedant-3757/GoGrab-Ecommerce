@@ -1,151 +1,147 @@
-import { useContext } from "react";
-
-import {
-  useParams,
-  useNavigate,
-} from "react-router-dom";
+import { useContext, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import products from "../../jData/Products.js";
-
 import CartContext from "../../fContext/aCartContext.jsx";
+import WishlistContext from "../../fContext/gWishlistContext.jsx";
 import AuthContext from "../../fContext/eAuthContext.jsx";
 
 function ProductDetails() {
 
   const { id } = useParams();
-
   const navigate = useNavigate();
 
-  // FIND PRODUCT
-  const product = products.find(
-    (item) => item.id === Number(id)
-  );
+  const product = products.find((p) => p.id === Number(id));
 
-  // CART
-  const cartContext =
-    useContext(CartContext);
+  const user = useContext(AuthContext)?.user;
+  const { addToCart } = useContext(CartContext);
+  const wishlistContext = useContext(WishlistContext);
 
-  const addToCart =
-    cartContext?.addToCart;
+  const toggleWishlist = wishlistContext?.toggleWishlist;
+  const isInWishlist = wishlistContext?.isInWishlist;
 
-  // AUTH
-  const authContext =
-    useContext(AuthContext);
+  const [qty, setQty] = useState(1);
 
-  const user =
-    authContext?.user;
-
-  // PRODUCT NOT FOUND
   if (!product) {
-
     return (
-      <div className="min-h-screen flex items-center justify-center text-3xl font-bold">
-        Product Not Found
+      <div className="min-h-screen flex items-center justify-center text-gray-500">
+        Product not found
       </div>
     );
   }
 
-  // ADD TO CART
-  const handleAddToCart = () => {
+  const liked =
+    product?.id && isInWishlist
+      ? isInWishlist(product.id)
+      : false;
+
+  const handleCart = () => {
 
     if (!user) {
-
+      toast.error("Please login first");
       navigate("/login");
-
       return;
     }
 
-    addToCart(product);
-
-    alert("Product Added To Cart");
+    addToCart({ ...product, quantity: qty });
+    toast.success("Added to cart");
   };
 
-  // GRAB IT NOW
-  const handleBuyNow = () => {
+  const handleWishlist = () => {
 
-  // NOT LOGGED IN
-  if (!user) {
+    if (!user) {
+      toast.error("Please login first");
+      navigate("/login");
+      return;
+    }
 
-    navigate("/login", {
-      state: {
-        redirectToCheckout: true,
-        buyNowProduct: product,
-      },
-    });
+    toggleWishlist(product);
 
-    return;
-  }
-
-  // LOGGED IN
-  navigate("/checkout", {
-    state: {
-      buyNowProduct: product,
-    },
-  });
-};
+    toast.success(
+      liked ? "Removed from wishlist" : "Added to wishlist"
+    );
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-6">
+    <div className="min-h-screen bg-gray-100 p-6">
 
-      <div className="max-w-7xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden grid md:grid-cols-2 gap-10 p-8">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
 
         {/* IMAGE */}
-        <div>
-
+        <div className="bg-white p-6 rounded-2xl shadow-md flex items-center justify-center">
           <img
             src={product.image}
-            alt={product.name}
-            className="w-full h-125 object-cover rounded-2xl"
+            className="w-full max-h-[400px] object-cover rounded-xl"
           />
-
         </div>
 
         {/* DETAILS */}
-        <div className="flex flex-col justify-center">
+        <div className="bg-white p-6 rounded-2xl shadow-md">
 
-          <h1 className="text-5xl font-bold mb-6">
+          <h1 className="text-3xl font-bold mb-4">
             {product.name}
           </h1>
 
-          <p className="text-3xl font-semibold text-gray-800 mb-6">
+          <p className="text-gray-600 text-lg mb-6">
+            {product.description || "High quality product for daily use."}
+          </p>
+
+          <p className="text-2xl font-bold mb-6">
             ₹ {product.price}
           </p>
 
-          <p className="text-gray-600 text-lg leading-relaxed mb-8">
-            Premium quality product from GoGrab.
-            Designed for performance, style,
-            and modern shopping experience.
-          </p>
+          {/* QUANTITY */}
+          <div className="flex items-center gap-4 mb-6">
 
-          {/* STOCK */}
-          <div className="mb-8">
+            <button
+              onClick={() => setQty((q) => Math.max(1, q - 1))}
+              className="bg-gray-200 px-4 py-2 rounded-lg"
+            >
+              -
+            </button>
 
-            <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full font-semibold">
-              In Stock
+            <span className="text-xl font-semibold">
+              {qty}
             </span>
+
+            <button
+              onClick={() => setQty((q) => q + 1)}
+              className="bg-gray-200 px-4 py-2 rounded-lg"
+            >
+              +
+            </button>
 
           </div>
 
-          {/* BUTTONS */}
-          <div className="flex flex-col sm:flex-row gap-4">
+          {/* ACTIONS */}
+          <div className="flex flex-col gap-3">
 
             <button
-              onClick={handleAddToCart}
-              className="bg-black text-white px-8 py-4 rounded-2xl hover:bg-gray-800 transition"
+              onClick={handleCart}
+              className="bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition"
             >
               Add To Cart
             </button>
 
             <button
-              onClick={handleBuyNow}
-              className="bg-orange-500 text-white px-8 py-4 rounded-2xl hover:bg-orange-600 transition"
+              onClick={handleWishlist}
+              className="border border-black py-3 rounded-xl hover:bg-black hover:text-white transition"
             >
-              Grab It Now
+              {liked ? "Remove from Wishlist" : "Add to Wishlist"}
+            </button>
+
+            <button
+              onClick={() => navigate("/cart")}
+              className="text-gray-600 underline"
+            >
+              Go to Cart
             </button>
 
           </div>
 
         </div>
+
       </div>
     </div>
   );
