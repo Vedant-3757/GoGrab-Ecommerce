@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { motion } from "framer-motion";
 
 import CartContext from "../../fContext/aCartContext.jsx";
 import AuthContext from "../../fContext/eAuthContext.jsx";
@@ -17,7 +18,7 @@ function ProductCard({ product }) {
   const toggleWishlist = wishlistContext?.toggleWishlist;
   const isInWishlist = wishlistContext?.isInWishlist;
 
-  // FIXED: no useMemo (prevents hook errors)
+  // LIKE STATUS (unchanged logic)
   const liked =
     product?.id && isInWishlist
       ? isInWishlist(product.id)
@@ -57,7 +58,13 @@ function ProductCard({ product }) {
   if (!product) return null;
 
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:scale-[1.03] hover:shadow-xl transition duration-300 relative">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      whileHover={{ scale: 1.05 }}
+      transition={{ duration: 0.25 }}
+      className="bg-white rounded-2xl shadow-md overflow-hidden relative"
+    >
 
       {/* WISHLIST BUTTON */}
       <button
@@ -106,7 +113,8 @@ function ProductCard({ product }) {
         </div>
 
       </div>
-    </div>
+
+    </motion.div>
   );
 }
 
