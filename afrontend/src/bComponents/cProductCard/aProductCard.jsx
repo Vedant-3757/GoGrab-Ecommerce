@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
 import toast from "react-hot-toast";
 
 import CartContext from "../../fContext/aCartContext.jsx";
@@ -11,25 +10,16 @@ function ProductCard({ product }) {
 
   const navigate = useNavigate();
 
-  // AUTH
   const user = useContext(AuthContext)?.user;
-
-  // CART
   const { addToCart } = useContext(CartContext);
+  const wishlistContext = useContext(WishlistContext);
 
-  // WISHLIST
-  const wishlistContext =
-    useContext(WishlistContext);
+  const toggleWishlist = wishlistContext?.toggleWishlist;
+  const isInWishlist = wishlistContext?.isInWishlist;
 
-  const toggleWishlist =
-    wishlistContext?.toggleWishlist;
-
-  const isInWishlist =
-    wishlistContext?.isInWishlist;
-
-  // LIKE STATUS
+  // FIXED: no useMemo (prevents hook errors)
   const liked =
-    isInWishlist && product?.id
+    product?.id && isInWishlist
       ? isInWishlist(product.id)
       : false;
 
@@ -37,28 +27,21 @@ function ProductCard({ product }) {
   const handleAddToCart = () => {
 
     if (!user) {
-
       toast.error("Please login first");
-
       navigate("/login");
-
       return;
     }
 
     addToCart(product);
-
     toast.success("Added to cart");
   };
 
-  // WISHLIST TOGGLE
+  // WISHLIST
   const handleWishlist = () => {
 
     if (!user) {
-
       toast.error("Please login first");
-
       navigate("/login");
-
       return;
     }
 
@@ -67,21 +50,19 @@ function ProductCard({ product }) {
     toggleWishlist(product);
 
     toast.success(
-      liked
-        ? "Removed from wishlist"
-        : "Added to wishlist"
+      liked ? "Removed from wishlist" : "Added to wishlist"
     );
   };
 
   if (!product) return null;
 
   return (
-    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:scale-105 transition duration-300 relative">
+    <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:scale-[1.03] hover:shadow-xl transition duration-300 relative">
 
-      {/* ❤️ WISHLIST HEART */}
+      {/* WISHLIST BUTTON */}
       <button
         onClick={handleWishlist}
-        className="absolute top-4 right-4 text-3xl z-10"
+        className="absolute top-3 right-3 text-2xl z-10"
       >
         {liked ? "❤️" : "🤍"}
       </button>
@@ -93,18 +74,18 @@ function ProductCard({ product }) {
         className="h-52 w-full object-cover"
       />
 
-      {/* DETAILS */}
+      {/* CONTENT */}
       <div className="p-4">
 
-        <h2 className="text-xl font-semibold mb-2">
+        <h2 className="text-lg font-semibold mb-2 line-clamp-1">
           {product.name}
         </h2>
 
-        <p className="text-gray-600 mb-4">
+        <p className="text-gray-600 mb-4 font-medium">
           ₹ {product.price}
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row gap-2">
 
           <button
             onClick={handleAddToCart}
@@ -119,13 +100,12 @@ function ProductCard({ product }) {
             }
             className="border border-black px-4 py-2 rounded-lg hover:bg-black hover:text-white w-full"
           >
-            View Details
+            View
           </button>
 
         </div>
 
       </div>
-
     </div>
   );
 }
