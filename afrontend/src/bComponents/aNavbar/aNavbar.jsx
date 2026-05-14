@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import SearchContext from "../../fContext/cSearchContext.jsx";
@@ -10,24 +10,46 @@ function Navbar() {
   const location = useLocation();
 
   const searchContext = useContext(SearchContext);
-  const searchTerm = searchContext?.searchTerm ?? "";
-  const setSearchTerm = searchContext?.setSearchTerm ?? (() => {});
+  const setSearchTerm = searchContext?.setSearchTerm;
 
   const cartContext = useContext(CartContext);
   const cartItems = cartContext?.cartItems ?? [];
 
   const totalItems = Array.isArray(cartItems)
-    ? cartItems.reduce((total, item) => total + (item?.quantity || 0), 0)
+    ? cartItems.reduce(
+        (total, item) => total + (item?.quantity || 0),
+        0
+      )
     : 0;
 
-  const handleSearch = (e) => {
+  // LOCAL INPUT STATE
+  const [localSearch, setLocalSearch] = useState("");
+
+  // INPUT HANDLER
+  const handleSearchChange = (e) => {
     const value = e.target.value;
-    setSearchTerm(value);
+    setLocalSearch(value);
+
+    // immediate UX update
+    if (setSearchTerm) {
+      setSearchTerm(value);
+    }
 
     if (value.trim() !== "" && location.pathname !== "/search") {
       navigate("/search");
     }
   };
+
+  // DEBOUNCE GLOBAL SEARCH UPDATE
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (setSearchTerm) {
+        setSearchTerm(localSearch);
+      }
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [localSearch, setSearchTerm]);
 
   const linkClass = (path) =>
     location.pathname === path
@@ -39,18 +61,21 @@ function Navbar() {
 
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
 
+        {/* LOGO */}
         <Link to="/" className="text-3xl font-bold">
           GoGrab
         </Link>
 
+        {/* SEARCH */}
         <input
           type="text"
           placeholder="Search products..."
-          value={searchTerm}
-          onChange={handleSearch}
+          value={localSearch}
+          onChange={handleSearchChange}
           className="w-full md:w-96 px-4 py-2 rounded-xl bg-black text-white outline-none border border-white/20 focus:border-white/50 transition"
         />
 
+        {/* NAV LINKS */}
         <div className="flex items-center gap-6">
 
           <Link to="/" className={linkClass("/")}>
