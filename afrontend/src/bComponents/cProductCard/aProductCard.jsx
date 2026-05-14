@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
 import toast from "react-hot-toast";
 
 import CartContext from "../../fContext/aCartContext.jsx";
@@ -17,10 +18,14 @@ function ProductCard({ product }) {
   const { addToCart } = useContext(CartContext);
 
   // WISHLIST
-  const wishlistContext = useContext(WishlistContext);
+  const wishlistContext =
+    useContext(WishlistContext);
 
-  const toggleWishlist = wishlistContext?.toggleWishlist;
-  const isInWishlist = wishlistContext?.isInWishlist;
+  const toggleWishlist =
+    wishlistContext?.toggleWishlist;
+
+  const isInWishlist =
+    wishlistContext?.isInWishlist;
 
   // LIKE STATUS
   const liked =
@@ -32,7 +37,11 @@ function ProductCard({ product }) {
   const handleAddToCart = () => {
 
     if (!user) {
+
+      toast.error("Please login first");
+
       navigate("/login");
+
       return;
     }
 
@@ -45,7 +54,11 @@ function ProductCard({ product }) {
   const handleWishlist = () => {
 
     if (!user) {
+
+      toast.error("Please login first");
+
       navigate("/login");
+
       return;
     }
 
@@ -91,11 +104,11 @@ function ProductCard({ product }) {
           ₹ {product.price}
         </p>
 
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
 
           <button
             onClick={handleAddToCart}
-            className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800"
+            className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 w-full"
           >
             Add To Cart
           </button>
@@ -104,7 +117,7 @@ function ProductCard({ product }) {
             onClick={() =>
               navigate(`/product/${product.id}`)
             }
-            className="border border-black px-4 py-2 rounded-lg hover:bg-black hover:text-white"
+            className="border border-black px-4 py-2 rounded-lg hover:bg-black hover:text-white w-full"
           >
             View Details
           </button>

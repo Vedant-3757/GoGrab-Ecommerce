@@ -22,7 +22,6 @@ function Profile() {
 
   // PROTECTED PAGE
   if (!user) {
-
     return <Navigate to="/login" />;
   }
 
@@ -35,20 +34,18 @@ function Profile() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-6">
+    <div className="min-h-screen bg-gray-100 py-10 px-4 sm:px-6">
 
       <div className="max-w-7xl mx-auto">
 
         {/* TOP SECTION */}
-        <div className="bg-black text-white rounded-3xl p-10 shadow-lg mb-10">
+        <div className="bg-black text-white rounded-3xl p-6 sm:p-10 shadow-lg mb-10">
 
-          <h1 className="text-5xl font-bold mb-4">
-            Welcome,
-            {" "}
-            {user.name}
+          <h1 className="text-3xl sm:text-5xl font-bold mb-4 break-words">
+            Welcome, {user.name}
           </h1>
 
-          <p className="text-gray-300 text-lg">
+          <p className="text-gray-300 text-base sm:text-lg">
             Manage your GoGrab account,
             orders and activities.
           </p>
@@ -56,10 +53,10 @@ function Profile() {
         </div>
 
         {/* PROFILE GRID */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
           {/* PROFILE CARD */}
-          <div className="bg-white rounded-3xl p-8 shadow-md hover:shadow-xl transition">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md hover:shadow-xl transition">
 
             <div className="text-5xl mb-4">
               👤
@@ -80,7 +77,7 @@ function Profile() {
             onClick={() =>
               navigate("/activities")
             }
-            className="bg-white rounded-3xl p-8 shadow-md hover:shadow-xl transition cursor-pointer"
+            className="bg-white rounded-3xl p-6 sm:p-8 shadow-md hover:shadow-xl transition cursor-pointer"
           >
 
             <div className="text-5xl mb-4">
@@ -102,7 +99,7 @@ function Profile() {
             onClick={() =>
               navigate("/cart")
             }
-            className="bg-white rounded-3xl p-8 shadow-md hover:shadow-xl transition cursor-pointer"
+            className="bg-white rounded-3xl p-6 sm:p-8 shadow-md hover:shadow-xl transition cursor-pointer"
           >
 
             <div className="text-5xl mb-4">
@@ -122,7 +119,7 @@ function Profile() {
           {/* LOGOUT */}
           <div
             onClick={handleLogout}
-            className="bg-red-500 text-white rounded-3xl p-8 shadow-md hover:bg-red-600 transition cursor-pointer"
+            className="bg-red-500 text-white rounded-3xl p-6 sm:p-8 shadow-md hover:bg-red-600 transition cursor-pointer"
           >
 
             <div className="text-5xl mb-4">
@@ -142,15 +139,15 @@ function Profile() {
         </div>
 
         {/* RECENT ACTIVITY */}
-        <div className="bg-white rounded-3xl p-10 shadow-md mt-10">
+        <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-md mt-10">
 
-          <h2 className="text-3xl font-bold mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-8">
             Recent Activity
           </h2>
 
           <div className="space-y-5">
 
-            <div className="flex items-center gap-4 border-b pb-4">
+            <div className="flex items-start gap-4 border-b pb-4">
 
               <div className="text-3xl">
                 ✅
@@ -170,7 +167,7 @@ function Profile() {
 
             </div>
 
-            <div className="flex items-center gap-4 border-b pb-4">
+            <div className="flex items-start gap-4 border-b pb-4">
 
               <div className="text-3xl">
                 🛍️
@@ -190,7 +187,7 @@ function Profile() {
 
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-start gap-4">
 
               <div className="text-3xl">
                 ❤️
@@ -199,11 +196,11 @@ function Profile() {
               <div>
 
                 <h3 className="font-semibold text-lg">
-                  Wishlist Coming Soon
+                  Wishlist Active
                 </h3>
 
                 <p className="text-gray-500">
-                  Save your favorite products
+                  Save and manage favorite products
                 </p>
 
               </div>
@@ -215,6 +212,7 @@ function Profile() {
         </div>
 
       </div>
+
     </div>
   );
 }
