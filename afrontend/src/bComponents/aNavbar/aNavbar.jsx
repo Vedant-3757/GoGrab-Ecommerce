@@ -29,7 +29,6 @@ function Navbar() {
     }
   };
 
-  // ACTIVE LINK STYLE
   const linkClass = (path) =>
     location.pathname === path
       ? "text-white font-bold border-b-2 border-white pb-1"
@@ -60,6 +59,10 @@ function Navbar() {
 
           <Link to="/activities" className={linkClass("/activities")}>
             Activities
+          </Link>
+
+          <Link to="/wishlist" className={linkClass("/wishlist")}>
+            Wishlist
           </Link>
 
           <Link to="/cart" className={`relative ${linkClass("/cart")}`}>

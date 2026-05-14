@@ -13,6 +13,7 @@ import Activities from "../cPages/iActivities/Activities.jsx";
 import NotFound from "../cPages/jNotFound/NotFound.jsx";
 import OrderSuccess from "../cPages/kOrderSuccess/OrderSuccess.jsx";
 import OrderDetails from "../cPages/kOrderSuccess/OrderDetails.jsx";
+import Wishlist from "../cPages/lWishlist/Wishlist.jsx";
 
 import PageTransition from "../animations/PageTransition.jsx";
 
@@ -25,120 +26,24 @@ function AppRoutes() {
 
       <Routes location={location} key={location.pathname}>
 
-        {/* MAIN */}
-        <Route
-          path="/"
-          element={
-            <PageTransition>
-              <Home />
-            </PageTransition>
-          }
-        />
+        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+        <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
+        <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
 
-        {/* AUTH */}
-        <Route
-          path="/login"
-          element={
-            <PageTransition>
-              <Login />
-            </PageTransition>
-          }
-        />
+        <Route path="/product/:id" element={<PageTransition><ProductDetails /></PageTransition>} />
+        <Route path="/search" element={<PageTransition><Search /></PageTransition>} />
 
-        <Route
-          path="/register"
-          element={
-            <PageTransition>
-              <Register />
-            </PageTransition>
-          }
-        />
+        <Route path="/cart" element={<PageTransition><Cart /></PageTransition>} />
+        <Route path="/checkout" element={<PageTransition><Checkout /></PageTransition>} />
 
-        {/* PRODUCT FLOW */}
-        <Route
-          path="/product/:id"
-          element={
-            <PageTransition>
-              <ProductDetails />
-            </PageTransition>
-          }
-        />
+        <Route path="/profile" element={<PageTransition><Profile /></PageTransition>} />
+        <Route path="/activities" element={<PageTransition><Activities /></PageTransition>} />
+        <Route path="/wishlist" element={<PageTransition><Wishlist /></PageTransition>} />
 
-        <Route
-          path="/search"
-          element={
-            <PageTransition>
-              <Search />
-            </PageTransition>
-          }
-        />
+        <Route path="/order-success" element={<PageTransition><OrderSuccess /></PageTransition>} />
+        <Route path="/order/:id" element={<PageTransition><OrderDetails /></PageTransition>} />
 
-        {/* CART FLOW */}
-        <Route
-          path="/cart"
-          element={
-            <PageTransition>
-              <Cart />
-            </PageTransition>
-          }
-        />
-
-        <Route
-          path="/checkout"
-          element={
-            <PageTransition>
-              <Checkout />
-            </PageTransition>
-          }
-        />
-
-        {/* USER */}
-        <Route
-          path="/profile"
-          element={
-            <PageTransition>
-              <Profile />
-            </PageTransition>
-          }
-        />
-
-        <Route
-          path="/activities"
-          element={
-            <PageTransition>
-              <Activities />
-            </PageTransition>
-          }
-        />
-
-        {/* ORDER FLOW */}
-        <Route
-          path="/order-success"
-          element={
-            <PageTransition>
-              <OrderSuccess />
-            </PageTransition>
-          }
-        />
-
-        <Route
-          path="/order/:id"
-          element={
-            <PageTransition>
-              <OrderDetails />
-            </PageTransition>
-          }
-        />
-
-        {/* 404 */}
-        <Route
-          path="*"
-          element={
-            <PageTransition>
-              <NotFound />
-            </PageTransition>
-          }
-        />
+        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
 
       </Routes>
 
