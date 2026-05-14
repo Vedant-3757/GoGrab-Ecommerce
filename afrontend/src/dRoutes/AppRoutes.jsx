@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
 import Home from "../cPages/aHome/Home.jsx";
 import Login from "../cPages/bLogin/Login.jsx";
@@ -13,37 +14,135 @@ import NotFound from "../cPages/jNotFound/NotFound.jsx";
 import OrderSuccess from "../cPages/kOrderSuccess/OrderSuccess.jsx";
 import OrderDetails from "../cPages/kOrderSuccess/OrderDetails.jsx";
 
+import PageTransition from "../animations/PageTransition.jsx";
+
 function AppRoutes() {
+
+  const location = useLocation();
+
   return (
-    <Routes>
+    <AnimatePresence mode="wait">
 
-      {/* MAIN */}
-      <Route path="/" element={<Home />} />
+      <Routes location={location} key={location.pathname}>
 
-      {/* AUTH */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+        {/* MAIN */}
+        <Route
+          path="/"
+          element={
+            <PageTransition>
+              <Home />
+            </PageTransition>
+          }
+        />
 
-      {/* PRODUCT FLOW */}
-      <Route path="/product/:id" element={<ProductDetails />} />
-      <Route path="/search" element={<Search />} />
+        {/* AUTH */}
+        <Route
+          path="/login"
+          element={
+            <PageTransition>
+              <Login />
+            </PageTransition>
+          }
+        />
 
-      {/* CART FLOW */}
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/checkout" element={<Checkout />} />
+        <Route
+          path="/register"
+          element={
+            <PageTransition>
+              <Register />
+            </PageTransition>
+          }
+        />
 
-      {/* USER */}
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/activities" element={<Activities />} />
+        {/* PRODUCT FLOW */}
+        <Route
+          path="/product/:id"
+          element={
+            <PageTransition>
+              <ProductDetails />
+            </PageTransition>
+          }
+        />
 
-      {/* ORDER FLOW */}
-      <Route path="/order-success" element={<OrderSuccess />} />
-      <Route path="/order/:id" element={<OrderDetails />} />
+        <Route
+          path="/search"
+          element={
+            <PageTransition>
+              <Search />
+            </PageTransition>
+          }
+        />
 
-      {/* 404 */}
-      <Route path="*" element={<NotFound />} />
+        {/* CART FLOW */}
+        <Route
+          path="/cart"
+          element={
+            <PageTransition>
+              <Cart />
+            </PageTransition>
+          }
+        />
 
-    </Routes>
+        <Route
+          path="/checkout"
+          element={
+            <PageTransition>
+              <Checkout />
+            </PageTransition>
+          }
+        />
+
+        {/* USER */}
+        <Route
+          path="/profile"
+          element={
+            <PageTransition>
+              <Profile />
+            </PageTransition>
+          }
+        />
+
+        <Route
+          path="/activities"
+          element={
+            <PageTransition>
+              <Activities />
+            </PageTransition>
+          }
+        />
+
+        {/* ORDER FLOW */}
+        <Route
+          path="/order-success"
+          element={
+            <PageTransition>
+              <OrderSuccess />
+            </PageTransition>
+          }
+        />
+
+        <Route
+          path="/order/:id"
+          element={
+            <PageTransition>
+              <OrderDetails />
+            </PageTransition>
+          }
+        />
+
+        {/* 404 */}
+        <Route
+          path="*"
+          element={
+            <PageTransition>
+              <NotFound />
+            </PageTransition>
+          }
+        />
+
+      </Routes>
+
+    </AnimatePresence>
   );
 }
 
