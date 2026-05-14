@@ -1,179 +1,125 @@
 import { useContext, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import CartContext from "../../fContext/aCartContext.jsx";
-import OrderContext from "../../fContext/hOrderContext.jsx";
 
 function Checkout() {
 
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const { cartItems, clearCart } = useContext(CartContext);
-  const { addOrder } = useContext(OrderContext);
+  const cartContext = useContext(CartContext);
+  const cartItems = cartContext?.cartItems ?? [];
 
-  const buyNowProduct = location.state?.buyNowProduct;
+  const removeItem = cartContext?.removeItem;
 
-  const finalProducts = buyNowProduct
-    ? [{ ...buyNowProduct, quantity: 1 }]
-    : cartItems;
+  const [form, setForm] = useState({
+    name: "",
+    address: "",
+    phone: "",
+  });
 
-  const totalPrice = finalProducts.reduce(
+  const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
-  // SHIPPING STATE
-  const [fullName, setFullName] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [pincode, setPincode] = useState("");
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const handlePlaceOrder = () => {
+  const handleOrder = () => {
 
-    if (finalProducts.length === 0) {
-
+    if (cartItems.length === 0) {
       toast.error("Cart is empty");
-
       return;
     }
 
-    if (!fullName || !address || !city || !pincode) {
-
+    if (!form.name || !form.address || !form.phone) {
       toast.error("Please fill all details");
-
       return;
     }
 
-    const orderData = {
-      id: Date.now(),
-      items: finalProducts,
-      total: totalPrice,
-      status: "Packed",
-      createdAt: new Date().toISOString(),
+    toast.success("Order placed successfully!");
 
-      shipping: {
-        fullName,
-        address,
-        city,
-        pincode,
-      },
-    };
-
-    // SAVE ORDER
-    addOrder(orderData);
-
-    // CLEAR CART
-    if (!buyNowProduct) {
-      clearCart();
-    }
-
-    toast.success("Order placed successfully");
+    // SAFE CART CLEAR (uses only what exists)
+    cartItems.forEach((item) => {
+      removeItem?.(item.id);
+    });
 
     navigate("/order-success");
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-6">
+    <div className="min-h-screen bg-gray-100 p-6">
 
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
+      <div className="max-w-5xl mx-auto">
 
-        {/* LEFT - FORM */}
-        <div className="bg-white p-6 rounded-2xl shadow">
+        <h1 className="text-3xl font-bold mb-8">
+          Checkout
+        </h1>
 
-          <h2 className="text-2xl font-bold mb-6">
-            Shipping Details
-          </h2>
+        {/* FORM */}
+        <div className="bg-white p-6 rounded-2xl shadow-md space-y-4">
 
           <input
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            type="text"
+            name="name"
             placeholder="Full Name"
-            className="w-full border p-3 mb-4 rounded-lg"
+            value={form.name}
+            onChange={handleChange}
+            className="w-full border p-3 rounded-lg"
           />
 
           <input
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
+            type="text"
+            name="address"
             placeholder="Address"
-            className="w-full border p-3 mb-4 rounded-lg"
+            value={form.address}
+            onChange={handleChange}
+            className="w-full border p-3 rounded-lg"
           />
 
           <input
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            placeholder="City"
-            className="w-full border p-3 mb-4 rounded-lg"
-          />
-
-          <input
-            value={pincode}
-            onChange={(e) => setPincode(e.target.value)}
-            placeholder="Pincode"
-            className="w-full border p-3 mb-4 rounded-lg"
+            type="text"
+            name="phone"
+            placeholder="Phone Number"
+            value={form.phone}
+            onChange={handleChange}
+            className="w-full border p-3 rounded-lg"
           />
 
         </div>
 
-        {/* RIGHT - SUMMARY */}
-        <div className="bg-white p-6 rounded-2xl shadow">
+        {/* ORDER SUMMARY */}
+        <div className="bg-white p-6 rounded-2xl shadow-md mt-6">
 
-          <h2 className="text-2xl font-bold mb-6">
+          <h2 className="text-2xl font-bold mb-4">
             Order Summary
           </h2>
 
-          <div className="space-y-4">
+          {cartItems.map((item) => (
+            <div key={item.id} className="flex justify-between py-2">
+              <span>{item.name} x {item.quantity}</span>
+              <span>₹ {item.price * item.quantity}</span>
+            </div>
+          ))}
 
-            {finalProducts.map((item) => (
+          <hr className="my-4" />
 
-              <div
-                key={item.id}
-                className="flex gap-4 border-b pb-3"
-              >
+          <h3 className="text-xl font-bold">
+            Total: ₹ {totalPrice}
+          </h3>
 
-                <img
-                  src={item.image}
-                  className="w-16 h-16 object-cover rounded-lg"
-                />
-
-                <div>
-
-                  <h3 className="font-semibold">
-                    {item.name}
-                  </h3>
-
-                  <p>
-                    Qty: {item.quantity}
-                  </p>
-
-                  <p>
-                    ₹ {item.price}
-                  </p>
-
-                </div>
-
-              </div>
-
-            ))}
-
-          </div>
-
-          <div className="mt-6 border-t pt-4">
-
-            <h2 className="text-xl font-bold mb-4">
-              Total: ₹ {totalPrice}
-            </h2>
-
-            <button
-              onClick={handlePlaceOrder}
-              className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800"
-            >
-              Place Order
-            </button>
-
-          </div>
+          <button
+            onClick={handleOrder}
+            className="bg-black text-white px-6 py-3 rounded-xl mt-5 w-full hover:bg-gray-800"
+          >
+            Place Order
+          </button>
 
         </div>
 
