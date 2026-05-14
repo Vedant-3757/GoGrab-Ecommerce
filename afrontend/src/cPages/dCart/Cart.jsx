@@ -1,5 +1,4 @@
 import { useContext } from "react";
-
 import { useNavigate } from "react-router-dom";
 
 import CartContext from "../../fContext/aCartContext.jsx";
@@ -16,8 +15,7 @@ function Cart() {
   } = useContext(CartContext);
 
   const totalPrice = cartItems.reduce(
-    (total, item) =>
-      total + item.price * item.quantity,
+    (total, item) => total + item.price * item.quantity,
     0
   );
 
@@ -30,11 +28,29 @@ function Cart() {
           Your Cart
         </h1>
 
+        {/* EMPTY STATE (UPGRADED) */}
         {cartItems.length === 0 ? (
 
-          <p className="text-lg sm:text-xl text-gray-600">
-            Cart is empty
-          </p>
+          <div className="flex flex-col items-center justify-center py-20 text-center">
+
+            <div className="text-6xl mb-4">🛒</div>
+
+            <h2 className="text-2xl font-bold mb-2">
+              Your cart is empty
+            </h2>
+
+            <p className="text-gray-500 mb-6">
+              Add products and start shopping
+            </p>
+
+            <button
+              onClick={() => navigate("/")}
+              className="bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition hover:scale-105"
+            >
+              Start Shopping
+            </button>
+
+          </div>
 
         ) : (
 
@@ -66,10 +82,8 @@ function Cart() {
                   <div className="flex items-center justify-center lg:justify-start gap-4 mt-4">
 
                     <button
-                      onClick={() =>
-                        decreaseQuantity(item.id)
-                      }
-                      className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300"
+                      onClick={() => decreaseQuantity(item.id)}
+                      className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
                     >
                       -
                     </button>
@@ -79,10 +93,8 @@ function Cart() {
                     </span>
 
                     <button
-                      onClick={() =>
-                        increaseQuantity(item.id)
-                      }
-                      className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300"
+                      onClick={() => increaseQuantity(item.id)}
+                      className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition"
                     >
                       +
                     </button>
@@ -92,10 +104,8 @@ function Cart() {
                 </div>
 
                 <button
-                  onClick={() =>
-                    removeItem(item.id)
-                  }
-                  className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 w-full sm:w-auto"
+                  onClick={() => removeItem(item.id)}
+                  className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition hover:scale-105 w-full sm:w-auto"
                 >
                   Remove
                 </button>
@@ -112,9 +122,7 @@ function Cart() {
               </h2>
 
               <button
-                onClick={() =>
-                  navigate("/checkout")
-                }
+                onClick={() => navigate("/checkout")}
                 className="bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition w-full sm:w-auto"
               >
                 Proceed To Checkout
@@ -127,7 +135,6 @@ function Cart() {
         )}
 
       </div>
-
     </div>
   );
 }
