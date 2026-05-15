@@ -1,24 +1,29 @@
 @import "tailwindcss";
 
+/* GLOBAL RESET */
 html, body, #root {
   height: 100%;
+  width: 100%;
   margin: 0;
+  padding: 0;
 }
 
-/* STOP FULL PAGE SCROLL BUG */
+/* PREVENT HORIZONTAL SCROLL BUG */
 body {
   overflow-x: hidden;
+
+  /* ✅ ADDED FIX (safe for all pages) */
   overflow-y: auto;
 }
 
-/* smooth scroll inside chat */
-html {
-  scroll-behavior: smooth;
-}
-
-/* FIX layout conflicts */
+/* IMPORTANT: CONSISTENT PAGE FLOW */
 #root {
-  min-height: 100%;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
+}
+
+/* SMOOTH SCROLL */
+html {
+  scroll-behavior: smooth;
 }

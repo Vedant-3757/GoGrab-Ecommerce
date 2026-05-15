@@ -28,7 +28,7 @@ function AiAssistant() {
       };
 
       setMessages((prev) => [...prev, botMsg]);
-    } catch {
+    } catch  {
       setMessages((prev) => [
         ...prev,
         { role: "bot", text: "Something went wrong. Try again." }
@@ -39,28 +39,27 @@ function AiAssistant() {
   };
 
   return (
-    <div className="h-[calc(100vh-72px)] flex flex-col bg-gradient-to-br from-gray-100 to-gray-200">
+    <div className="h-[calc(100vh-72px)] flex flex-col bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
 
-      {/* 🔥 AI INTRO HEADER */}
-      <div className="px-4 py-3 bg-white border-b shadow-sm">
-        <h1 className="text-lg md:text-xl font-bold text-gray-800">
+      {/* HEADER (NO GAP FIX) */}
+      <div className="px-4 py-2 bg-white border-b shadow-sm">
+        <h1 className="text-lg font-bold">
           GoGrab AI Assistant 🤖
         </h1>
 
-        <p className="text-sm text-gray-500 mt-1">
-          Your personalized shopping assistant. Ask for products, deals, and recommendations instantly.
+        <p className="text-xs text-gray-500">
+          Ask anything — products, prices, recommendations
         </p>
       </div>
 
       {/* CHAT AREA */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
+      <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
 
         {messages.map((msg, index) => (
-          <div key={index} className="space-y-3">
+          <div key={index} className="space-y-2">
 
-            {/* MESSAGE */}
             <div
-              className={`max-w-xl px-4 py-3 rounded-xl text-sm shadow-md ${
+              className={`max-w-xl px-4 py-3 rounded-xl text-sm shadow ${
                 msg.role === "user"
                   ? "bg-black text-white ml-auto"
                   : "bg-white text-gray-800"
@@ -69,7 +68,6 @@ function AiAssistant() {
               {msg.text}
             </div>
 
-            {/* PRODUCTS */}
             {msg.products?.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {msg.products.map((p) => (
@@ -83,28 +81,26 @@ function AiAssistant() {
 
       </div>
 
-      {/* INPUT */}
-      <div className="p-3 md:p-4 bg-white border-t shadow-md shrink-0">
-
+      {/* INPUT FIXED BOTTOM */}
+      <div className="p-3 bg-white border-t shadow-md shrink-0">
         <div className="max-w-2xl mx-auto flex gap-2">
 
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
-            placeholder="Ask something like 'phone under 20k'"
-            className="flex-1 border border-gray-300 rounded-xl px-4 py-2 md:py-3 text-sm outline-none focus:border-black"
+            placeholder="Ask something..."
+            className="flex-1 border rounded-xl px-4 py-2 outline-none focus:border-black"
           />
 
           <button
             onClick={handleSend}
-            className="bg-black text-white px-4 md:px-5 py-2 md:py-3 rounded-xl hover:scale-105 transition"
+            className="bg-black text-white px-4 py-2 rounded-xl"
           >
             Send
           </button>
 
         </div>
-
       </div>
 
     </div>
