@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
+
 import { useNavigate } from "react-router-dom";
+
 import toast from "react-hot-toast";
 
 import CartContext from "../../fContext/aCartContext.jsx";
 
-import {
-  saveOrder,
-} from "../../hUtils/OrderService.js";
+import { saveOrder } from "../../hUtils/OrderService.js";
 
 function Checkout() {
 
@@ -14,11 +14,9 @@ function Checkout() {
 
   const cartContext = useContext(CartContext);
 
-  const cartItems =
-    cartContext?.cartItems ?? [];
+  const cartItems = cartContext?.cartItems ?? [];
 
-  const removeItem =
-    cartContext?.removeItem;
+  const removeItem = cartContext?.removeItem;
 
   const [form, setForm] = useState({
     name: "",
@@ -33,10 +31,12 @@ function Checkout() {
   );
 
   const handleChange = (e) => {
+
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
+
   };
 
   const handleOrder = () => {
@@ -66,15 +66,13 @@ function Checkout() {
 
     saveOrder(newOrder);
 
-    toast.success(
-      "Order placed successfully!"
-    );
-
     cartItems.forEach((item) => {
       removeItem?.(item.id);
     });
 
-    navigate("/order-success");
+    toast.success("Order placed successfully!");
+
+    navigate("/activities");
   };
 
   return (
@@ -82,12 +80,12 @@ function Checkout() {
 
       <div className="max-w-5xl mx-auto">
 
-        <h1 className="text-3xl font-bold mb-8">
+        <h1 className="text-4xl font-bold mb-8">
           Checkout
         </h1>
 
         {/* FORM */}
-        <div className="bg-white p-6 rounded-2xl shadow-md space-y-4">
+        <div className="bg-white p-6 rounded-3xl shadow-md space-y-4">
 
           <input
             type="text"
@@ -95,7 +93,7 @@ function Checkout() {
             placeholder="Full Name"
             value={form.name}
             onChange={handleChange}
-            className="w-full border p-3 rounded-lg"
+            className="w-full border p-4 rounded-xl outline-none"
           />
 
           <input
@@ -104,7 +102,7 @@ function Checkout() {
             placeholder="Address"
             value={form.address}
             onChange={handleChange}
-            className="w-full border p-3 rounded-lg"
+            className="w-full border p-4 rounded-xl outline-none"
           />
 
           <input
@@ -113,42 +111,62 @@ function Checkout() {
             placeholder="Phone Number"
             value={form.phone}
             onChange={handleChange}
-            className="w-full border p-3 rounded-lg"
+            className="w-full border p-4 rounded-xl outline-none"
           />
 
         </div>
 
-        {/* SUMMARY */}
-        <div className="bg-white p-6 rounded-2xl shadow-md mt-6">
+        {/* ORDER SUMMARY */}
+        <div className="bg-white p-6 rounded-3xl shadow-md mt-6">
 
-          <h2 className="text-2xl font-bold mb-4">
+          <h2 className="text-3xl font-bold mb-6">
             Order Summary
           </h2>
 
-          {cartItems.map((item) => (
-            <div
-              key={item.id}
-              className="flex justify-between py-2"
-            >
-              <span>
-                {item.name} x {item.quantity}
-              </span>
+          <div className="space-y-4">
 
-              <span>
-                ₹ {item.price * item.quantity}
-              </span>
-            </div>
-          ))}
+            {cartItems.map((item) => (
 
-          <hr className="my-4" />
+              <div
+                key={item.id}
+                className="flex justify-between border-b pb-3"
+              >
 
-          <h3 className="text-xl font-bold">
-            Total: ₹ {totalPrice}
-          </h3>
+                <div>
+                  <h3 className="font-semibold">
+                    {item.name}
+                  </h3>
+
+                  <p className="text-gray-500 text-sm">
+                    Qty: {item.quantity}
+                  </p>
+                </div>
+
+                <p className="font-semibold">
+                  ₹ {item.price * item.quantity}
+                </p>
+
+              </div>
+
+            ))}
+
+          </div>
+
+          <div className="mt-8 flex justify-between items-center">
+
+            <h3 className="text-2xl font-bold">
+              Total
+            </h3>
+
+            <h3 className="text-2xl font-bold">
+              ₹ {totalPrice}
+            </h3>
+
+          </div>
 
           <button
             onClick={handleOrder}
-            className="bg-black text-white px-6 py-3 rounded-xl mt-5 w-full hover:bg-gray-800"
+            className="bg-black text-white w-full py-4 rounded-2xl mt-8 hover:bg-gray-800 transition"
           >
             Place Order
           </button>

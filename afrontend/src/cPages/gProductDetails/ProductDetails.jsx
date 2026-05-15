@@ -1,38 +1,69 @@
-import { useContext, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useContext, useMemo, useState } from "react";
+
+import {
+  useParams,
+  useNavigate,
+} from "react-router-dom";
+
 import toast from "react-hot-toast";
 
 import products from "../../jData/Products.js";
 
 import CartContext from "../../fContext/aCartContext.jsx";
 import AuthContext from "../../fContext/eAuthContext.jsx";
-import WishlistContext from "../../fContext/gWishlistContext.jsx";
 
-function ProductDetails() {
+import ProductCard from "../../bComponents/cProductCard/aProductCard.jsx";
+
+function SingleProduct() {
 
   const { id } = useParams();
+
   const navigate = useNavigate();
 
-  const user = useContext(AuthContext)?.user;
-  const { addToCart } = useContext(CartContext);
-  const wishlistContext = useContext(WishlistContext);
+  const product = products.find(
+    (p) => String(p.id) === String(id)
+  );
 
-  const toggleWishlist = wishlistContext?.toggleWishlist;
-  const isInWishlist = wishlistContext?.isInWishlist;
+  const { addToCart } =
+    useContext(CartContext);
 
-  const product = products.find((p) => String(p.id) === String(id));
+  const user =
+    useContext(AuthContext)?.user;
 
-  const [qty, setQty] = useState(1);
+  const [quantity, setQuantity] =
+    useState(1);
+
+  const relatedProducts = useMemo(() => {
+
+    return products
+      .filter(
+        (p) =>
+          p.id !== product?.id &&
+          p.category === product?.category
+      )
+      .slice(0, 4);
+
+  }, [product]);
 
   if (!product) {
+
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-500">
-        Product not found 😢
+      <div className="min-h-screen flex flex-col items-center justify-center">
+
+        <h1 className="text-3xl font-bold mb-4">
+          Product Not Found
+        </h1>
+
+        <button
+          onClick={() => navigate("/")}
+          className="bg-black text-white px-6 py-3 rounded-xl"
+        >
+          Back Home
+        </button>
+
       </div>
     );
   }
-
-  const liked = isInWishlist ? isInWishlist(product.id) : false;
 
   const handleAddToCart = () => {
 
@@ -42,104 +73,162 @@ function ProductDetails() {
       return;
     }
 
-    addToCart({ ...product, quantity: qty });
-    toast.success("Added to cart");
-  };
-
-  const handleWishlist = () => {
-
-    if (!user) {
-      toast.error("Please login first");
-      navigate("/login");
-      return;
+    for (let i = 0; i < quantity; i++) {
+      addToCart(product);
     }
 
-    if (!toggleWishlist) return;
-
-    toggleWishlist(product);
-
-    toast.success(
-      liked ? "Removed from wishlist" : "Added to wishlist"
-    );
+    toast.success("Added to cart");
   };
 
   return (
     <div className="min-h-screen bg-gray-100 px-6 py-10">
 
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 bg-white p-6 rounded-2xl shadow-lg">
+      <div className="max-w-7xl mx-auto">
 
-        {/* IMAGE */}
-        <div className="flex justify-center items-center">
-          <img
-            src={product.image}
-            alt={product.name}
-            className="w-full max-h-[400px] object-cover rounded-xl"
-          />
+        {/* MAIN PRODUCT */}
+        <div className="bg-white rounded-3xl shadow-md p-6 md:p-10 grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+          {/* IMAGE */}
+          <div className="flex items-center justify-center bg-gray-100 rounded-3xl p-6">
+
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full max-w-md object-cover rounded-2xl"
+            />
+
+          </div>
+
+          {/* DETAILS */}
+          <div className="flex flex-col justify-center">
+
+            <div className="mb-4">
+
+              <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold">
+                In Stock
+              </span>
+
+            </div>
+
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              {product.name}
+            </h1>
+
+            <p className="text-3xl font-bold text-black mb-6">
+              ₹ {product.price}
+            </p>
+
+            <p className="text-gray-600 leading-7 mb-8">
+              Premium quality product designed for modern users.
+              Smooth experience, reliable performance and stylish design
+              built for your daily lifestyle.
+            </p>
+
+            {/* DELIVERY */}
+            <div className="bg-gray-100 rounded-2xl p-4 mb-8">
+
+              <p className="font-semibold">
+                🚚 Free Delivery Available
+              </p>
+
+              <p className="text-gray-500 text-sm mt-1">
+                Delivery within 3-5 business days
+              </p>
+
+            </div>
+
+            {/* QUANTITY */}
+            <div className="flex items-center gap-4 mb-8">
+
+              <button
+                onClick={() =>
+                  setQuantity((prev) =>
+                    prev > 1 ? prev - 1 : 1
+                  )
+                }
+                className="bg-gray-200 px-4 py-2 rounded-xl hover:bg-gray-300 transition"
+              >
+                -
+              </button>
+
+              <span className="text-2xl font-bold">
+                {quantity}
+              </span>
+
+              <button
+                onClick={() =>
+                  setQuantity((prev) => prev + 1)
+                }
+                className="bg-gray-200 px-4 py-2 rounded-xl hover:bg-gray-300 transition"
+              >
+                +
+              </button>
+
+            </div>
+
+            {/* ACTIONS */}
+            <div className="flex flex-col sm:flex-row gap-4">
+
+              <button
+                onClick={handleAddToCart}
+                className="bg-black text-white px-8 py-4 rounded-2xl hover:bg-gray-800 transition w-full"
+              >
+                Add To Cart
+              </button>
+
+              <button
+                onClick={() => navigate("/cart")}
+                className="border border-black px-8 py-4 rounded-2xl hover:bg-black hover:text-white transition w-full"
+              >
+                Go To Cart
+              </button>
+
+            </div>
+
+          </div>
+
         </div>
 
-        {/* DETAILS */}
-        <div>
+        {/* RELATED PRODUCTS */}
+        <div className="mt-16">
 
-          <h1 className="text-3xl font-bold mb-4">
-            {product.name}
-          </h1>
+          <div className="flex items-center justify-between mb-8">
 
-          <p className="text-gray-600 mb-6 text-lg">
-            ₹ {product.price}
-          </p>
-
-          {/* QUANTITY */}
-          <div className="flex items-center gap-4 mb-6">
-
-            <button
-              onClick={() => setQty((q) => Math.max(1, q - 1))}
-              className="px-4 py-2 bg-gray-200 rounded-lg"
-            >
-              -
-            </button>
-
-            <span className="text-xl font-semibold">{qty}</span>
-
-            <button
-              onClick={() => setQty((q) => q + 1)}
-              className="px-4 py-2 bg-gray-200 rounded-lg"
-            >
-              +
-            </button>
+            <h2 className="text-4xl font-bold">
+              Related Products
+            </h2>
 
           </div>
 
-          {/* ACTIONS */}
-          <div className="flex flex-col gap-3">
+          {relatedProducts.length === 0 ? (
 
-            <button
-              onClick={handleAddToCart}
-              className="bg-black text-white py-3 rounded-xl hover:bg-gray-800"
-            >
-              Add To Cart
-            </button>
+            <div className="text-gray-500">
+              No related products found
+            </div>
 
-            <button
-              onClick={handleWishlist}
-              className="border border-black py-3 rounded-xl hover:bg-black hover:text-white"
-            >
-              {liked ? "Remove from Wishlist ❤️" : "Add to Wishlist 🤍"}
-            </button>
+          ) : (
 
-            <button
-              onClick={() => navigate("/cart")}
-              className="text-blue-600 underline mt-2"
-            >
-              Go to Cart →
-            </button>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
-          </div>
+              {relatedProducts.map((item) => (
+
+                <ProductCard
+                  key={item.id}
+                  product={item}
+                />
+
+              ))}
+
+            </div>
+
+          )}
 
         </div>
 
       </div>
+
     </div>
   );
 }
 
-export default ProductDetails;
+export default SingleProduct;
