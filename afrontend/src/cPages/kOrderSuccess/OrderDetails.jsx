@@ -1,11 +1,13 @@
+import { useContext } from "react";
+
 import {
   useParams,
   useNavigate,
 } from "react-router-dom";
 
-import {
-  getOrderById,
-} from "../../hUtils/OrderService.js";
+import { motion } from "framer-motion";
+
+import OrderContext from "../../fContext/hOrderContext.jsx";
 
 function OrderDetails() {
 
@@ -13,14 +15,25 @@ function OrderDetails() {
 
   const navigate = useNavigate();
 
+  const { orders } =
+    useContext(OrderContext);
+
   const order =
-    getOrderById(id);
+    orders.find(
+      (o) =>
+        String(o.id) === String(id)
+    );
 
   if (!order) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center">
 
-        <h1 className="text-2xl font-bold mb-4">
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
+
+        <div className="text-6xl mb-4">
+          😢
+        </div>
+
+        <h1 className="text-3xl font-bold mb-4">
           Order Not Found
         </h1>
 
@@ -28,13 +41,14 @@ function OrderDetails() {
           onClick={() =>
             navigate("/activities")
           }
-          className="bg-black text-white px-4 py-2 rounded-xl"
+          className="bg-black text-white px-6 py-3 rounded-2xl"
         >
           Back
         </button>
 
       </div>
     );
+
   }
 
   const steps = [
@@ -48,97 +62,142 @@ function OrderDetails() {
     steps.indexOf(order.status);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        duration: 0.3,
+      }}
+      className="min-h-screen bg-gray-100 px-4 sm:px-6 py-8"
+    >
 
-      <div className="max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-md">
+      <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-md p-6 sm:p-8">
 
-        <h1 className="text-4xl font-bold mb-6">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-8">
           Order Tracking
         </h1>
 
         {/* INFO */}
-        <div className="mb-6 space-y-2">
+        <div className="space-y-3 mb-10">
 
-          <p>
-            <b>Order ID:</b> {order.id}
+          <p className="break-all">
+            <b>Order ID:</b>
+            {" "}
+            {order.id}
           </p>
 
           <p>
-            <b>Total:</b> ₹ {order.total}
+            <b>Total:</b>
+            {" "}
+            ₹ {order.total}
           </p>
 
           <p>
-            <b>Status:</b> {order.status}
+            <b>Status:</b>
+            {" "}
+            {order.status}
           </p>
 
         </div>
 
-        {/* TRACK BAR */}
-        <div className="flex justify-between mb-8">
+        {/* TRACKING */}
+        <div className="overflow-x-auto pb-4 mb-10">
 
-          {steps.map((step, index) => (
-            <div
-              key={step}
-              className={`text-sm font-semibold ${
-                index <= currentStep
-                  ? "text-green-600"
-                  : "text-gray-400"
-              }`}
-            >
-              {step}
-            </div>
-          ))}
+          <div className="flex min-w-[600px] justify-between gap-6">
+
+            {steps.map((step, index) => (
+
+              <div
+                key={step}
+                className="flex flex-col items-center flex-1"
+              >
+
+                <div
+                  className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold ${
+                    index <= currentStep
+                      ? "bg-green-500"
+                      : "bg-gray-300"
+                  }`}
+                >
+                  {index + 1}
+                </div>
+
+                <p
+                  className={`mt-3 text-sm font-semibold text-center ${
+                    index <= currentStep
+                      ? "text-green-600"
+                      : "text-gray-400"
+                  }`}
+                >
+                  {step}
+                </p>
+
+              </div>
+
+            ))}
+
+          </div>
 
         </div>
 
         {/* ITEMS */}
-        <div className="space-y-4">
+        <div className="space-y-5">
 
           {order.items.map((item) => (
-            <div
+
+            <motion.div
+              whileHover={{
+                y: -2,
+              }}
               key={item.id}
-              className="flex gap-4 border-b pb-4"
+              className="border rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row gap-5 sm:items-center"
             >
 
               <img
                 src={item.image}
                 alt={item.name}
-                className="w-20 h-20 object-cover rounded-xl"
+                className="w-full sm:w-28 h-52 sm:h-28 object-cover rounded-2xl"
               />
 
-              <div>
+              <div className="flex-1">
 
-                <h3 className="font-semibold">
+                <h3 className="text-xl font-bold mb-2">
                   {item.name}
                 </h3>
 
-                <p>
-                  Qty: {item.quantity}
+                <p className="text-gray-500">
+                  Quantity:
+                  {" "}
+                  {item.quantity}
                 </p>
 
-                <p>
+                <p className="text-gray-500">
+                  Price:
+                  {" "}
                   ₹ {item.price}
                 </p>
 
               </div>
 
-            </div>
+            </motion.div>
+
           ))}
 
         </div>
 
+        {/* BUTTON */}
         <button
           onClick={() =>
             navigate("/activities")
           }
-          className="mt-8 w-full bg-black text-white py-3 rounded-xl"
+          className="mt-10 w-full bg-black text-white py-4 rounded-2xl hover:bg-gray-800 transition"
         >
-          Back
+          Back To Activities
         </button>
 
       </div>
 
-    </div>
+    </motion.div>
   );
 }
 

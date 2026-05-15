@@ -27,12 +27,6 @@ function Navbar() {
   const searchContext =
     useContext(SearchContext);
 
-  const searchTerm =
-    searchContext?.searchTerm ?? "";
-
-  const setSearchTerm =
-    searchContext?.setSearchTerm;
-
   const cartContext =
     useContext(CartContext);
 
@@ -45,6 +39,9 @@ function Navbar() {
         total + item.quantity,
       0
     );
+
+  const setSearchTerm =
+    searchContext?.setSearchTerm;
 
   const handleSearch = (e) => {
 
@@ -61,14 +58,6 @@ function Navbar() {
 
   };
 
-  const handleNavigate = (path) => {
-
-    navigate(path);
-
-    setMenuOpen(false);
-
-  };
-
   const linkClass = (path) =>
     location.pathname === path
       ? "text-white font-semibold"
@@ -79,6 +68,7 @@ function Navbar() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
 
+        {/* TOP */}
         <div className="flex items-center justify-between gap-4">
 
           {/* LOGO */}
@@ -89,15 +79,14 @@ function Navbar() {
             GoGrab
           </Link>
 
-          {/* DESKTOP SEARCH */}
-          <div className="hidden md:flex flex-1 justify-center">
+          {/* SEARCH DESKTOP */}
+          <div className="hidden md:block flex-1 max-w-md">
 
             <input
               type="text"
               placeholder="Search products..."
-              value={searchTerm}
               onChange={handleSearch}
-              className="w-full max-w-md px-4 py-2 rounded-xl bg-gray-900 border border-gray-700 outline-none focus:border-white"
+              className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2 outline-none focus:border-white"
             />
 
           </div>
@@ -123,14 +112,13 @@ function Navbar() {
               to="/cart"
               className={`relative ${linkClass("/cart")}`}
             >
+
               Cart
 
               {totalItems > 0 && (
-
-                <span className="absolute -top-3 -right-4 bg-red-500 text-xs px-2 py-1 rounded-full">
+                <span className="absolute -top-2 -right-4 bg-red-500 text-xs px-2 py-1 rounded-full">
                   {totalItems}
                 </span>
-
               )}
 
             </Link>
@@ -144,7 +132,7 @@ function Navbar() {
 
           </div>
 
-          {/* MOBILE MENU BUTTON */}
+          {/* MOBILE BUTTON */}
           <button
             onClick={() =>
               setMenuOpen(!menuOpen)
@@ -166,9 +154,8 @@ function Navbar() {
           <input
             type="text"
             placeholder="Search products..."
-            value={searchTerm}
             onChange={handleSearch}
-            className="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-700 outline-none focus:border-white"
+            className="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-2 outline-none"
           />
 
         </div>
@@ -176,52 +163,47 @@ function Navbar() {
         {/* MOBILE MENU */}
         {menuOpen && (
 
-          <div className="md:hidden mt-4 bg-gray-900 rounded-2xl p-4 flex flex-col gap-4">
+          <div className="md:hidden flex flex-col gap-5 mt-6 pb-4">
 
-            <button
+            <Link
+              to="/"
               onClick={() =>
-                handleNavigate("/")
+                setMenuOpen(false)
               }
-              className="text-left"
+              className={linkClass("/")}
             >
               Home
-            </button>
+            </Link>
 
-            <button
+            <Link
+              to="/activities"
               onClick={() =>
-                handleNavigate("/activities")
+                setMenuOpen(false)
               }
-              className="text-left"
+              className={linkClass("/activities")}
             >
               Activities
-            </button>
+            </Link>
 
-            <button
+            <Link
+              to="/cart"
               onClick={() =>
-                handleNavigate("/cart")
+                setMenuOpen(false)
               }
-              className="text-left flex items-center gap-2"
+              className={linkClass("/cart")}
             >
-              Cart
+              Cart ({totalItems})
+            </Link>
 
-              {totalItems > 0 && (
-
-                <span className="bg-red-500 text-xs px-2 py-1 rounded-full">
-                  {totalItems}
-                </span>
-
-              )}
-
-            </button>
-
-            <button
+            <Link
+              to="/profile"
               onClick={() =>
-                handleNavigate("/profile")
+                setMenuOpen(false)
               }
-              className="text-left"
+              className={linkClass("/profile")}
             >
               Profile
-            </button>
+            </Link>
 
           </div>
 

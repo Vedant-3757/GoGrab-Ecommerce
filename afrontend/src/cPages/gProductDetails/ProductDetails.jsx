@@ -23,34 +23,35 @@ function ProductDetails() {
 
   const product =
     products.find(
-      (item) =>
-        String(item.id) === String(id)
+      (p) => String(p.id) === String(id)
     );
 
-  const cartContext =
+  const { addToCart } =
     useContext(CartContext);
 
-  const addToCart =
-    cartContext?.addToCart;
-
-  const authContext =
-    useContext(AuthContext);
-
   const user =
-    authContext?.user;
+    useContext(AuthContext)?.user;
 
   if (!product) {
 
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-6">
+      <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
 
-        <h1 className="text-3xl font-bold mb-4">
+        <div className="text-6xl mb-4">
+          😢
+        </div>
+
+        <h1 className="text-3xl font-bold mb-3">
           Product Not Found
         </h1>
 
+        <p className="text-gray-500 mb-6">
+          This product does not exist
+        </p>
+
         <button
           onClick={() => navigate("/")}
-          className="bg-black text-white px-6 py-3 rounded-2xl"
+          className="bg-black text-white px-6 py-3 rounded-xl"
         >
           Back Home
         </button>
@@ -63,132 +64,122 @@ function ProductDetails() {
   const handleAddToCart = () => {
 
     if (!user) {
-      toast.error("Please login first");
+
+      toast.error(
+        "Please login first"
+      );
+
       navigate("/login");
+
       return;
+
     }
 
-    addToCart?.(product);
+    addToCart(product);
 
-    toast.success("Added to cart");
+    toast.success(
+      "Added to cart"
+    );
+
+  };
+
+  const handleBuyNow = () => {
+
+    if (!user) {
+
+      toast.error(
+        "Please login first"
+      );
+
+      navigate("/login");
+
+      return;
+
+    }
+
+    addToCart(product);
+
+    navigate("/checkout");
 
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        duration: 0.35,
+        ease: "easeInOut",
+      }}
+      className="min-h-screen bg-gray-100 px-4 sm:px-6 py-8 sm:py-10"
+    >
 
       <div className="max-w-7xl mx-auto">
 
-        <div className="bg-white rounded-3xl shadow-md overflow-hidden">
+        <div className="bg-white rounded-3xl shadow-lg overflow-hidden grid grid-cols-1 lg:grid-cols-2">
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 p-6 sm:p-10">
+          {/* IMAGE */}
+          <div className="p-4 sm:p-8 flex items-center justify-center bg-gray-50">
 
-            {/* IMAGE */}
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4 }}
-              className="flex justify-center items-center"
-            >
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full max-w-md h-auto object-cover rounded-2xl"
+            />
 
-              <div className="w-full max-w-xl bg-gray-100 rounded-3xl overflow-hidden">
+          </div>
 
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-[300px] sm:h-[500px] object-cover"
-                />
+          {/* CONTENT */}
+          <div className="p-6 sm:p-10 flex flex-col justify-center">
 
-              </div>
+            <p className="text-gray-500 mb-2">
+              GoGrab Premium
+            </p>
 
-            </motion.div>
+            <h1 className="text-3xl sm:text-5xl font-bold mb-6">
+              {product.name}
+            </h1>
 
-            {/* DETAILS */}
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.4 }}
-              className="flex flex-col justify-center"
-            >
+            <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-8">
 
-              {/* STOCK */}
-              <div className="mb-4">
+              Experience premium quality and modern technology with this amazing product from GoGrab.
 
-                <span className="bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-semibold">
-                  In Stock
-                </span>
+            </p>
 
-              </div>
+            <div className="text-3xl sm:text-4xl font-bold mb-8">
+              ₹ {product.price}
+            </div>
 
-              {/* NAME */}
-              <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-6">
+            {/* BUTTONS */}
+            <div className="flex flex-col sm:flex-row gap-4">
 
-                {product.name}
+              <motion.button
+                whileTap={{
+                  scale: 0.95,
+                }}
+                whileHover={{
+                  scale: 1.02,
+                }}
+                onClick={handleAddToCart}
+                className="bg-black text-white px-6 py-4 rounded-2xl hover:bg-gray-800 transition w-full"
+              >
+                Add To Cart
+              </motion.button>
 
-              </h1>
+              <motion.button
+                whileTap={{
+                  scale: 0.95,
+                }}
+                whileHover={{
+                  scale: 1.02,
+                }}
+                onClick={handleBuyNow}
+                className="border border-black px-6 py-4 rounded-2xl hover:bg-black hover:text-white transition w-full"
+              >
+                Buy Now
+              </motion.button>
 
-              {/* PRICE */}
-              <h2 className="text-3xl sm:text-4xl font-bold text-black mb-6">
-
-                ₹ {product.price}
-
-              </h2>
-
-              {/* DESCRIPTION */}
-              <p className="text-gray-600 text-lg leading-relaxed mb-8">
-
-                Premium quality product with modern design and smooth user experience. Perfect for everyday usage with high durability and performance.
-
-              </p>
-
-              {/* HIGHLIGHTS */}
-              <div className="space-y-4 mb-10">
-
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">🚚</span>
-                  <p className="text-gray-700">
-                    Free delivery across India
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">🔒</span>
-                  <p className="text-gray-700">
-                    Secure payment system
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">⭐</span>
-                  <p className="text-gray-700">
-                    Trusted premium quality
-                  </p>
-                </div>
-
-              </div>
-
-              {/* BUTTONS */}
-              <div className="flex flex-col sm:flex-row gap-4">
-
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  whileHover={{ scale: 1.02 }}
-                  onClick={handleAddToCart}
-                  className="bg-black text-white px-8 py-4 rounded-2xl font-semibold hover:bg-gray-800 transition w-full"
-                >
-                  Add To Cart
-                </motion.button>
-
-                <button
-                  onClick={() => navigate("/cart")}
-                  className="border border-black px-8 py-4 rounded-2xl font-semibold hover:bg-black hover:text-white transition w-full"
-                >
-                  Go To Cart
-                </button>
-
-              </div>
-
-            </motion.div>
+            </div>
 
           </div>
 
@@ -196,7 +187,7 @@ function ProductDetails() {
 
       </div>
 
-    </div>
+    </motion.div>
   );
 }
 
