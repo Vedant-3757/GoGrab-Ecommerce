@@ -1,9 +1,24 @@
 @import "tailwindcss";
 
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+/* STOP FULL PAGE SCROLL BUG */
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* smooth scroll inside chat */
 html {
   scroll-behavior: smooth;
 }
 
-body {
-  overflow-x: hidden;
+/* FIX layout conflicts */
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }

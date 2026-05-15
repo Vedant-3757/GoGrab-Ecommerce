@@ -2,13 +2,12 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 function ScrollToTop() {
-
   const { pathname } = useLocation();
 
   useEffect(() => {
-
-    window.scrollTo(0, 0);
-
+    // instant reset (more reliable than smooth)
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }, [pathname]);
 
   return null;
