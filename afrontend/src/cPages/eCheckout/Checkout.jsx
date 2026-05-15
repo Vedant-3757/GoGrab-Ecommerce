@@ -4,14 +4,21 @@ import toast from "react-hot-toast";
 
 import CartContext from "../../fContext/aCartContext.jsx";
 
+import {
+  saveOrder,
+} from "../../hUtils/OrderService.js";
+
 function Checkout() {
 
   const navigate = useNavigate();
 
   const cartContext = useContext(CartContext);
-  const cartItems = cartContext?.cartItems ?? [];
 
-  const removeItem = cartContext?.removeItem;
+  const cartItems =
+    cartContext?.cartItems ?? [];
+
+  const removeItem =
+    cartContext?.removeItem;
 
   const [form, setForm] = useState({
     name: "",
@@ -20,7 +27,8 @@ function Checkout() {
   });
 
   const totalPrice = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
+    (total, item) =>
+      total + item.price * item.quantity,
     0
   );
 
@@ -38,14 +46,30 @@ function Checkout() {
       return;
     }
 
-    if (!form.name || !form.address || !form.phone) {
+    if (
+      !form.name ||
+      !form.address ||
+      !form.phone
+    ) {
       toast.error("Please fill all details");
       return;
     }
 
-    toast.success("Order placed successfully!");
+    const newOrder = {
+      id: Date.now(),
+      customer: form,
+      items: cartItems,
+      total: totalPrice,
+      status: "Packed",
+      createdAt: new Date().toISOString(),
+    };
 
-    // SAFE CART CLEAR (uses only what exists)
+    saveOrder(newOrder);
+
+    toast.success(
+      "Order placed successfully!"
+    );
+
     cartItems.forEach((item) => {
       removeItem?.(item.id);
     });
@@ -94,7 +118,7 @@ function Checkout() {
 
         </div>
 
-        {/* ORDER SUMMARY */}
+        {/* SUMMARY */}
         <div className="bg-white p-6 rounded-2xl shadow-md mt-6">
 
           <h2 className="text-2xl font-bold mb-4">
@@ -102,9 +126,17 @@ function Checkout() {
           </h2>
 
           {cartItems.map((item) => (
-            <div key={item.id} className="flex justify-between py-2">
-              <span>{item.name} x {item.quantity}</span>
-              <span>₹ {item.price * item.quantity}</span>
+            <div
+              key={item.id}
+              className="flex justify-between py-2"
+            >
+              <span>
+                {item.name} x {item.quantity}
+              </span>
+
+              <span>
+                ₹ {item.price * item.quantity}
+              </span>
             </div>
           ))}
 

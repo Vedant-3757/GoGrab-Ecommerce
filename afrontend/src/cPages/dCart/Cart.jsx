@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import CartContext from "../../fContext/aCartContext.jsx";
 
 function Cart() {
-
   const navigate = useNavigate();
 
   const {
@@ -28,9 +27,8 @@ function Cart() {
           Your Cart
         </h1>
 
-        {/* EMPTY STATE (UPGRADED) */}
+        {/* EMPTY STATE */}
         {cartItems.length === 0 ? (
-
           <div className="flex flex-col items-center justify-center py-20 text-center">
 
             <div className="text-6xl mb-4">🛒</div>
@@ -45,30 +43,29 @@ function Cart() {
 
             <button
               onClick={() => navigate("/")}
-              className="bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition hover:scale-105"
+              className="bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition"
             >
               Start Shopping
             </button>
 
           </div>
-
         ) : (
-
           <div className="space-y-6">
 
             {cartItems.map((item) => (
-
               <div
                 key={item.id}
                 className="bg-white rounded-2xl shadow-md p-4 flex flex-col lg:flex-row items-center gap-6"
               >
 
+                {/* IMAGE */}
                 <img
                   src={item.image}
                   alt={item.name}
                   className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-xl"
                 />
 
+                {/* DETAILS */}
                 <div className="flex-1 w-full text-center lg:text-left">
 
                   <h2 className="text-xl sm:text-2xl font-semibold">
@@ -79,6 +76,7 @@ function Cart() {
                     ₹ {item.price}
                   </p>
 
+                  {/* QUANTITY CONTROLS */}
                   <div className="flex items-center justify-center lg:justify-start gap-4 mt-4">
 
                     <button
@@ -103,15 +101,15 @@ function Cart() {
 
                 </div>
 
+                {/* REMOVE BUTTON */}
                 <button
                   onClick={() => removeItem(item.id)}
-                  className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition hover:scale-105 w-full sm:w-auto"
+                  className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition"
                 >
                   Remove
                 </button>
 
               </div>
-
             ))}
 
             {/* TOTAL SECTION */}
@@ -123,7 +121,7 @@ function Cart() {
 
               <button
                 onClick={() => navigate("/checkout")}
-                className="bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition w-full sm:w-auto"
+                className="bg-black text-white px-6 py-3 rounded-xl hover:bg-gray-800 transition"
               >
                 Proceed To Checkout
               </button>
@@ -131,10 +129,10 @@ function Cart() {
             </div>
 
           </div>
-
         )}
 
       </div>
+
     </div>
   );
 }

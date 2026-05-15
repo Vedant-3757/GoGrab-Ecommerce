@@ -2,21 +2,28 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import WishlistContext from "../../fContext/gWishlistContext.jsx";
-import CartContext from "../../fContext/aCartContext.jsx";
+
+import {
+  getOrders,
+} from "../../hUtils/OrderService.js";
 
 function Activities() {
 
   const navigate = useNavigate();
 
-  const wishlistContext = useContext(WishlistContext);
-  const cartContext = useContext(CartContext);
+  const wishlistContext =
+    useContext(WishlistContext);
 
-  const wishlist = wishlistContext?.wishlist ?? [];
-  const removeFromWishlist = wishlistContext?.removeFromWishlist;
+  const wishlist =
+    wishlistContext?.wishlist ?? [];
 
-  const orders = cartContext?.orders ?? []; // fallback (if you store orders later)
+  const removeFromWishlist =
+    wishlistContext?.removeFromWishlist;
 
-  const [tab, setTab] = useState("wishlist");
+  const orders = getOrders();
+
+  const [tab, setTab] =
+    useState("wishlist");
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -31,7 +38,9 @@ function Activities() {
         <div className="flex gap-4 mb-8">
 
           <button
-            onClick={() => setTab("wishlist")}
+            onClick={() =>
+              setTab("wishlist")
+            }
             className={`px-4 py-2 rounded-xl ${
               tab === "wishlist"
                 ? "bg-black text-white"
@@ -42,7 +51,9 @@ function Activities() {
           </button>
 
           <button
-            onClick={() => setTab("orders")}
+            onClick={() =>
+              setTab("orders")
+            }
             className={`px-4 py-2 rounded-xl ${
               tab === "orders"
                 ? "bg-black text-white"
@@ -54,7 +65,7 @@ function Activities() {
 
         </div>
 
-        {/* WISHLIST TAB */}
+        {/* WISHLIST */}
         {tab === "wishlist" && (
           <div className="space-y-4">
 
@@ -70,6 +81,7 @@ function Activities() {
                 >
 
                   <div>
+
                     <h2 className="font-semibold">
                       {item.name}
                     </h2>
@@ -77,13 +89,16 @@ function Activities() {
                     <p className="text-gray-500">
                       ₹ {item.price}
                     </p>
+
                   </div>
 
                   <div className="flex gap-3">
 
                     <button
                       onClick={() =>
-                        navigate(`/product/${item.id}`)
+                        navigate(
+                          `/product/${item.id}`
+                        )
                       }
                       className="text-blue-600"
                     >
@@ -92,7 +107,9 @@ function Activities() {
 
                     <button
                       onClick={() =>
-                        removeFromWishlist?.(item.id)
+                        removeFromWishlist?.(
+                          item.id
+                        )
                       }
                       className="text-red-500"
                     >
@@ -108,7 +125,7 @@ function Activities() {
           </div>
         )}
 
-        {/* ORDERS TAB */}
+        {/* ORDERS */}
         {tab === "orders" && (
           <div className="space-y-4">
 
@@ -117,18 +134,37 @@ function Activities() {
                 No orders yet 📦
               </p>
             ) : (
-              orders.map((order, i) => (
+              orders.map((order) => (
                 <div
-                  key={i}
-                  className="bg-white p-4 rounded-xl shadow"
+                  key={order.id}
+                  onClick={() =>
+                    navigate(
+                      `/order/${order.id}`
+                    )
+                  }
+                  className="bg-white p-5 rounded-2xl shadow cursor-pointer hover:shadow-lg transition"
                 >
-                  <h2 className="font-semibold">
-                    Order #{i + 1}
-                  </h2>
 
-                  <p className="text-gray-500">
-                    Total: ₹ {order.total || 0}
-                  </p>
+                  <div className="flex justify-between items-center">
+
+                    <div>
+
+                      <h2 className="font-bold text-lg">
+                        Order #{order.id}
+                      </h2>
+
+                      <p className="text-gray-500">
+                        ₹ {order.total}
+                      </p>
+
+                    </div>
+
+                    <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                      {order.status}
+                    </div>
+
+                  </div>
+
                 </div>
               ))
             )}
