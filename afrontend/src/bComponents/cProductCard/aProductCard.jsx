@@ -8,21 +8,32 @@ import AuthContext from "../../fContext/eAuthContext.jsx";
 import WishlistContext from "../../fContext/gWishlistContext.jsx";
 
 function ProductCard({ product }) {
+
   const navigate = useNavigate();
 
-  const user = useContext(AuthContext)?.user;
-  const { addToCart } = useContext(CartContext);
-  const wishlistContext = useContext(WishlistContext);
+  const user =
+    useContext(AuthContext)?.user;
 
-  const toggleWishlist = wishlistContext?.toggleWishlist;
-  const isInWishlist = wishlistContext?.isInWishlist;
+  const { addToCart } =
+    useContext(CartContext);
+
+  const wishlistContext =
+    useContext(WishlistContext);
+
+  const toggleWishlist =
+    wishlistContext?.toggleWishlist;
+
+  const isInWishlist =
+    wishlistContext?.isInWishlist;
 
   const liked =
-    product?.id && isInWishlist
+    product?.id &&
+    isInWishlist
       ? isInWishlist(product.id)
       : false;
 
   const handleAddToCart = () => {
+
     if (!user) {
       toast.error("Please login first");
       navigate("/login");
@@ -30,23 +41,27 @@ function ProductCard({ product }) {
     }
 
     addToCart(product);
+
     toast.success("Added to cart");
+
   };
 
   const handleWishlist = () => {
+
     if (!user) {
       toast.error("Please login first");
       navigate("/login");
       return;
     }
 
-    if (!toggleWishlist) return;
-
-    toggleWishlist(product);
+    toggleWishlist?.(product);
 
     toast.success(
-      liked ? "Removed from wishlist" : "Added to wishlist"
+      liked
+        ? "Removed from wishlist"
+        : "Added to wishlist"
     );
+
   };
 
   if (!product) return null;
@@ -55,11 +70,15 @@ function ProductCard({ product }) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ scale: 1.03 }}
-      transition={{ duration: 0.25 }}
-      className="bg-white rounded-2xl shadow-md overflow-hidden relative"
+      whileHover={{
+        scale: 1.03,
+      }}
+      transition={{
+        duration: 0.25,
+      }}
+      className="group bg-white rounded-2xl shadow-md hover:shadow-2xl hover:-translate-y-1 transition overflow-hidden relative"
     >
-      {/* WISHLIST */}
+
       <button
         onClick={handleWishlist}
         className="absolute top-3 right-3 text-2xl z-10"
@@ -67,15 +86,14 @@ function ProductCard({ product }) {
         {liked ? "❤️" : "🤍"}
       </button>
 
-      {/* IMAGE */}
       <img
         src={product.image}
         alt={product.name}
-        className="h-52 w-full object-cover"
+        className="h-52 w-full object-cover transition duration-300 group-hover:scale-105"
       />
 
-      {/* CONTENT */}
       <div className="p-4">
+
         <h2 className="text-lg font-semibold mb-2 line-clamp-1">
           {product.name}
         </h2>
@@ -86,22 +104,30 @@ function ProductCard({ product }) {
 
         <div className="flex flex-col sm:flex-row gap-2">
 
-          <button
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
             onClick={handleAddToCart}
-            className="bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800 w-full"
+            className="bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-800 transition w-full"
           >
             Add To Cart
-          </button>
+          </motion.button>
 
-          <button
-            onClick={() => navigate(`/product/${product.id}`)}
-            className="border border-black px-4 py-2 rounded-lg hover:bg-black hover:text-white w-full"
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            onClick={() =>
+              navigate(`/product/${product.id}`)
+            }
+            className="border border-black px-4 py-2 rounded-xl hover:bg-black hover:text-white transition w-full"
           >
             View
-          </button>
+          </motion.button>
 
         </div>
+
       </div>
+
     </motion.div>
   );
 }

@@ -1,13 +1,13 @@
-import {
-  useContext,
-  useState,
-  useEffect,
-  useMemo,
-} from "react";
+import { useContext, useState, useEffect } from "react";
+
+import { motion } from "framer-motion";
 
 import SearchContext from "../../fContext/cSearchContext.jsx";
+
 import ProductCard from "../../bComponents/cProductCard/aProductCard.jsx";
+
 import ProductSkeleton from "../../bComponents/cProductCard/bProductSkeleton.jsx";
+
 import products from "../../jData/Products.js";
 
 function Home() {
@@ -15,60 +15,61 @@ function Home() {
   const searchTerm =
     useContext(SearchContext)?.searchTerm || "";
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] =
+    useState(true);
 
-  const [category, setCategory] = useState("All");
-
-  const [sortBy, setSortBy] = useState("");
+  const [sortBy, setSortBy] =
+    useState("default");
 
   useEffect(() => {
 
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 800);
+    const timer =
+      setTimeout(() => {
+        setLoading(false);
+      }, 800);
 
     return () => clearTimeout(timer);
 
   }, []);
 
-  const filteredProducts = useMemo(() => {
-
-    let filtered = [...products];
-
-    // SEARCH
-    filtered = filtered.filter((product) =>
-      product.name
+  let filteredProducts =
+    products.filter((p) =>
+      p.name
         .toLowerCase()
-        .includes(searchTerm.toLowerCase())
+        .includes(
+          searchTerm.toLowerCase()
+        )
     );
 
-    // CATEGORY
-    if (category !== "All") {
-      filtered = filtered.filter(
-        (product) =>
-          product.category === category
-      );
-    }
+  // SORTING
+  if (sortBy === "low-high") {
 
-    // SORT
-    if (sortBy === "low") {
-      filtered.sort(
+    filteredProducts =
+      [...filteredProducts].sort(
         (a, b) => a.price - b.price
       );
-    }
 
-    if (sortBy === "high") {
-      filtered.sort(
+  }
+
+  if (sortBy === "high-low") {
+
+    filteredProducts =
+      [...filteredProducts].sort(
         (a, b) => b.price - a.price
       );
-    }
 
-    return filtered;
-
-  }, [searchTerm, category, sortBy]);
+  }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        duration: 0.35,
+        ease: "easeInOut",
+      }}
+      className="min-h-screen bg-gray-100"
+    >
 
       {/* HERO */}
       <div className="bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white py-28 px-6">
@@ -83,17 +84,48 @@ function Home() {
               With GoGrab
             </h1>
 
-            <p className="text-gray-300 mb-10">
-              Premium shopping experience.
+            <p className="text-gray-300 mb-10 max-w-xl">
+              Discover premium gadgets,
+              accessories and smart
+              shopping with modern UX.
             </p>
 
             <a href="#products">
 
-              <button className="bg-white text-black px-8 py-4 rounded-2xl hover:scale-105 transition">
+              <motion.button
+                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
+                className="bg-white text-black px-8 py-4 rounded-2xl font-semibold"
+              >
                 Explore Products
-              </button>
+              </motion.button>
 
             </a>
+
+          </div>
+
+          {/* HERO CARD */}
+          <div className="flex-1 flex justify-center">
+
+            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 w-72 h-72 flex items-center justify-center shadow-2xl">
+
+              <div className="text-center">
+
+                <div className="text-6xl mb-4">
+                  🛍️
+                </div>
+
+                <p className="text-lg font-semibold">
+                  Fast Shopping
+                </p>
+
+                <p className="text-sm text-gray-300">
+                  Premium Experience
+                </p>
+
+              </div>
+
+            </div>
 
           </div>
 
@@ -101,64 +133,50 @@ function Home() {
 
       </div>
 
-      {/* FILTER BAR */}
-      <div className="max-w-7xl mx-auto px-6 pt-10">
+      {/* CATEGORIES */}
+      <div className="max-w-7xl mx-auto px-6 py-14">
 
-        <div className="bg-white rounded-2xl shadow-md p-4 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+        <h2 className="text-4xl font-bold mb-10">
+          Categories
+        </h2>
 
-          {/* CATEGORY */}
-          <select
-            value={category}
-            onChange={(e) =>
-              setCategory(e.target.value)
-            }
-            className="border rounded-xl px-4 py-3 outline-none"
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+          <motion.div
+            whileHover={{
+              y: -5,
+            }}
+            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-2xl transition text-center cursor-pointer"
           >
+            📱 Electronics
+          </motion.div>
 
-            <option value="All">
-              All Categories
-            </option>
-
-            <option value="Electronics">
-              Electronics
-            </option>
-
-            <option value="Accessories">
-              Accessories
-            </option>
-
-            <option value="Laptops">
-              Laptops
-            </option>
-
-            <option value="Smart Gadgets">
-              Smart Gadgets
-            </option>
-
-          </select>
-
-          {/* SORT */}
-          <select
-            value={sortBy}
-            onChange={(e) =>
-              setSortBy(e.target.value)
-            }
-            className="border rounded-xl px-4 py-3 outline-none"
+          <motion.div
+            whileHover={{
+              y: -5,
+            }}
+            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-2xl transition text-center cursor-pointer"
           >
+            🎧 Accessories
+          </motion.div>
 
-            <option value="">
-              Sort By
-            </option>
+          <motion.div
+            whileHover={{
+              y: -5,
+            }}
+            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-2xl transition text-center cursor-pointer"
+          >
+            💻 Laptops
+          </motion.div>
 
-            <option value="low">
-              Price: Low to High
-            </option>
-
-            <option value="high">
-              Price: High to Low
-            </option>
-
-          </select>
+          <motion.div
+            whileHover={{
+              y: -5,
+            }}
+            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-2xl transition text-center cursor-pointer"
+          >
+            ⌚ Smart Gadgets
+          </motion.div>
 
         </div>
 
@@ -167,21 +185,54 @@ function Home() {
       {/* PRODUCTS */}
       <div
         id="products"
-        className="max-w-7xl mx-auto px-6 py-20"
+        className="max-w-7xl mx-auto px-6 pb-20"
       >
 
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-10">
+        {/* TOP BAR */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-10">
 
-          <h2 className="text-4xl font-bold">
-            Featured Products
-          </h2>
+          <div>
 
-          <p className="text-gray-600 mt-2 md:mt-0">
-            Showing {filteredProducts.length} products
-          </p>
+            <h2 className="text-4xl font-bold">
+              Featured Products
+            </h2>
+
+            <p className="text-gray-500 mt-2">
+              Showing
+              {" "}
+              {filteredProducts.length}
+              {" "}
+              products
+            </p>
+
+          </div>
+
+          {/* SORT */}
+          <select
+            value={sortBy}
+            onChange={(e) =>
+              setSortBy(e.target.value)
+            }
+            className="bg-white border border-gray-300 px-4 py-3 rounded-2xl outline-none"
+          >
+
+            <option value="default">
+              Sort By
+            </option>
+
+            <option value="low-high">
+              Price: Low to High
+            </option>
+
+            <option value="high-low">
+              Price: High to Low
+            </option>
+
+          </select>
 
         </div>
 
+        {/* LOADING */}
         {loading ? (
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -196,19 +247,31 @@ function Home() {
 
         ) : filteredProducts.length === 0 ? (
 
-          <div className="text-center py-20 text-gray-500 text-lg">
-            No products found 😢
+          <div className="text-center py-24">
+
+            <div className="text-6xl mb-4">
+              😢
+            </div>
+
+            <h2 className="text-2xl font-bold mb-2">
+              No Products Found
+            </h2>
+
+            <p className="text-gray-500">
+              Try searching something else
+            </p>
+
           </div>
 
         ) : (
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
-            {filteredProducts.map((product) => (
+            {filteredProducts.map((p) => (
 
               <ProductCard
-                key={product.id}
-                product={product}
+                key={p.id}
+                product={p}
               />
 
             ))}
@@ -219,7 +282,7 @@ function Home() {
 
       </div>
 
-    </div>
+    </motion.div>
   );
 }
 
