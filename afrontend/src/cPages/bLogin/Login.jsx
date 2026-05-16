@@ -1,43 +1,94 @@
-import { useState, useContext } from "react";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import {
+  useState,
+  useContext,
+} from "react";
+
+import {
+  useNavigate,
+  Link,
+  useLocation,
+} from "react-router-dom";
+
 import AuthContext from "../../fContext/eAuthContext.jsx";
 
 function Login() {
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  const authContext = useContext(AuthContext);
+  const navigate =
+    useNavigate();
 
-  const login = authContext?.login || (() => false);
+  const location =
+    useLocation();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const authContext =
+    useContext(AuthContext);
+
+  const login =
+    authContext?.login ||
+    (() => false);
+
+  const [email, setEmail] =
+    useState("");
+
+  const [password,
+    setPassword] =
+      useState("");
+
+  // ✅ NEW
+  const [loading, setLoading] =
+    useState(false);
+
+  // ✅ SAFER REDIRECT
+  const redirectPath =
+    typeof location.state?.from === "string"
+      ? location.state.from
+      : "/profile";
 
   const handleLogin = (e) => {
+
     e.preventDefault();
 
-    if (!email || !password) {
-      alert("Please Fill All Fields");
+    if (
+      !email ||
+      !password
+    ) {
+
+      alert(
+        "Please Fill All Fields"
+      );
+
       return;
     }
 
-    const success = login(email, password);
+    setLoading(true);
+
+    const success =
+      login(
+        email.trim(),
+        password
+      );
 
     if (success) {
-      alert("Login Successful");
 
-      // ✅ MODIFIED ONLY HERE (redirect fix)
-      const redirectPath = location.state?.from?.pathname;
+      alert(
+        "Login Successful"
+      );
 
-      if (redirectPath) {
-        navigate(redirectPath, { replace: true });
-      } else {
-        navigate("/profile");
-      }
+      navigate(
+        redirectPath,
+        {
+          replace: true,
+        }
+      );
 
     } else {
-      alert("Invalid Email Or Password");
+
+      alert(
+        "Invalid Email Or Password"
+      );
+
     }
+
+    setLoading(false);
   };
 
   return (
@@ -49,41 +100,65 @@ function Login() {
           Login
         </h1>
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form
+          onSubmit={handleLogin}
+          className="space-y-6"
+        >
 
           <input
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border outline-none"
+            onChange={(e) =>
+              setEmail(
+                e.target.value
+              )
+            }
+            autoComplete="email"
+            className="w-full px-4 py-3 rounded-xl border outline-none focus:border-black"
           />
 
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border outline-none"
+            onChange={(e) =>
+              setPassword(
+                e.target.value
+              )
+            }
+            autoComplete="current-password"
+            className="w-full px-4 py-3 rounded-xl border outline-none focus:border-black"
           />
 
           <button
             type="submit"
-            className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition"
+            disabled={loading}
+            className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition active:scale-[0.98] disabled:opacity-60"
           >
-            Login
+            {loading
+              ? "Logging In..."
+              : "Login"}
           </button>
 
         </form>
 
         <p className="text-center mt-6 text-gray-600">
-          Don't have an account?{" "}
-          <Link to="/register" className="text-black font-semibold">
+
+          Don't have an account?
+          {" "}
+
+          <Link
+            to="/register"
+            className="text-black font-semibold"
+          >
             Register
           </Link>
+
         </p>
 
       </div>
+
     </div>
   );
 }

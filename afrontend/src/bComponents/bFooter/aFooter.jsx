@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom";
+
 function Footer() {
+
   return (
     <footer className="bg-black text-white mt-20">
 
@@ -23,10 +26,43 @@ function Footer() {
           </h2>
 
           <ul className="space-y-3 text-gray-400">
-            <li>Home</li>
-            <li>Products</li>
-            <li>Cart</li>
-            <li>Checkout</li>
+
+            <li>
+              <Link
+                to="/"
+                className="hover:text-white transition"
+              >
+                Home
+              </Link>
+            </li>
+
+            <li>
+              <a
+                href="/#products"
+                className="hover:text-white transition"
+              >
+                Products
+              </a>
+            </li>
+
+            <li>
+              <Link
+                to="/cart"
+                className="hover:text-white transition"
+              >
+                Cart
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                to="/checkout"
+                className="hover:text-white transition"
+              >
+                Checkout
+              </Link>
+            </li>
+
           </ul>
         </div>
 
@@ -37,10 +73,23 @@ function Footer() {
           </h2>
 
           <ul className="space-y-3 text-gray-400">
-            <li>Electronics</li>
-            <li>Laptops</li>
-            <li>Accessories</li>
-            <li>Smart Gadgets</li>
+
+            <li className="hover:text-white transition cursor-pointer">
+              Electronics
+            </li>
+
+            <li className="hover:text-white transition cursor-pointer">
+              Laptops
+            </li>
+
+            <li className="hover:text-white transition cursor-pointer">
+              Accessories
+            </li>
+
+            <li className="hover:text-white transition cursor-pointer">
+              Smart Gadgets
+            </li>
+
           </ul>
         </div>
 
@@ -51,9 +100,19 @@ function Footer() {
           </h2>
 
           <ul className="space-y-3 text-gray-400">
-            <li>Email: supportgograb@.com</li>
-            <li>Phone: +91 8010706552</li>
-            <li>Mumbai, Maharashtra</li>
+
+            <li>
+              Email: support@gograb.com
+            </li>
+
+            <li>
+              Phone: +91 8010706552
+            </li>
+
+            <li>
+              Mumbai, Maharashtra
+            </li>
+
           </ul>
         </div>
 

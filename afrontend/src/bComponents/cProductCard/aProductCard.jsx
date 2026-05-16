@@ -35,23 +35,37 @@ function ProductCard({ product }) {
   const handleAddToCart = () => {
 
     if (!user) {
-      toast.error("Please login first");
+
+      toast.error(
+        "Please login first"
+      );
+
       navigate("/login");
+
       return;
+
     }
 
     addToCart(product);
 
-    toast.success("Added to cart");
+    toast.success(
+      "Added to cart"
+    );
 
   };
 
   const handleWishlist = () => {
 
     if (!user) {
-      toast.error("Please login first");
+
+      toast.error(
+        "Please login first"
+      );
+
       navigate("/login");
+
       return;
+
     }
 
     toggleWishlist?.(product);
@@ -68,8 +82,14 @@ function ProductCard({ product }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{
+        opacity: 0,
+        y: 20,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+      }}
       whileHover={{
         scale: 1.03,
       }}
@@ -79,12 +99,19 @@ function ProductCard({ product }) {
       className="group bg-white rounded-2xl shadow-md hover:shadow-2xl hover:-translate-y-1 transition overflow-hidden relative"
     >
 
-      <button
+      {/* HEART */}
+      <motion.button
+        whileTap={{
+          scale: 0.8,
+        }}
+        whileHover={{
+          scale: 1.15,
+        }}
         onClick={handleWishlist}
         className="absolute top-3 right-3 text-2xl z-10"
       >
         {liked ? "❤️" : "🤍"}
-      </button>
+      </motion.button>
 
       <img
         src={product.image}
@@ -105,8 +132,12 @@ function ProductCard({ product }) {
         <div className="flex flex-col sm:flex-row gap-2">
 
           <motion.button
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ scale: 1.02 }}
+            whileTap={{
+              scale: 0.95,
+            }}
+            whileHover={{
+              scale: 1.02,
+            }}
             onClick={handleAddToCart}
             className="bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-800 transition w-full"
           >
@@ -114,10 +145,16 @@ function ProductCard({ product }) {
           </motion.button>
 
           <motion.button
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ scale: 1.02 }}
+            whileTap={{
+              scale: 0.95,
+            }}
+            whileHover={{
+              scale: 1.02,
+            }}
             onClick={() =>
-              navigate(`/product/${product.id}`)
+              navigate(
+                `/product/${product.id}`
+              )
             }
             className="border border-black px-4 py-2 rounded-xl hover:bg-black hover:text-white transition w-full"
           >

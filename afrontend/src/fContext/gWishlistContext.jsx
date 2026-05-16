@@ -4,76 +4,62 @@ import {
   useEffect,
 } from "react";
 
-const WishlistContext =
-  createContext();
+const WishlistContext = createContext(null);
 
-export function WishlistProvider({
-  children,
-}) {
+export function WishlistProvider({ children }) {
 
-  const [wishlistItems,
-    setWishlistItems] =
-      useState(() => {
+  const [wishlistItems, setWishlistItems] = useState(() => {
 
-        try {
-          const saved =
-            localStorage.getItem("gograb-wishlist");
+    try {
+      const saved = localStorage.getItem("gograb-wishlist");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
 
-          return saved
-            ? JSON.parse(saved)
-            : [];
-        } catch  {
-          return [];
-        }
+  });
 
-      });
-
-  // SAVE TO LOCALSTORAGE
+  
   useEffect(() => {
-    localStorage.setItem(
-      "gograb-wishlist",
-      JSON.stringify(wishlistItems)
-    );
+    try {
+      localStorage.setItem(
+        "gograb-wishlist",
+        JSON.stringify(wishlistItems)
+      );
+    } catch {
+      // ignore storage errors
+    }
   }, [wishlistItems]);
 
   // ADD / REMOVE
-  const toggleWishlist = (
-    product
-  ) => {
+  const toggleWishlist = (product) => {
 
-    const exists =
-      wishlistItems.find(
-        (item) =>
-          item.id === product.id
-      );
+    const exists = wishlistItems.find(
+      (item) => item.id === product.id
+    );
 
     if (exists) {
-
       setWishlistItems(
         wishlistItems.filter(
-          (item) =>
-            item.id !== product.id
+          (item) => item.id !== product.id
         )
       );
-
     } else {
-
-      setWishlistItems([
-        ...wishlistItems,
-        product,
-      ]);
+      setWishlistItems([...wishlistItems, product]);
     }
+
+  };
+
+  // REMOVE DIRECTLY
+  const removeFromWishlist = (id) => {
+    setWishlistItems(
+      wishlistItems.filter((item) => item.id !== id)
+    );
   };
 
   // CHECK
-  const isInWishlist = (
-    id
-  ) => {
-
-    return wishlistItems.some(
-      (item) =>
-        item.id === id
-    );
+  const isInWishlist = (id) => {
+    return wishlistItems.some((item) => item.id === id);
   };
 
   return (
@@ -81,12 +67,11 @@ export function WishlistProvider({
       value={{
         wishlistItems,
         toggleWishlist,
+        removeFromWishlist,
         isInWishlist,
       }}
     >
-
       {children}
-
     </WishlistContext.Provider>
   );
 }

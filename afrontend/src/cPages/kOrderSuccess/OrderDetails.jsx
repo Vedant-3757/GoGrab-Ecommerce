@@ -84,14 +84,14 @@ function OrderDetails() {
 
           <p>
             <b>Status:</b>{" "}
-            {order.status}
+            {order.status || "Processing"}
           </p>
 
           <p>
             <b>Ordered On:</b>{" "}
-            {new Date(
-              order.createdAt
-            ).toLocaleDateString()}
+            {order.createdAt
+              ? new Date(order.createdAt).toLocaleDateString()
+              : "N/A"}
           </p>
 
         </div>
@@ -139,7 +139,7 @@ function OrderDetails() {
         {/* ITEMS */}
         <div className="space-y-5">
 
-          {order.items.map((item) => (
+          {(order.items || []).map((item) => (
 
             <motion.div
               whileHover={{ y: -2 }}

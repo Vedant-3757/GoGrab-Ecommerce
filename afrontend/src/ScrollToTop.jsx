@@ -5,9 +5,13 @@ function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // instant reset (more reliable than smooth)
+    // instant reset (more reliable across browsers)
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
+
+    // extra safety for modern browsers
+    window.scrollTo(0, 0);
+
   }, [pathname]);
 
   return null;

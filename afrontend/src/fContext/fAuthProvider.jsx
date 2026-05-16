@@ -1,29 +1,20 @@
 import { useState } from "react";
-
 import AuthContext from "./eAuthContext.jsx";
 
 function AuthProvider({ children }) {
 
   // LOAD USER DIRECTLY (SAFE PARSE)
   const [user, setUser] = useState(() => {
-
     try {
-      const savedUser =
-        localStorage.getItem("gograb-user");
-
-      return savedUser
-        ? JSON.parse(savedUser)
-        : null;
-
+      const savedUser = localStorage.getItem("gograb-user");
+      return savedUser ? JSON.parse(savedUser) : null;
     } catch {
       return null;
     }
-
   });
 
   // REGISTER
   const register = (userData) => {
-
     localStorage.setItem(
       "gograb-user",
       JSON.stringify(userData)
@@ -32,29 +23,28 @@ function AuthProvider({ children }) {
     setUser(userData);
   };
 
-  // LOGIN
+  // LOGIN (SAFE VERSION)
   const login = (email, password) => {
+    try {
+      const savedUserRaw = localStorage.getItem("gograb-user");
+      const savedUser = savedUserRaw ? JSON.parse(savedUserRaw) : null;
 
-    const savedUser = JSON.parse(
-      localStorage.getItem("gograb-user")
-    );
+      if (
+        savedUser?.email?.trim() === email?.trim() &&
+        savedUser?.password === password
+      ) {
+        setUser(savedUser);
+        return true;
+      }
 
-    if (
-      savedUser?.email === email &&
-      savedUser?.password === password
-    ) {
-
-      setUser(savedUser);
-
-      return true;
+      return false;
+    } catch {
+      return false;
     }
-
-    return false;
   };
 
-  // LOGOUT (FIXED: clear storage also)
+  // LOGOUT
   const logout = () => {
-
     localStorage.removeItem("gograb-user");
     setUser(null);
   };

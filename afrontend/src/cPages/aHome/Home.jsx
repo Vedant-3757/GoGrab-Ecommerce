@@ -14,39 +14,57 @@ function Home() {
     searchContext?.searchTerm || "";
 
   const [loading, setLoading] = useState(true);
-  const [sortBy, setSortBy] = useState("default");
+
+  const [sortBy, setSortBy] =
+    useState("default");
 
   useEffect(() => {
+
     const timer = setTimeout(() => {
       setLoading(false);
     }, 800);
 
     return () => clearTimeout(timer);
+
   }, []);
 
-  let filteredProducts = products.filter((p) =>
-    (p.name || "")
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
+  let filteredProducts =
+    products.filter((p) =>
+      (p.name || "")
+        .toLowerCase()
+        .includes(
+          searchTerm.toLowerCase()
+        )
+    );
 
   if (sortBy === "low-high") {
-    filteredProducts = [...filteredProducts].sort(
-      (a, b) => a.price - b.price
-    );
+
+    filteredProducts =
+      [...filteredProducts].sort(
+        (a, b) =>
+          a.price - b.price
+      );
+
   }
 
   if (sortBy === "high-low") {
-    filteredProducts = [...filteredProducts].sort(
-      (a, b) => b.price - a.price
-    );
+
+    filteredProducts =
+      [...filteredProducts].sort(
+        (a, b) =>
+          b.price - a.price
+      );
+
   }
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.35, ease: "easeInOut" }}
+      transition={{
+        duration: 0.35,
+        ease: "easeInOut",
+      }}
       className="min-h-[calc(100vh-72px)] bg-gray-100"
     >
 
@@ -64,17 +82,25 @@ function Home() {
             </h1>
 
             <p className="text-gray-300 mb-10 max-w-xl">
-              Discover premium gadgets, accessories and smart shopping.
+              Discover premium gadgets,
+              accessories and smart
+              shopping.
             </p>
 
             <a href="#products">
+
               <motion.button
-                whileTap={{ scale: 0.95 }}
-                whileHover={{ scale: 1.02 }}
+                whileTap={{
+                  scale: 0.95,
+                }}
+                whileHover={{
+                  scale: 1.02,
+                }}
                 className="bg-white text-black px-8 py-4 rounded-2xl font-semibold"
               >
                 Explore Products
               </motion.button>
+
             </a>
 
           </div>
@@ -84,9 +110,19 @@ function Home() {
             <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 w-72 h-72 flex items-center justify-center shadow-2xl">
 
               <div className="text-center">
-                <div className="text-6xl mb-4">🛍️</div>
-                <p className="text-lg font-semibold">Fast Shopping</p>
-                <p className="text-sm text-gray-300">Premium Experience</p>
+
+                <div className="text-6xl mb-4">
+                  🛍️
+                </div>
+
+                <p className="text-lg font-semibold">
+                  Fast Shopping
+                </p>
+
+                <p className="text-sm text-gray-300">
+                  Premium Experience
+                </p>
+
               </div>
 
             </div>
@@ -97,7 +133,7 @@ function Home() {
 
       </div>
 
-      {/* CATEGORIES (UNCHANGED UI) */}
+      {/* CATEGORIES */}
       <div className="max-w-7xl mx-auto px-6 py-14">
 
         <h2 className="text-4xl font-bold mb-10">
@@ -106,19 +142,43 @@ function Home() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
 
-          <motion.div whileHover={{ y: -6, scale: 1.03 }} className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer">
+          <motion.div
+            whileHover={{
+              y: -6,
+              scale: 1.03,
+            }}
+            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
+          >
             📱 Electronics
           </motion.div>
 
-          <motion.div whileHover={{ y: -6, scale: 1.03 }} className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer">
+          <motion.div
+            whileHover={{
+              y: -6,
+              scale: 1.03,
+            }}
+            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
+          >
             🎧 Accessories
           </motion.div>
 
-          <motion.div whileHover={{ y: -6, scale: 1.03 }} className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer">
+          <motion.div
+            whileHover={{
+              y: -6,
+              scale: 1.03,
+            }}
+            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
+          >
             💻 Laptops
           </motion.div>
 
-          <motion.div whileHover={{ y: -6, scale: 1.03 }} className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer">
+          <motion.div
+            whileHover={{
+              y: -6,
+              scale: 1.03,
+            }}
+            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
+          >
             ⌚ Smart Gadgets
           </motion.div>
 
@@ -127,7 +187,10 @@ function Home() {
       </div>
 
       {/* PRODUCTS */}
-      <div id="products" className="max-w-7xl mx-auto px-6 py-20">
+      <div
+        id="products"
+        className="max-w-7xl mx-auto px-6 py-20"
+      >
 
         <div className="flex justify-between items-center mb-10">
 
@@ -137,30 +200,80 @@ function Home() {
 
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
+            onChange={(e) =>
+              setSortBy(
+                e.target.value
+              )
+            }
             className="bg-white border px-4 py-3 rounded-2xl"
           >
-            <option value="default">Sort By</option>
-            <option value="low-high">Low → High</option>
-            <option value="high-low">High → Low</option>
+
+            <option value="default">
+              Sort By
+            </option>
+
+            <option value="low-high">
+              Low → High
+            </option>
+
+            <option value="high-low">
+              High → Low
+            </option>
+
           </select>
 
         </div>
 
         {loading ? (
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {Array(8).fill(0).map((_, i) => (
-              <ProductSkeleton key={i} />
-            ))}
+
+            {Array(8)
+              .fill(0)
+              .map((_, i) => (
+
+                <ProductSkeleton
+                  key={i}
+                />
+
+              ))}
+
           </div>
+
+        ) : filteredProducts.length === 0 ? (
+
+          <div className="bg-white rounded-3xl shadow-md p-10 text-center">
+
+            <div className="text-6xl mb-4">
+              🔍
+            </div>
+
+            <h2 className="text-2xl font-bold mb-2">
+              No Products Found
+            </h2>
+
+            <p className="text-gray-500">
+              Try searching with another
+              keyword
+            </p>
+
+          </div>
+
         ) : (
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
 
             {filteredProducts.map((p) => (
-              <ProductCard key={p.id} product={p} />
+
+              <ProductCard
+                key={p.id}
+                product={p}
+              />
+
             ))}
 
           </div>
+
         )}
 
       </div>

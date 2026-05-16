@@ -7,75 +7,165 @@ import CartContext from "../../fContext/aCartContext.jsx";
 import { saveOrder } from "../../hUtils/OrderService.js";
 
 function Checkout() {
+
   const navigate = useNavigate();
+
   const location = useLocation();
 
-  const cartContext = useContext(CartContext);
-  const cartItems = cartContext?.cartItems ?? [];
-  const removeItem = cartContext?.removeItem;
+  const cartContext =
+    useContext(CartContext);
 
-  const buyNowProduct = location.state?.buyNowProduct;
+  const cartItems =
+    cartContext?.cartItems ?? [];
 
-  const [form, setForm] = useState({
-    name: "",
-    address: "",
-    phone: "",
-  });
+  const removeItem =
+    cartContext?.removeItem;
+
+  const buyNowProduct =
+    location.state?.buyNowProduct;
+
+  const [form, setForm] =
+    useState({
+      name: "",
+      address: "",
+      phone: "",
+    });
+
+  // ✅ NEW
+  const [loading, setLoading] =
+    useState(false);
 
   const itemsToCheckout =
-    buyNowProduct ? [buyNowProduct] : cartItems;
+    buyNowProduct
+      ? [buyNowProduct]
+      : cartItems;
 
-  const totalPrice = itemsToCheckout.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const totalPrice =
+    itemsToCheckout.reduce(
+      (total, item) =>
+        total +
+        item.price *
+          item.quantity,
+      0
+    );
 
   const handleChange = (e) => {
+
     setForm({
       ...form,
-      [e.target.name]: e.target.value,
+      [e.target.name]:
+        e.target.value,
     });
+
   };
 
-  const handleOrder = () => {
-    if (itemsToCheckout.length === 0) {
-      toast.error("Cart is empty");
+  const handleOrder = async () => {
+
+    if (
+      itemsToCheckout.length === 0
+    ) {
+
+      toast.error(
+        "Cart is empty"
+      );
+
       return;
     }
 
-    if (!form.name || !form.address || !form.phone) {
-      toast.error("Please fill all details");
+    if (
+      !form.name ||
+      !form.address ||
+      !form.phone
+    ) {
+
+      toast.error(
+        "Please fill all details"
+      );
+
       return;
     }
+
+    // ✅ PHONE VALIDATION
+    const phoneRegex =
+      /^[0-9]{10}$/;
+
+    if (
+      !phoneRegex.test(
+        form.phone
+      )
+    ) {
+
+      toast.error(
+        "Enter valid 10 digit phone number"
+      );
+
+      return;
+    }
+
+    setLoading(true);
 
     const order = {
       id: Date.now(),
-      items: itemsToCheckout,
+
+      items:
+        itemsToCheckout,
+
       total: totalPrice,
-      customer: form,
+
+      customer: {
+        name:
+          form.name.trim(),
+        address:
+          form.address.trim(),
+        phone:
+          form.phone.trim(),
+      },
+
       status: "Packed",
-      createdAt: new Date().toISOString(),
+
+      createdAt:
+        new Date().toISOString(),
     };
 
     saveOrder(order);
 
-    toast.success("Order placed successfully!");
+    toast.success(
+      "Order placed successfully!"
+    );
 
     if (!buyNowProduct) {
-      cartItems.forEach((item) => removeItem?.(item.id));
+
+      cartItems.forEach(
+        (item) =>
+          removeItem?.(
+            item.id
+          )
+      );
+
     }
 
-    navigate("/order-success");
+    setTimeout(() => {
+
+      navigate(
+        "/order-success"
+      );
+
+    }, 500);
   };
 
   return (
+
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
+      transition={{
+        duration: 0.3,
+      }}
       className="min-h-screen bg-gray-100 px-4 sm:px-6 py-8"
     >
+
       <div className="max-w-6xl mx-auto">
+
         <h1 className="text-3xl sm:text-4xl font-bold mb-8">
           Checkout
         </h1>
@@ -84,17 +174,20 @@ function Checkout() {
 
           {/* FORM */}
           <div className="bg-white rounded-3xl shadow-md p-6 sm:p-8">
+
             <h2 className="text-2xl font-bold mb-6">
               Delivery Details
             </h2>
 
             <div className="space-y-5">
+
               <input
                 type="text"
                 name="name"
                 placeholder="Full Name"
                 value={form.name}
                 onChange={handleChange}
+                autoComplete="name"
                 className="w-full border border-gray-300 p-4 rounded-2xl outline-none focus:border-black"
               />
 
@@ -104,68 +197,110 @@ function Checkout() {
                 placeholder="Address"
                 value={form.address}
                 onChange={handleChange}
+                autoComplete="street-address"
                 className="w-full border border-gray-300 p-4 rounded-2xl outline-none focus:border-black"
               />
 
               <input
-                type="text"
+                type="tel"
                 name="phone"
                 placeholder="Phone Number"
                 value={form.phone}
+                maxLength={10}
                 onChange={handleChange}
+                autoComplete="tel"
                 className="w-full border border-gray-300 p-4 rounded-2xl outline-none focus:border-black"
               />
+
             </div>
+
           </div>
 
           {/* SUMMARY */}
           <div className="bg-white rounded-3xl shadow-md p-6 sm:p-8 h-fit">
+
             <h2 className="text-2xl font-bold mb-6">
               Order Summary
             </h2>
 
             <div className="space-y-4">
-              {itemsToCheckout.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex justify-between items-center gap-4 border-b pb-4"
-                >
-                  <div>
-                    <h3 className="font-semibold">
-                      {item.name}
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      Qty: {item.quantity}
+
+              {itemsToCheckout.map(
+                (item) => (
+
+                  <div
+                    key={item.id}
+                    className="flex justify-between items-center gap-4 border-b pb-4"
+                  >
+
+                    <div>
+
+                      <h3 className="font-semibold">
+                        {item.name}
+                      </h3>
+
+                      <p className="text-sm text-gray-500">
+                        Qty:{" "}
+                        {
+                          item.quantity
+                        }
+                      </p>
+
+                    </div>
+
+                    <p className="font-semibold whitespace-nowrap">
+                      ₹{" "}
+                      {item.price *
+                        item.quantity}
                     </p>
+
                   </div>
 
-                  <p className="font-semibold whitespace-nowrap">
-                    ₹ {item.price * item.quantity}
-                  </p>
-                </div>
-              ))}
+                )
+              )}
+
             </div>
 
             <div className="mt-8">
+
               <div className="flex justify-between text-2xl font-bold mb-6">
-                <span>Total</span>
-                <span>₹ {totalPrice}</span>
+
+                <span>
+                  Total
+                </span>
+
+                <span>
+                  ₹ {totalPrice}
+                </span>
+
               </div>
 
               <motion.button
-                whileTap={{ scale: 0.97 }}
-                whileHover={{ scale: 1.01 }}
+                whileTap={{
+                  scale: 0.97,
+                }}
+                whileHover={{
+                  scale: 1.01,
+                }}
                 onClick={handleOrder}
-                className="w-full bg-black text-white py-4 rounded-2xl hover:bg-gray-800 transition"
+                disabled={loading}
+                className="w-full bg-black text-white py-4 rounded-2xl hover:bg-gray-800 transition disabled:opacity-60"
               >
-                Place Order
+                {loading
+                  ? "Processing..."
+                  : "Place Order"}
               </motion.button>
+
             </div>
+
           </div>
 
         </div>
+
       </div>
+
     </motion.div>
+
   );
 }
 

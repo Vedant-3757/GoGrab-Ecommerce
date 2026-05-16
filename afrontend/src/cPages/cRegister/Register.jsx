@@ -1,4 +1,7 @@
-import { useState, useContext } from "react";
+import {
+  useState,
+  useContext,
+} from "react";
 
 import {
   useNavigate,
@@ -9,7 +12,8 @@ import AuthContext from "../../fContext/eAuthContext.jsx";
 
 function Register() {
 
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
   const authContext =
     useContext(AuthContext);
@@ -27,8 +31,19 @@ function Register() {
   const [password, setPassword] =
     useState("");
 
-  const [passwordError, setPasswordError] =
-    useState("");
+  const [
+    confirmPassword,
+    setConfirmPassword,
+  ] = useState("");
+
+  const [
+    passwordError,
+    setPasswordError,
+  ] = useState("");
+
+  // ✅ NEW
+  const [loading, setLoading] =
+    useState(false);
 
   const handleRegister = (e) => {
 
@@ -38,7 +53,8 @@ function Register() {
     if (
       !name ||
       !email ||
-      !password
+      !password ||
+      !confirmPassword
     ) {
 
       alert(
@@ -53,7 +69,9 @@ function Register() {
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$/;
 
     if (
-      !passwordRegex.test(password)
+      !passwordRegex.test(
+        password
+      )
     ) {
 
       setPasswordError(
@@ -63,13 +81,50 @@ function Register() {
       return;
     }
 
+    // CONFIRM PASSWORD
+    if (
+      password !==
+      confirmPassword
+    ) {
+
+      setPasswordError(
+        "Passwords do not match."
+      );
+
+      return;
+    }
+
+    // CHECK EXISTING USERS
+    const existingUsers =
+      JSON.parse(
+        localStorage.getItem("gograb-users")
+      ) || [];
+
+    const alreadyExists =
+      existingUsers.some(
+        (user) =>
+          user.email.toLowerCase() ===
+          email.trim().toLowerCase()
+      );
+
+    if (alreadyExists) {
+
+      alert(
+        "Email already registered"
+      );
+
+      return;
+    }
+
+    setLoading(true);
+
     // CLEAR ERROR
     setPasswordError("");
 
     // USER DATA
     const userData = {
-      name,
-      email,
+      name: name.trim(),
+      email: email.trim(),
       password,
     };
 
@@ -81,6 +136,8 @@ function Register() {
     );
 
     navigate("/profile");
+
+    setLoading(false);
   };
 
   return (
@@ -101,20 +158,26 @@ function Register() {
             type="text"
             placeholder="Full Name"
             value={name}
+            autoComplete="name"
             onChange={(e) =>
-              setName(e.target.value)
+              setName(
+                e.target.value
+              )
             }
-            className="w-full px-4 py-3 rounded-xl border outline-none"
+            className="w-full px-4 py-3 rounded-xl border outline-none focus:border-black"
           />
 
           <input
             type="email"
             placeholder="Email"
             value={email}
+            autoComplete="email"
             onChange={(e) =>
-              setEmail(e.target.value)
+              setEmail(
+                e.target.value
+              )
             }
-            className="w-full px-4 py-3 rounded-xl border outline-none"
+            className="w-full px-4 py-3 rounded-xl border outline-none focus:border-black"
           />
 
           <div>
@@ -123,6 +186,7 @@ function Register() {
               type="password"
               placeholder="Password"
               value={password}
+              autoComplete="new-password"
               onChange={(e) => {
 
                 setPassword(
@@ -130,8 +194,30 @@ function Register() {
                 );
 
                 setPasswordError("");
+
               }}
-              className="w-full px-4 py-3 rounded-xl border outline-none"
+              className="w-full px-4 py-3 rounded-xl border outline-none focus:border-black"
+            />
+
+          </div>
+
+          <div>
+
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              autoComplete="new-password"
+              onChange={(e) => {
+
+                setConfirmPassword(
+                  e.target.value
+                );
+
+                setPasswordError("");
+
+              }}
+              className="w-full px-4 py-3 rounded-xl border outline-none focus:border-black"
             />
 
             {passwordError && (
@@ -146,16 +232,20 @@ function Register() {
 
           <button
             type="submit"
-            className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition"
+            disabled={loading}
+            className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition active:scale-[0.98] disabled:opacity-60"
           >
-            Create Account
+            {loading
+              ? "Creating Account..."
+              : "Create Account"}
           </button>
 
         </form>
 
         <p className="text-center mt-6 text-gray-600">
 
-          Already have an account?{" "}
+          Already have an account?
+          {" "}
 
           <Link
             to="/login"
@@ -167,6 +257,7 @@ function Register() {
         </p>
 
       </div>
+
     </div>
   );
 }

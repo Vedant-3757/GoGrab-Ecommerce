@@ -31,13 +31,22 @@ function Activities() {
   const [orders, setOrders] =
     useState([]);
 
+  // ✅ NEW
+  const [loading, setLoading] =
+    useState(true);
+
   useEffect(() => {
 
     const storedOrders =
       getOrders();
 
     Promise.resolve().then(() => {
+
       setOrders(storedOrders);
+
+      // ✅ NEW
+      setLoading(false);
+
     });
 
   }, []);
@@ -54,9 +63,20 @@ function Activities() {
 
       <div className="max-w-6xl mx-auto">
 
-        <h1 className="text-3xl sm:text-4xl font-bold mb-8">
-          Activities
-        </h1>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+
+          <h1 className="text-3xl sm:text-4xl font-bold">
+            Activities
+          </h1>
+
+          {/* ✅ NEW */}
+          <div className="text-sm text-gray-500">
+            {tab === "orders"
+              ? `${orders.length} Orders`
+              : `${wishlist.length} Wishlist Items`}
+          </div>
+
+        </div>
 
         {/* TABS */}
         <div className="flex flex-wrap gap-4 mb-8">
@@ -68,7 +88,7 @@ function Activities() {
             className={`px-5 py-3 rounded-2xl transition ${
               tab === "orders"
                 ? "bg-black text-white"
-                : "bg-white"
+                : "bg-white hover:bg-gray-200"
             }`}
           >
             Orders
@@ -81,7 +101,7 @@ function Activities() {
             className={`px-5 py-3 rounded-2xl transition ${
               tab === "wishlist"
                 ? "bg-black text-white"
-                : "bg-white"
+                : "bg-white hover:bg-gray-200"
             }`}
           >
             Wishlist
@@ -94,7 +114,22 @@ function Activities() {
 
           <div className="space-y-5">
 
-            {orders.length === 0 ? (
+            {/* ✅ NEW */}
+            {loading ? (
+
+              <div className="bg-white rounded-3xl p-10 text-center shadow-md">
+
+                <div className="text-5xl mb-4">
+                  ⏳
+                </div>
+
+                <p className="text-gray-500">
+                  Loading Orders...
+                </p>
+
+              </div>
+
+            ) : orders.length === 0 ? (
 
               <div className="bg-white rounded-3xl p-10 text-center shadow-md">
 
@@ -212,6 +247,7 @@ function Activities() {
                     <img
                       src={item.image}
                       alt={item.name}
+                      loading="lazy"
                       className="w-24 h-24 object-cover rounded-2xl"
                     />
 

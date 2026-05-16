@@ -1,5 +1,14 @@
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+import {
+  Routes,
+  Route,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
+
+import {
+  AnimatePresence,
+} from "framer-motion";
+
 import { useContext } from "react";
 
 import Home from "../cPages/aHome/Home.jsx";
@@ -18,43 +27,110 @@ import Wishlist from "../cPages/lWishlist/Wishlist.jsx";
 import AiAssistant from "../cPages/mAiAssistant/AiAssistant.jsx";
 
 import PageTransition from "../kAnimation/PageTransition.jsx";
+
 import AuthContext from "../fContext/eAuthContext.jsx";
 
-// 🔒 PROTECTED WRAPPER (no logic change, only routing guard)
+// 🔒 PROTECTED WRAPPER
 function ProtectedRoute({ children }) {
+
   const auth = useContext(AuthContext);
   const user = auth?.user;
 
+  const location = useLocation();
+
   if (!user) {
-    return <Navigate to="/login" replace />;
+
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{
+          from: location.pathname || "/",
+        }}
+      />
+    );
+
   }
 
   return children;
 }
 
 function AppRoutes() {
+
   const location = useLocation();
 
   return (
     <div className="pt-[72px]">
+
       <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
 
-          <Route path="/" element={<PageTransition><Home /></PageTransition>} />
-          <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
-          <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
+        <Routes
+          location={location}
+          key={location.pathname}
+        >
 
-          <Route path="/product/:id" element={<PageTransition><ProductDetails /></PageTransition>} />
-          <Route path="/search" element={<PageTransition><Search /></PageTransition>} />
+          <Route
+            path="/"
+            element={
+              <PageTransition>
+                <Home />
+              </PageTransition>
+            }
+          />
 
-          <Route path="/ai" element={<PageTransition><AiAssistant /></PageTransition>} />
+          <Route
+            path="/login"
+            element={
+              <PageTransition>
+                <Login />
+              </PageTransition>
+            }
+          />
+
+          <Route
+            path="/register"
+            element={
+              <PageTransition>
+                <Register />
+              </PageTransition>
+            }
+          />
+
+          <Route
+            path="/product/:id"
+            element={
+              <PageTransition>
+                <ProductDetails />
+              </PageTransition>
+            }
+          />
+
+          <Route
+            path="/search"
+            element={
+              <PageTransition>
+                <Search />
+              </PageTransition>
+            }
+          />
+
+          <Route
+            path="/ai"
+            element={
+              <PageTransition>
+                <AiAssistant />
+              </PageTransition>
+            }
+          />
 
           {/* 🔒 PROTECTED ROUTES */}
           <Route
             path="/cart"
             element={
               <ProtectedRoute>
-                <PageTransition><Cart /></PageTransition>
+                <PageTransition>
+                  <Cart />
+                </PageTransition>
               </ProtectedRoute>
             }
           />
@@ -63,7 +139,9 @@ function AppRoutes() {
             path="/checkout"
             element={
               <ProtectedRoute>
-                <PageTransition><Checkout /></PageTransition>
+                <PageTransition>
+                  <Checkout />
+                </PageTransition>
               </ProtectedRoute>
             }
           />
@@ -72,7 +150,9 @@ function AppRoutes() {
             path="/profile"
             element={
               <ProtectedRoute>
-                <PageTransition><Profile /></PageTransition>
+                <PageTransition>
+                  <Profile />
+                </PageTransition>
               </ProtectedRoute>
             }
           />
@@ -81,7 +161,9 @@ function AppRoutes() {
             path="/activities"
             element={
               <ProtectedRoute>
-                <PageTransition><Activities /></PageTransition>
+                <PageTransition>
+                  <Activities />
+                </PageTransition>
               </ProtectedRoute>
             }
           />
@@ -90,18 +172,45 @@ function AppRoutes() {
             path="/wishlist"
             element={
               <ProtectedRoute>
-                <PageTransition><Wishlist /></PageTransition>
+                <PageTransition>
+                  <Wishlist />
+                </PageTransition>
               </ProtectedRoute>
             }
           />
 
-          <Route path="/order-success" element={<PageTransition><OrderSuccess /></PageTransition>} />
-          <Route path="/order/:id" element={<PageTransition><OrderDetails /></PageTransition>} />
+          <Route
+            path="/order-success"
+            element={
+              <PageTransition>
+                <OrderSuccess />
+              </PageTransition>
+            }
+          />
 
-          <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+          <Route
+            path="/order/:id"
+            element={
+              <PageTransition>
+                <OrderDetails />
+              </PageTransition>
+            }
+          />
+
+          {/* ✅ 404 */}
+          <Route
+            path="*"
+            element={
+              <PageTransition>
+                <NotFound />
+              </PageTransition>
+            }
+          />
 
         </Routes>
+
       </AnimatePresence>
+
     </div>
   );
 }

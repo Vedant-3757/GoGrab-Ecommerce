@@ -11,9 +11,12 @@ function CartProvider({ children }) {
       const savedCart =
         localStorage.getItem("gograb-cart");
 
-      return savedCart ? JSON.parse(savedCart) : [];
+      const parsed = savedCart ? JSON.parse(savedCart) : [];
 
-    } catch  {
+      // safety check (must be array)
+      return Array.isArray(parsed) ? parsed : [];
+
+    } catch {
       return [];
     }
   });
@@ -21,10 +24,14 @@ function CartProvider({ children }) {
   // SAVE TO LOCAL STORAGE
   useEffect(() => {
 
-    localStorage.setItem(
-      "gograb-cart",
-      JSON.stringify(cartItems)
-    );
+    try {
+      localStorage.setItem(
+        "gograb-cart",
+        JSON.stringify(cartItems)
+      );
+    } catch {
+      // ignore storage errors
+    }
 
   }, [cartItems]);
 
@@ -76,7 +83,7 @@ function CartProvider({ children }) {
     );
   };
 
-  // DECREASE QUANTITY
+  // DECREASE QUANTITY (SAFE GUARD ADDED)
   const decreaseQuantity = (id) => {
 
     setCartItems((prev) =>
@@ -103,7 +110,6 @@ function CartProvider({ children }) {
 
   // CLEAR CART
   const clearCart = () => {
-
     setCartItems([]);
   };
 
