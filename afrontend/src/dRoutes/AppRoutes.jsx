@@ -23,8 +23,6 @@ function AppRoutes() {
 
   return (
     <div className="pt-[72px]">
-      {/* 🔥 IMPORTANT: prevents navbar overlap for ALL pages */}
-
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
 
