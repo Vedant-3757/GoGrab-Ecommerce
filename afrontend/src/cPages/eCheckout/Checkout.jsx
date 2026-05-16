@@ -14,7 +14,6 @@ function Checkout() {
   const cartItems = cartContext?.cartItems ?? [];
   const removeItem = cartContext?.removeItem;
 
-  // ✅ NEW: support Buy Now product
   const buyNowProduct = location.state?.buyNowProduct;
 
   const [form, setForm] = useState({
@@ -23,11 +22,8 @@ function Checkout() {
     phone: "",
   });
 
-  // ✅ FINAL ITEMS LOGIC (cart OR buy now)
   const itemsToCheckout =
-    buyNowProduct
-      ? [{ ...buyNowProduct, quantity: 1 }]
-      : cartItems;
+    buyNowProduct ? [buyNowProduct] : cartItems;
 
   const totalPrice = itemsToCheckout.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -65,7 +61,6 @@ function Checkout() {
 
     toast.success("Order placed successfully!");
 
-    // ✅ clear cart only if cart checkout
     if (!buyNowProduct) {
       cartItems.forEach((item) => removeItem?.(item.id));
     }
@@ -81,7 +76,6 @@ function Checkout() {
       className="min-h-screen bg-gray-100 px-4 sm:px-6 py-8"
     >
       <div className="max-w-6xl mx-auto">
-
         <h1 className="text-3xl sm:text-4xl font-bold mb-8">
           Checkout
         </h1>
@@ -90,13 +84,11 @@ function Checkout() {
 
           {/* FORM */}
           <div className="bg-white rounded-3xl shadow-md p-6 sm:p-8">
-
             <h2 className="text-2xl font-bold mb-6">
               Delivery Details
             </h2>
 
             <div className="space-y-5">
-
               <input
                 type="text"
                 name="name"
@@ -123,19 +115,16 @@ function Checkout() {
                 onChange={handleChange}
                 className="w-full border border-gray-300 p-4 rounded-2xl outline-none focus:border-black"
               />
-
             </div>
           </div>
 
           {/* SUMMARY */}
           <div className="bg-white rounded-3xl shadow-md p-6 sm:p-8 h-fit">
-
             <h2 className="text-2xl font-bold mb-6">
               Order Summary
             </h2>
 
             <div className="space-y-4">
-
               {itemsToCheckout.map((item) => (
                 <div
                   key={item.id}
@@ -145,7 +134,6 @@ function Checkout() {
                     <h3 className="font-semibold">
                       {item.name}
                     </h3>
-
                     <p className="text-sm text-gray-500">
                       Qty: {item.quantity}
                     </p>
@@ -156,11 +144,9 @@ function Checkout() {
                   </p>
                 </div>
               ))}
-
             </div>
 
             <div className="mt-8">
-
               <div className="flex justify-between text-2xl font-bold mb-6">
                 <span>Total</span>
                 <span>₹ {totalPrice}</span>
@@ -174,9 +160,7 @@ function Checkout() {
               >
                 Place Order
               </motion.button>
-
             </div>
-
           </div>
 
         </div>

@@ -19,7 +19,6 @@ function Activities() {
   const wishlistContext =
     useContext(WishlistContext);
 
-  // FIX: correct key fallback
   const wishlist =
     wishlistContext?.wishlistItems ?? [];
 
@@ -140,6 +139,14 @@ function Activities() {
                     <p className="text-gray-500">
                       Total:{" "}
                       ₹ {order.total}
+                    </p>
+
+                    <p className="text-gray-500">
+                      Ordered:
+                      {" "}
+                      {new Date(
+                        order.createdAt
+                      ).toLocaleDateString()}
                     </p>
 
                   </div>

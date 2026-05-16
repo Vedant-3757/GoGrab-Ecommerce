@@ -1,5 +1,3 @@
-import { useContext } from "react";
-
 import {
   useParams,
   useNavigate,
@@ -7,7 +5,7 @@ import {
 
 import { motion } from "framer-motion";
 
-import OrderContext from "../../fContext/hOrderContext.jsx";
+import { getOrderById } from "../../hUtils/OrderService.js";
 
 function OrderDetails() {
 
@@ -15,15 +13,8 @@ function OrderDetails() {
 
   const navigate = useNavigate();
 
-  const orderContext = useContext(OrderContext);
-
-  const orders = orderContext?.orders ?? [];
-
   const order =
-    orders.find(
-      (o) =>
-        String(o.id) === String(id)
-    );
+    getOrderById(id);
 
   if (!order) {
 
@@ -94,6 +85,13 @@ function OrderDetails() {
           <p>
             <b>Status:</b>{" "}
             {order.status}
+          </p>
+
+          <p>
+            <b>Ordered On:</b>{" "}
+            {new Date(
+              order.createdAt
+            ).toLocaleDateString()}
           </p>
 
         </div>
@@ -177,7 +175,6 @@ function OrderDetails() {
 
         </div>
 
-        {/* BUTTON */}
         <button
           onClick={() =>
             navigate("/activities")
