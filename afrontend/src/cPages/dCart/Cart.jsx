@@ -7,11 +7,11 @@ function Cart() {
   const navigate = useNavigate();
 
   const {
-    cartItems,
+    cartItems = [],
     increaseQuantity,
     decreaseQuantity,
     removeItem,
-  } = useContext(CartContext);
+  } = useContext(CartContext) || {};
 
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -58,14 +58,12 @@ function Cart() {
                 className="bg-white rounded-2xl shadow-md p-4 flex flex-col lg:flex-row items-center gap-6"
               >
 
-                {/* IMAGE */}
                 <img
                   src={item.image}
                   alt={item.name}
                   className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-xl"
                 />
 
-                {/* DETAILS */}
                 <div className="flex-1 w-full text-center lg:text-left">
 
                   <h2 className="text-xl sm:text-2xl font-semibold">
@@ -76,7 +74,6 @@ function Cart() {
                     ₹ {item.price}
                   </p>
 
-                  {/* QUANTITY CONTROLS */}
                   <div className="flex items-center justify-center lg:justify-start gap-4 mt-4">
 
                     <button
@@ -101,7 +98,6 @@ function Cart() {
 
                 </div>
 
-                {/* REMOVE BUTTON */}
                 <button
                   onClick={() => removeItem(item.id)}
                   className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600 transition"
@@ -112,7 +108,6 @@ function Cart() {
               </div>
             ))}
 
-            {/* TOTAL SECTION */}
             <div className="bg-white p-5 sm:p-6 rounded-2xl shadow-md">
 
               <h2 className="text-2xl sm:text-3xl font-bold mb-6">
@@ -132,7 +127,6 @@ function Cart() {
         )}
 
       </div>
-
     </div>
   );
 }
