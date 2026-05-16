@@ -15,8 +15,9 @@ function OrderDetails() {
 
   const navigate = useNavigate();
 
-  const { orders } =
-    useContext(OrderContext);
+  const orderContext = useContext(OrderContext);
+
+  const orders = orderContext?.orders ?? [];
 
   const order =
     orders.find(
@@ -81,20 +82,17 @@ function OrderDetails() {
         <div className="space-y-3 mb-10">
 
           <p className="break-all">
-            <b>Order ID:</b>
-            {" "}
+            <b>Order ID:</b>{" "}
             {order.id}
           </p>
 
           <p>
-            <b>Total:</b>
-            {" "}
+            <b>Total:</b>{" "}
             ₹ {order.total}
           </p>
 
           <p>
-            <b>Status:</b>
-            {" "}
+            <b>Status:</b>{" "}
             {order.status}
           </p>
 
@@ -146,9 +144,7 @@ function OrderDetails() {
           {order.items.map((item) => (
 
             <motion.div
-              whileHover={{
-                y: -2,
-              }}
+              whileHover={{ y: -2 }}
               key={item.id}
               className="border rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row gap-5 sm:items-center"
             >
@@ -166,15 +162,11 @@ function OrderDetails() {
                 </h3>
 
                 <p className="text-gray-500">
-                  Quantity:
-                  {" "}
-                  {item.quantity}
+                  Quantity: {item.quantity}
                 </p>
 
                 <p className="text-gray-500">
-                  Price:
-                  {" "}
-                  ₹ {item.price}
+                  Price: ₹ {item.price}
                 </p>
 
               </div>
