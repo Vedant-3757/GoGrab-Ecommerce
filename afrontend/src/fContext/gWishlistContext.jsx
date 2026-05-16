@@ -1,6 +1,7 @@
 import {
   createContext,
   useState,
+  useEffect,
 } from "react";
 
 const WishlistContext =
@@ -12,7 +13,22 @@ export function WishlistProvider({
 
   const [wishlistItems,
     setWishlistItems] =
-      useState([]);
+      useState(() => {
+        const saved =
+          localStorage.getItem("gograb-wishlist");
+
+        return saved
+          ? JSON.parse(saved)
+          : [];
+      });
+
+  // SAVE TO LOCALSTORAGE
+  useEffect(() => {
+    localStorage.setItem(
+      "gograb-wishlist",
+      JSON.stringify(wishlistItems)
+    );
+  }, [wishlistItems]);
 
   // ADD / REMOVE
   const toggleWishlist = (
