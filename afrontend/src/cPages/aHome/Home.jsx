@@ -8,8 +8,10 @@ import products from "../../jData/Products.js";
 
 function Home() {
 
+  const searchContext = useContext(SearchContext);
+
   const searchTerm =
-    useContext(SearchContext)?.searchTerm || "";
+    searchContext?.searchTerm || "";
 
   const [loading, setLoading] = useState(true);
   const [sortBy, setSortBy] = useState("default");
@@ -23,7 +25,9 @@ function Home() {
   }, []);
 
   let filteredProducts = products.filter((p) =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+    (p.name || "")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
   );
 
   if (sortBy === "low-high") {
@@ -93,7 +97,7 @@ function Home() {
 
       </div>
 
-      {/* CATEGORIES (IMPROVED UI ONLY) */}
+      {/* CATEGORIES (UNCHANGED UI) */}
       <div className="max-w-7xl mx-auto px-6 py-14">
 
         <h2 className="text-4xl font-bold mb-10">
@@ -102,31 +106,19 @@ function Home() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
 
-          <motion.div
-            whileHover={{ y: -6, scale: 1.03 }}
-            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
-          >
+          <motion.div whileHover={{ y: -6, scale: 1.03 }} className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer">
             📱 Electronics
           </motion.div>
 
-          <motion.div
-            whileHover={{ y: -6, scale: 1.03 }}
-            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
-          >
+          <motion.div whileHover={{ y: -6, scale: 1.03 }} className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer">
             🎧 Accessories
           </motion.div>
 
-          <motion.div
-            whileHover={{ y: -6, scale: 1.03 }}
-            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
-          >
+          <motion.div whileHover={{ y: -6, scale: 1.03 }} className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer">
             💻 Laptops
           </motion.div>
 
-          <motion.div
-            whileHover={{ y: -6, scale: 1.03 }}
-            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
-          >
+          <motion.div whileHover={{ y: -6, scale: 1.03 }} className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer">
             ⌚ Smart Gadgets
           </motion.div>
 
