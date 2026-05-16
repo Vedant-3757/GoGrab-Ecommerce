@@ -46,9 +46,10 @@ function AuthProvider({ children }) {
     return false;
   };
 
-  // LOGOUT
+  // LOGOUT (FIXED: clear storage also)
   const logout = () => {
 
+    localStorage.removeItem("gograb-user");
     setUser(null);
   };
 
