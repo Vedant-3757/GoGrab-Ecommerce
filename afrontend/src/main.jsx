@@ -15,13 +15,11 @@ import { HOrderProvider } from "./fContext/hOrderContext.jsx";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
-
       <AuthProvider>
         <SearchProvider>
           <CartProvider>
             <WishlistProvider>
               <HOrderProvider>
-
                 <App />
 
                 <Toaster
@@ -35,13 +33,11 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                     },
                   }}
                 />
-
               </HOrderProvider>
             </WishlistProvider>
           </CartProvider>
         </SearchProvider>
       </AuthProvider>
-
     </BrowserRouter>
   </React.StrictMode>
 );

@@ -1,4 +1,3 @@
-// src/fContext/aCartContext.jsx
 import { createContext } from "react";
 
 const CartContext = createContext(null);
