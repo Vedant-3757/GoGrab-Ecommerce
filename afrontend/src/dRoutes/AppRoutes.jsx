@@ -1,5 +1,6 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import { useContext } from "react";
 
 import Home from "../cPages/aHome/Home.jsx";
 import Login from "../cPages/bLogin/Login.jsx";
@@ -17,6 +18,19 @@ import Wishlist from "../cPages/lWishlist/Wishlist.jsx";
 import AiAssistant from "../cPages/mAiAssistant/AiAssistant.jsx";
 
 import PageTransition from "../kAnimation/PageTransition.jsx";
+import AuthContext from "../fContext/eAuthContext.jsx";
+
+// 🔒 PROTECTED WRAPPER (no logic change, only routing guard)
+function ProtectedRoute({ children }) {
+  const auth = useContext(AuthContext);
+  const user = auth?.user;
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+}
 
 function AppRoutes() {
   const location = useLocation();
@@ -35,12 +49,51 @@ function AppRoutes() {
 
           <Route path="/ai" element={<PageTransition><AiAssistant /></PageTransition>} />
 
-          <Route path="/cart" element={<PageTransition><Cart /></PageTransition>} />
-          <Route path="/checkout" element={<PageTransition><Checkout /></PageTransition>} />
+          {/* 🔒 PROTECTED ROUTES */}
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute>
+                <PageTransition><Cart /></PageTransition>
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/profile" element={<PageTransition><Profile /></PageTransition>} />
-          <Route path="/activities" element={<PageTransition><Activities /></PageTransition>} />
-          <Route path="/wishlist" element={<PageTransition><Wishlist /></PageTransition>} />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute>
+                <PageTransition><Checkout /></PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <PageTransition><Profile /></PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/activities"
+            element={
+              <ProtectedRoute>
+                <PageTransition><Activities /></PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/wishlist"
+            element={
+              <ProtectedRoute>
+                <PageTransition><Wishlist /></PageTransition>
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="/order-success" element={<PageTransition><OrderSuccess /></PageTransition>} />
           <Route path="/order/:id" element={<PageTransition><OrderDetails /></PageTransition>} />
