@@ -22,13 +22,13 @@ function Profile() {
     <div className="min-h-screen bg-gray-100 p-6">
 
       <h1 className="text-3xl font-bold mb-6">
-        Welcome {user.name}
+        Welcome {user?.name}
       </h1>
 
       <div className="grid grid-cols-2 gap-4">
 
         <div className="bg-white p-4 rounded-xl">
-          {user.email}
+          {user?.email}
         </div>
 
         <div

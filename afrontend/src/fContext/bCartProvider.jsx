@@ -4,15 +4,18 @@ import CartContext from "./aCartContext.jsx";
 
 function CartProvider({ children }) {
 
-  // LOAD FROM LOCAL STORAGE
+  // LOAD FROM LOCAL STORAGE (SAFE PARSE)
   const [cartItems, setCartItems] = useState(() => {
 
-    const savedCart =
-      localStorage.getItem("gograb-cart");
+    try {
+      const savedCart =
+        localStorage.getItem("gograb-cart");
 
-    return savedCart
-      ? JSON.parse(savedCart)
-      : [];
+      return savedCart ? JSON.parse(savedCart) : [];
+
+    } catch  {
+      return [];
+    }
   });
 
   // SAVE TO LOCAL STORAGE

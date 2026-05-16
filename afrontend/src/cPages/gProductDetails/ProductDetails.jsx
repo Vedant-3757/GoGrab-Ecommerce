@@ -33,13 +33,10 @@ function ProductDetails() {
     useContext(AuthContext)?.user;
 
   if (!product) {
-
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
 
-        <div className="text-6xl mb-4">
-          😢
-        </div>
+        <div className="text-6xl mb-4">😢</div>
 
         <h1 className="text-3xl font-bold mb-3">
           Product Not Found
@@ -58,48 +55,38 @@ function ProductDetails() {
 
       </div>
     );
-
   }
 
   const handleAddToCart = () => {
 
     if (!user) {
-
-      toast.error(
-        "Please login first"
-      );
-
+      toast.error("Please login first");
       navigate("/login");
-
       return;
-
     }
 
     addToCart(product);
 
-    toast.success(
-      "Added to cart"
-    );
-
+    toast.success("Added to cart");
   };
 
   const handleBuyNow = () => {
 
     if (!user) {
-
-      toast.error(
-        "Please login first"
-      );
-
+      toast.error("Please login first");
       navigate("/login");
-
       return;
-
     }
 
-    addToCart(product);
-
-    navigate("/checkout");
+    // ✅ FIXED: pass product to checkout
+    navigate("/checkout", {
+      state: {
+        buyNowProduct: {
+          ...product,
+          quantity: 1,
+        },
+      },
+    });
 
   };
 
@@ -141,9 +128,7 @@ function ProductDetails() {
             </h1>
 
             <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-8">
-
               Experience premium quality and modern technology with this amazing product from GoGrab.
-
             </p>
 
             <div className="text-3xl sm:text-4xl font-bold mb-8">
@@ -154,12 +139,8 @@ function ProductDetails() {
             <div className="flex flex-col sm:flex-row gap-4">
 
               <motion.button
-                whileTap={{
-                  scale: 0.95,
-                }}
-                whileHover={{
-                  scale: 1.02,
-                }}
+                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
                 onClick={handleAddToCart}
                 className="bg-black text-white px-6 py-4 rounded-2xl hover:bg-gray-800 transition w-full"
               >
@@ -167,12 +148,8 @@ function ProductDetails() {
               </motion.button>
 
               <motion.button
-                whileTap={{
-                  scale: 0.95,
-                }}
-                whileHover={{
-                  scale: 1.02,
-                }}
+                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.02 }}
                 onClick={handleBuyNow}
                 className="border border-black px-6 py-4 rounded-2xl hover:bg-black hover:text-white transition w-full"
               >

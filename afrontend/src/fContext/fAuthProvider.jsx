@@ -4,15 +4,21 @@ import AuthContext from "./eAuthContext.jsx";
 
 function AuthProvider({ children }) {
 
-  // LOAD USER DIRECTLY
+  // LOAD USER DIRECTLY (SAFE PARSE)
   const [user, setUser] = useState(() => {
 
-    const savedUser =
-      localStorage.getItem("gograb-user");
+    try {
+      const savedUser =
+        localStorage.getItem("gograb-user");
 
-    return savedUser
-      ? JSON.parse(savedUser)
-      : null;
+      return savedUser
+        ? JSON.parse(savedUser)
+        : null;
+
+    } catch {
+      return null;
+    }
+
   });
 
   // REGISTER

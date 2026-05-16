@@ -14,12 +14,18 @@ export function WishlistProvider({
   const [wishlistItems,
     setWishlistItems] =
       useState(() => {
-        const saved =
-          localStorage.getItem("gograb-wishlist");
 
-        return saved
-          ? JSON.parse(saved)
-          : [];
+        try {
+          const saved =
+            localStorage.getItem("gograb-wishlist");
+
+          return saved
+            ? JSON.parse(saved)
+            : [];
+        } catch  {
+          return [];
+        }
+
       });
 
   // SAVE TO LOCALSTORAGE
