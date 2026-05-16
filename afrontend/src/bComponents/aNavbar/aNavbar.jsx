@@ -35,10 +35,15 @@ function Navbar() {
 
   const linkClass = (path) =>
     location.pathname === path
-      ? "text-white font-semibold"
+      ? "text-white font-semibold border-b-2 border-white pb-1"
       : "text-gray-300 hover:text-white transition";
 
   const closeMenu = () => setMenuOpen(false);
+
+  const handleNav = (path) => {
+    navigate(path);
+    closeMenu();
+  };
 
   return (
     <nav className="bg-black text-white sticky top-0 z-50 border-b border-gray-800">
@@ -49,9 +54,12 @@ function Navbar() {
         <div className="flex items-center justify-between gap-4">
 
           {/* LOGO */}
-          <Link to="/" className="text-2xl sm:text-3xl font-bold">
+          <div
+            onClick={() => handleNav("/")}
+            className="text-2xl sm:text-3xl font-bold cursor-pointer"
+          >
             GoGrab
-          </Link>
+          </div>
 
           {/* SEARCH (DESKTOP) */}
           <div className="hidden md:block flex-1 max-w-md">
@@ -70,7 +78,6 @@ function Navbar() {
               Home
             </Link>
 
-            {/* AI ASSISTANT */}
             <Link to="/ai" className={linkClass("/ai")}>
               AI Assistant
             </Link>
@@ -81,7 +88,6 @@ function Navbar() {
 
             <Link to="/cart" className={`relative ${linkClass("/cart")}`}>
               Cart
-
               {totalItems > 0 && (
                 <span className="absolute -top-2 -right-4 bg-red-500 text-xs px-2 py-1 rounded-full">
                   {totalItems}
