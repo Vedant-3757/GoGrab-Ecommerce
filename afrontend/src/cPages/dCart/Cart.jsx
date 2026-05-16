@@ -6,14 +6,16 @@ import CartContext from "../../fContext/aCartContext.jsx";
 function Cart() {
   const navigate = useNavigate();
 
+  const cartContext = useContext(CartContext) || {};
+
   const {
     cartItems = [],
     increaseQuantity,
     decreaseQuantity,
     removeItem,
-  } = useContext(CartContext) || {};
+  } = cartContext;
 
-  const totalPrice = cartItems.reduce(
+  const totalPrice = (cartItems || []).reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
