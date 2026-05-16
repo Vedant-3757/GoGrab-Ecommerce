@@ -19,8 +19,9 @@ function Activities() {
   const wishlistContext =
     useContext(WishlistContext);
 
+  // FIX: correct key fallback
   const wishlist =
-    wishlistContext?.wishlist ?? [];
+    wishlistContext?.wishlistItems ?? [];
 
   const removeFromWishlist =
     wishlistContext?.removeFromWishlist;
@@ -132,14 +133,12 @@ function Activities() {
                     </h2>
 
                     <p className="text-gray-500">
-                      Status:
-                      {" "}
+                      Status:{" "}
                       {order.status}
                     </p>
 
                     <p className="text-gray-500">
-                      Total:
-                      {" "}
+                      Total:{" "}
                       ₹ {order.total}
                     </p>
 

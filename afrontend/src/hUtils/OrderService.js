@@ -15,10 +15,14 @@ export const saveOrder = (order) => {
 
   const updated = [order, ...oldOrders];
 
-  localStorage.setItem(
-    "gograb-orders",
-    JSON.stringify(updated)
-  );
+  try {
+    localStorage.setItem(
+      "gograb-orders",
+      JSON.stringify(updated)
+    );
+  } catch {
+    // ignore storage failures (private mode / quota issues)
+  }
 
   return updated;
 };
