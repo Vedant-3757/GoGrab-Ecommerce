@@ -33,8 +33,13 @@ function Navbar() {
     }
   };
 
+  // ✅ IMPROVED ACTIVE ROUTE CHECK (handles nested routes too)
+  const isActive = (path) =>
+    location.pathname === path ||
+    location.pathname.startsWith(path + "/");
+
   const linkClass = (path) =>
-    location.pathname === path
+    isActive(path)
       ? "text-white font-semibold border-b-2 border-white pb-1"
       : "text-gray-300 hover:text-white transition";
 
@@ -88,6 +93,7 @@ function Navbar() {
 
             <Link to="/cart" className={`relative ${linkClass("/cart")}`}>
               Cart
+
               {totalItems > 0 && (
                 <span className="absolute -top-2 -right-4 bg-red-500 text-xs px-2 py-1 rounded-full">
                   {totalItems}

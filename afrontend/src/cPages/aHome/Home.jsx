@@ -93,6 +93,47 @@ function Home() {
 
       </div>
 
+      {/* CATEGORIES (IMPROVED UI ONLY) */}
+      <div className="max-w-7xl mx-auto px-6 py-14">
+
+        <h2 className="text-4xl font-bold mb-10">
+          Categories
+        </h2>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+
+          <motion.div
+            whileHover={{ y: -6, scale: 1.03 }}
+            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
+          >
+            📱 Electronics
+          </motion.div>
+
+          <motion.div
+            whileHover={{ y: -6, scale: 1.03 }}
+            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
+          >
+            🎧 Accessories
+          </motion.div>
+
+          <motion.div
+            whileHover={{ y: -6, scale: 1.03 }}
+            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
+          >
+            💻 Laptops
+          </motion.div>
+
+          <motion.div
+            whileHover={{ y: -6, scale: 1.03 }}
+            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
+          >
+            ⌚ Smart Gadgets
+          </motion.div>
+
+        </div>
+
+      </div>
+
       {/* PRODUCTS */}
       <div id="products" className="max-w-7xl mx-auto px-6 py-20">
 
