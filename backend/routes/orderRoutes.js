@@ -6,8 +6,12 @@ const {
   getUserOrders,
 } = require("../controllers/orderController");
 
-router.post("/", placeOrder);
+const protect = require("../middleware/authMiddleware");
 
-router.get("/:userId", getUserOrders);
+// PLACE ORDER
+router.post("/", protect, placeOrder);
+
+// GET USER ORDERS
+router.get("/", protect, getUserOrders);
 
 module.exports = router;

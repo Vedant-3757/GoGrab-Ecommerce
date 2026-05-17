@@ -1,9 +1,9 @@
 const Order = require("../models/Order");
 
+// PLACE ORDER
 exports.placeOrder = async (req, res) => {
   try {
     const {
-      userId,
       products,
       totalAmount,
       shippingAddress,
@@ -11,7 +11,7 @@ exports.placeOrder = async (req, res) => {
     } = req.body;
 
     const order = await Order.create({
-      userId,
+      userId: req.user._id,
       products,
       totalAmount,
       shippingAddress,
@@ -26,10 +26,11 @@ exports.placeOrder = async (req, res) => {
   }
 };
 
+// GET LOGGED IN USER ORDERS
 exports.getUserOrders = async (req, res) => {
   try {
     const orders = await Order.find({
-      userId: req.params.userId,
+      userId: req.user._id,
     }).populate("products.productId");
 
     res.json(orders);
