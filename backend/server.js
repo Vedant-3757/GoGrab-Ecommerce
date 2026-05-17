@@ -7,40 +7,44 @@ dotenv.config();
 
 const app = express();
 
-// middleware
+// ================= MIDDLEWARE =================
 app.use(cors());
 app.use(express.json());
 
-//mongo connection
+// ================= MONGODB CONNECTION =================
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected ✅"))
   .catch((err) => console.log("MongoDB Error ❌", err));
 
-// routes
+// ================= ROUTES =================
 
-// auth route
+// AUTH ROUTES
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
 
-// product route
+// PRODUCT ROUTES
 const productRoutes = require("./routes/productRoutes");
 app.use("/api/products", productRoutes);
 
-// cart route
+// CART ROUTES
 const cartRoutes = require("./routes/cartRoutes");
 app.use("/api/cart", cartRoutes);
 
-// order route
+// ORDER ROUTES
 const orderRoutes = require("./routes/orderRoutes");
 app.use("/api/orders", orderRoutes);
 
-// test route
+// WISHLIST ROUTES (NEW)
+const wishlistRoutes = require("./routes/wishlistRoutes");
+app.use("/api/wishlist", wishlistRoutes);
+
+// ================= TEST ROUTE =================
 app.get("/", (req, res) => {
   res.send("GoGrab Backend Running 🚀");
 });
 
-// server
+// ================= SERVER =================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
