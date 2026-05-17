@@ -7,11 +7,11 @@ dotenv.config();
 
 const app = express();
 
-// middleware
+// ================= MIDDLEWARE =================
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
+// ================= MONGODB CONNECTION =================
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected ✅"))
@@ -19,20 +19,24 @@ mongoose
 
 // ================= ROUTES =================
 
-// Auth routes
+// Auth Routes
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
 
-// Product routes (ADDED)
+// Product Routes
 const productRoutes = require("./routes/productRoutes");
 app.use("/api/products", productRoutes);
 
-// Test route
+// Cart Routes (ADDED)
+const cartRoutes = require("./routes/cartRoutes");
+app.use("/api/cart", cartRoutes);
+
+// ================= TEST ROUTE =================
 app.get("/", (req, res) => {
   res.send("GoGrab Backend Running 🚀");
 });
 
-// PORT
+// ================= SERVER =================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
