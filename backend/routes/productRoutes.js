@@ -8,9 +8,22 @@ const {
   deleteProduct,
 } = require("../controllers/productController");
 
-router.post("/", addProduct);
+// middleware imports
+const protect = require("../middleware/authMiddleware");
+const adminOnly = require("../middleware/adminMiddleware");
+
+// ROUTES
+
+// Admin only
+router.post("/", protect, adminOnly, addProduct);
+
+// Public
 router.get("/", getProducts);
+
+// Public
 router.get("/:id", getProduct);
-router.delete("/:id", deleteProduct);
+
+// Admin only
+router.delete("/:id", protect, adminOnly, deleteProduct);
 
 module.exports = router;
