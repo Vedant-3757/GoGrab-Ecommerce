@@ -6,24 +6,28 @@ const {
   getProducts,
   getProduct,
   deleteProduct,
+  addReview,
 } = require("../controllers/productController");
 
-// middleware imports
+// MIDDLEWARE IMPORTS
 const protect = require("../middleware/authMiddleware");
 const adminOnly = require("../middleware/adminMiddleware");
 
-// ROUTES
+// ================= ROUTES =================
 
-// Admin only
+// ADMIN ONLY
 router.post("/", protect, adminOnly, addProduct);
 
-// Public
+// PUBLIC
 router.get("/", getProducts);
 
-// Public
+// PUBLIC
 router.get("/:id", getProduct);
 
-// Admin only
+// ADD REVIEW
+router.post("/:id/reviews", protect, addReview);
+
+// ADMIN ONLY
 router.delete("/:id", protect, adminOnly, deleteProduct);
 
 module.exports = router;
