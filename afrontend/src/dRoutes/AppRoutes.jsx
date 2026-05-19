@@ -2,11 +2,9 @@ import {
   Routes,
   Route,
   useLocation,
-  Navigate,
 } from "react-router-dom";
 
 import { AnimatePresence } from "framer-motion";
-import { useContext } from "react";
 
 {/*pages*/}
 import Home from "../cPages/aHome/Home.jsx";
@@ -35,38 +33,8 @@ import Devices from "../cPages/hProfile/Devices.jsx";
 import Feedback from "../cPages/hProfile/Feedback.jsx";
 
 import PageTransition from "../kAnimation/PageTransition.jsx";
-import AuthContext from "../fContext/eAuthContext.jsx";
 
-function ProtectedRoute({ children }) {
-
-  const auth = useContext(AuthContext);
-
-  const user = auth?.user;
-
-  const token =
-    localStorage.getItem("token");
-
-  const location =
-    useLocation();
-
-  {/*auth check*/}
-  if (!user && !token) {
-
-    return (
-      <Navigate
-        to="/login"
-        replace
-        state={{
-          from:
-            location.pathname || "/",
-        }}
-      />
-    );
-
-  }
-
-  return children;
-}
+import ProtectedRoute from "../lGuards/ProtectedRoute.jsx";
 
 function AppRoutes() {
 

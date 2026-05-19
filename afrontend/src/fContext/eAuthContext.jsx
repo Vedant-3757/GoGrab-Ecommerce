@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 
 const AuthContext = createContext(null);
 
-{/*safe localStorage access */ }
+// safe localStorage access
 const getStoredUser = () => {
   try {
     const user = localStorage.getItem("user");
@@ -17,12 +17,9 @@ const getStoredToken = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-
-  {/*initialize ONLY ONCE */}
   const [user, setUser] = useState(() => getStoredUser());
   const [token, setToken] = useState(() => getStoredToken());
 
-  {/*login*/}
   const login = (userData, tokenData) => {
     setUser(userData);
     setToken(tokenData);
@@ -31,7 +28,6 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("token", tokenData);
   };
 
-  {/*logout*/}
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -44,7 +40,6 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        setUser,   // optional but safe now
         token,
         login,
         logout,
