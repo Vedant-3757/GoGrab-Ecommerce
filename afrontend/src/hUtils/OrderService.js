@@ -7,7 +7,7 @@ export const getOrders = () => {
     const orders =
       Array.isArray(data) ? data : [];
 
-    // ✅ AUTO STATUS UPDATE
+    // auto status update
     return orders.map((order) => {
 
       const createdTime =

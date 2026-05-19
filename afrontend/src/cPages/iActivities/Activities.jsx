@@ -31,7 +31,7 @@ function Activities() {
   const [orders, setOrders] =
     useState([]);
 
-  // ✅ NEW
+ {/*new*/}
   const [loading, setLoading] =
     useState(true);
 
@@ -44,7 +44,7 @@ function Activities() {
 
       setOrders(storedOrders);
 
-      // ✅ NEW
+      {/*new*/}
       setLoading(false);
 
     });
@@ -69,7 +69,7 @@ function Activities() {
             Activities
           </h1>
 
-          {/* ✅ NEW */}
+         {/*new*/}
           <div className="text-sm text-gray-500">
             {tab === "orders"
               ? `${orders.length} Orders`
@@ -78,7 +78,7 @@ function Activities() {
 
         </div>
 
-        {/* TABS */}
+        {/*tabs*/}
         <div className="flex flex-wrap gap-4 mb-8">
 
           <button
@@ -109,12 +109,12 @@ function Activities() {
 
         </div>
 
-        {/* ORDERS */}
+        {/*orders*/}
         {tab === "orders" && (
 
           <div className="space-y-5">
 
-            {/* ✅ NEW */}
+            {/*new loading state*/}
             {loading ? (
 
               <div className="bg-white rounded-3xl p-10 text-center shadow-md">
@@ -207,7 +207,7 @@ function Activities() {
 
         )}
 
-        {/* WISHLIST */}
+        {/*wishlist*/}
         {tab === "wishlist" && (
 
           <div className="space-y-5">

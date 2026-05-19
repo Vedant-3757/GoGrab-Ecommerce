@@ -3,19 +3,32 @@ import { Navigate, useLocation } from "react-router-dom";
 import AuthContext from "../fContext/eAuthContext.jsx";
 
 function ProtectedRoute({ children }) {
+
   const authContext = useContext(AuthContext);
+
   const user = authContext?.user;
 
-  const location = useLocation();
+  //safe check
+  const token =
+    localStorage.getItem("token");
 
-  if (!user) {
+  const location =
+    useLocation();
+
+  //protected route logic
+  if (!user && !token) {
+
     return (
       <Navigate
         to="/login"
         replace
-        state={{ from: location }}
+        state={{
+          from:
+            location.pathname,
+        }}
       />
     );
+
   }
 
   return children;

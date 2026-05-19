@@ -31,7 +31,7 @@ function Checkout() {
       phone: "",
     });
 
-  // ✅ NEW
+  {/*new*/}
   const [loading, setLoading] =
     useState(false);
 
@@ -85,7 +85,7 @@ function Checkout() {
       return;
     }
 
-    // ✅ PHONE VALIDATION
+    {/* phone validation */}
     const phoneRegex =
       /^[0-9]{10}$/;
 
@@ -216,7 +216,7 @@ function Checkout() {
 
           </div>
 
-          {/* SUMMARY */}
+          {/* summary */}
           <div className="bg-white rounded-3xl shadow-md p-6 sm:p-8 h-fit">
 
             <h2 className="text-2xl font-bold mb-6">

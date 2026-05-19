@@ -4,14 +4,24 @@ const router = express.Router();
 const {
   placeOrder,
   getUserOrders,
+  getOrderById,
+  updateOrderStatus,
 } = require("../controllers/orderController");
 
+// middlewares
 const protect = require("../middleware/authMiddleware");
+const adminOnly = require("../middleware/adminMiddleware");
 
-// PLACE ORDER
+// place order
 router.post("/", protect, placeOrder);
 
-// GET USER ORDERS
-router.get("/", protect, getUserOrders);
+// get my orders 
+router.get("/my-orders", protect, getUserOrders);
+
+// get single order 
+router.get("/:id", protect, getOrderById);
+
+// update order status admin only
+router.put("/:id", protect, adminOnly, updateOrderStatus);
 
 module.exports = router;

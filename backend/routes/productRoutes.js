@@ -9,25 +9,33 @@ const {
   addReview,
 } = require("../controllers/productController");
 
-// MIDDLEWARE IMPORTS
+// middleware imports
 const protect = require("../middleware/authMiddleware");
 const adminOnly = require("../middleware/adminMiddleware");
+const upload = require("../middleware/uploadMiddleware");
 
-// ================= ROUTES =================
+// create product with image upload
+router.post(
+  "/",
+  protect,
+  adminOnly,
+  upload.array("images", 5), 
+  addProduct
+);
 
-// ADMIN ONLY
-router.post("/", protect, adminOnly, addProduct);
-
-// PUBLIC
+// public routes
 router.get("/", getProducts);
-
-// PUBLIC
 router.get("/:id", getProduct);
 
-// ADD REVIEW
+// review
 router.post("/:id/reviews", protect, addReview);
 
-// ADMIN ONLY
-router.delete("/:id", protect, adminOnly, deleteProduct);
+// delete
+router.delete(
+  "/:id",
+  protect,
+  adminOnly,
+  deleteProduct
+);
 
 module.exports = router;

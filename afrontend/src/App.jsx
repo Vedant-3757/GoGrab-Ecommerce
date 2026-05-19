@@ -10,7 +10,6 @@ function App() {
     <>
       <ScrollToTop />
 
-      {/* ✅ GLOBAL TOASTER */}
       <Toaster
         position="top-center"
         toastOptions={{
@@ -24,9 +23,7 @@ function App() {
       />
 
       <Navbar />
-
       <AppRoutes />
-
       <Footer />
     </>
   );

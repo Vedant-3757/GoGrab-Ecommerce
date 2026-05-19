@@ -1,6 +1,6 @@
 const Wishlist = require("../models/Wishlist");
 
-// ADD TO WISHLIST
+// add to wishlist
 exports.addToWishlist = async (req, res) => {
   try {
     const { productId } = req.body;
@@ -27,7 +27,7 @@ exports.addToWishlist = async (req, res) => {
   }
 };
 
-// GET WISHLIST
+// get wishlist
 exports.getWishlist = async (req, res) => {
   try {
     const wishlist = await Wishlist.findOne({
@@ -42,7 +42,7 @@ exports.getWishlist = async (req, res) => {
   }
 };
 
-// REMOVE FROM WISHLIST
+// remove from wishlist
 exports.removeFromWishlist = async (req, res) => {
   try {
     const wishlist = await Wishlist.findOne({

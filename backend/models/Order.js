@@ -14,10 +14,9 @@ const orderSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Product",
         },
-
         quantity: {
           type: Number,
-          required: true,
+          default: 1,
         },
       },
     ],
@@ -39,7 +38,7 @@ const orderSchema = new mongoose.Schema(
 
     orderStatus: {
       type: String,
-      enum: ["Pending", "Processing", "Delivered"],
+      enum: ["Pending", "Shipped", "Delivered", "Cancelled"],
       default: "Pending",
     },
   },

@@ -18,7 +18,7 @@ function Cart() {
     removeItem,
   } = cartContext;
 
-  // ✅ SAFER TOTAL CALCULATION
+  {/* safer total calculation*/}
   const totalPrice =
     (cartItems || []).reduce(
       (total, item) =>
@@ -37,7 +37,7 @@ function Cart() {
           Your Cart
         </h1>
 
-        {/* EMPTY STATE */}
+        {/* empty cart */}
         {cartItems.length === 0 ? (
 
           <div className="bg-white rounded-3xl shadow-md flex flex-col items-center justify-center py-20 px-6 text-center">
@@ -145,7 +145,7 @@ function Cart() {
 
             </div>
 
-            {/* SUMMARY */}
+            {/* summary */}
             <div className="bg-white p-5 sm:p-6 rounded-3xl shadow-md xl:sticky xl:top-24">
 
               <h2 className="text-2xl font-bold mb-6">

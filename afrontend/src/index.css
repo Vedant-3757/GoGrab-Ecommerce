@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* GLOBAL RESET */
+/* global reset */
 html, body, #root {
   height: 100%;
   width: 100%;
@@ -8,22 +8,21 @@ html, body, #root {
   padding: 0;
 }
 
-/* PREVENT HORIZONTAL SCROLL BUG */
 body {
   overflow-x: hidden;
 
-  /* ✅ ADDED FIX (safe for all pages) */
+  /* fix */
   overflow-y: auto;
 }
 
-/* IMPORTANT: CONSISTENT PAGE FLOW */
+/* consistent page flow */
 #root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* SMOOTH SCROLL */
+/* smooth scroll */
 html {
   scroll-behavior: smooth;
 }

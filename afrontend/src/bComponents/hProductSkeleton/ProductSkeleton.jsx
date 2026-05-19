@@ -13,5 +13,4 @@ function ProductSkeleton() {
     </div>
   );
 }
-
 export default ProductSkeleton;

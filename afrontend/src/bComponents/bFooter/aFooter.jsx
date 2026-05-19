@@ -19,7 +19,6 @@ function Footer() {
           </p>
         </div>
 
-        {/* Links */}
         <div>
           <h2 className="text-xl font-semibold mb-4">
             Quick Links
@@ -66,7 +65,6 @@ function Footer() {
           </ul>
         </div>
 
-        {/* Categories */}
         <div>
           <h2 className="text-xl font-semibold mb-4">
             Categories
@@ -93,7 +91,6 @@ function Footer() {
           </ul>
         </div>
 
-        {/* Contact */}
         <div>
           <h2 className="text-xl font-semibold mb-4">
             Contact
@@ -117,13 +114,10 @@ function Footer() {
         </div>
 
       </div>
-
       <div className="border-t border-gray-800 py-6 text-center text-gray-500">
         © 2026 GoGrab. All rights reserved.
       </div>
-
     </footer>
   );
 }
-
 export default Footer;

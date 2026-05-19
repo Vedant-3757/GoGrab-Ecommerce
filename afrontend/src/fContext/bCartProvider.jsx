@@ -4,7 +4,7 @@ import CartContext from "./aCartContext.jsx";
 
 function CartProvider({ children }) {
 
-  // LOAD FROM LOCAL STORAGE (SAFE PARSE)
+  // load from local storage
   const [cartItems, setCartItems] = useState(() => {
 
     try {
@@ -13,7 +13,7 @@ function CartProvider({ children }) {
 
       const parsed = savedCart ? JSON.parse(savedCart) : [];
 
-      // safety check (must be array)
+      // safety check 
       return Array.isArray(parsed) ? parsed : [];
 
     } catch {
@@ -21,7 +21,7 @@ function CartProvider({ children }) {
     }
   });
 
-  // SAVE TO LOCAL STORAGE
+  // save to local storage 
   useEffect(() => {
 
     try {
@@ -35,7 +35,7 @@ function CartProvider({ children }) {
 
   }, [cartItems]);
 
-  // ADD TO CART
+  // add to cart
   const addToCart = (product) => {
 
     if (!product) return;
@@ -68,7 +68,7 @@ function CartProvider({ children }) {
     });
   };
 
-  // INCREASE QUANTITY
+  // increarse quantity
   const increaseQuantity = (id) => {
 
     setCartItems((prev) =>
@@ -83,7 +83,7 @@ function CartProvider({ children }) {
     );
   };
 
-  // DECREASE QUANTITY (SAFE GUARD ADDED)
+  // decrease quantity
   const decreaseQuantity = (id) => {
 
     setCartItems((prev) =>
@@ -100,7 +100,7 @@ function CartProvider({ children }) {
     );
   };
 
-  // REMOVE ITEM
+  // remove item
   const removeItem = (id) => {
 
     setCartItems((prev) =>
@@ -108,7 +108,7 @@ function CartProvider({ children }) {
     );
   };
 
-  // CLEAR CART
+  // clear cart
   const clearCart = () => {
     setCartItems([]);
   };

@@ -5,12 +5,10 @@ import {
   Navigate,
 } from "react-router-dom";
 
-import {
-  AnimatePresence,
-} from "framer-motion";
-
+import { AnimatePresence } from "framer-motion";
 import { useContext } from "react";
 
+{/*pages*/}
 import Home from "../cPages/aHome/Home.jsx";
 import Login from "../cPages/bLogin/Login.jsx";
 import Register from "../cPages/cRegister/Register.jsx";
@@ -18,34 +16,49 @@ import Cart from "../cPages/dCart/Cart.jsx";
 import Checkout from "../cPages/eCheckout/Checkout.jsx";
 import Search from "../cPages/fSearch/Search.jsx";
 import ProductDetails from "../cPages/gProductDetails/ProductDetails.jsx";
+
 import Profile from "../cPages/hProfile/Profile.jsx";
 import Activities from "../cPages/iActivities/Activities.jsx";
+
 import NotFound from "../cPages/jNotFound/NotFound.jsx";
 import OrderSuccess from "../cPages/kOrderSuccess/OrderSuccess.jsx";
 import OrderDetails from "../cPages/kOrderSuccess/OrderDetails.jsx";
+
 import Wishlist from "../cPages/lWishlist/Wishlist.jsx";
 import AiAssistant from "../cPages/mAiAssistant/AiAssistant.jsx";
 
-import PageTransition from "../kAnimation/PageTransition.jsx";
+import EditProfile from "../cPages/hProfile/EditProfile.jsx";
+import Payments from "../cPages/hProfile/Payments.jsx";
+import RecentlyViewed from "../cPages/hProfile/RecentlyViewed.jsx";
+import Stores from "../cPages/hProfile/Stores.jsx";
+import Devices from "../cPages/hProfile/Devices.jsx";
+import Feedback from "../cPages/hProfile/Feedback.jsx";
 
+import PageTransition from "../kAnimation/PageTransition.jsx";
 import AuthContext from "../fContext/eAuthContext.jsx";
 
-// 🔒 PROTECTED WRAPPER
 function ProtectedRoute({ children }) {
 
   const auth = useContext(AuthContext);
+
   const user = auth?.user;
 
-  const location = useLocation();
+  const token =
+    localStorage.getItem("token");
 
-  if (!user) {
+  const location =
+    useLocation();
+
+  {/*auth check*/}
+  if (!user && !token) {
 
     return (
       <Navigate
         to="/login"
         replace
         state={{
-          from: location.pathname || "/",
+          from:
+            location.pathname || "/",
         }}
       />
     );
@@ -57,7 +70,8 @@ function ProtectedRoute({ children }) {
 
 function AppRoutes() {
 
-  const location = useLocation();
+  const location =
+    useLocation();
 
   return (
     <div className="pt-[72px]">
@@ -69,6 +83,7 @@ function AppRoutes() {
           key={location.pathname}
         >
 
+         {/*public routes*/}
           <Route
             path="/"
             element={
@@ -123,7 +138,7 @@ function AppRoutes() {
             }
           />
 
-          {/* 🔒 PROTECTED ROUTES */}
+          {/*protected routes*/}
           <Route
             path="/cart"
             element={
@@ -179,6 +194,74 @@ function AppRoutes() {
             }
           />
 
+          {/*profile routes*/}
+          <Route
+            path="/profile/edit"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <EditProfile />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile/payments"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <Payments />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile/recent"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <RecentlyViewed />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile/stores"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <Stores />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile/devices"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <Devices />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile/feedback"
+            element={
+              <ProtectedRoute>
+                <PageTransition>
+                  <Feedback />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+
+          {/*orders*/}
           <Route
             path="/order-success"
             element={
@@ -197,7 +280,7 @@ function AppRoutes() {
             }
           />
 
-          {/* ✅ 404 */}
+          {/*404*/}
           <Route
             path="*"
             element={

@@ -31,7 +31,7 @@ export function WishlistProvider({ children }) {
     }
   }, [wishlistItems]);
 
-  // ADD / REMOVE
+  // add / remove
   const toggleWishlist = (product) => {
 
     const exists = wishlistItems.find(
@@ -50,14 +50,14 @@ export function WishlistProvider({ children }) {
 
   };
 
-  // REMOVE DIRECTLY
+  // remove directly
   const removeFromWishlist = (id) => {
     setWishlistItems(
       wishlistItems.filter((item) => item.id !== id)
     );
   };
 
-  // CHECK
+  // check
   const isInWishlist = (id) => {
     return wishlistItems.some((item) => item.id === id);
   };

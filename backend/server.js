@@ -7,46 +7,120 @@ dotenv.config();
 
 const app = express();
 
-// ================= MIDDLEWARE =================
+
+// ======================
+// MIDDLEWARE
+// ======================
+
 app.use(cors());
+
 app.use(express.json());
 
-// ================= MONGODB CONNECTION =================
+app.use(express.urlencoded({ extended: true }));
+
+
+// ======================
+// MONGODB CONNECTION
+// ======================
+
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected ✅"))
-  .catch((err) => console.log("MongoDB Error ❌", err));
+  .then(() => {
 
-// ================= ROUTES =================
+    console.log("MongoDB Connected ✅");
 
-// AUTH ROUTES
-const authRoutes = require("./routes/authRoutes");
-app.use("/api/auth", authRoutes);
+  })
+  .catch((err) => {
 
-// PRODUCT ROUTES
-const productRoutes = require("./routes/productRoutes");
-app.use("/api/products", productRoutes);
+    console.log("MongoDB Error ❌", err);
 
-// CART ROUTES
-const cartRoutes = require("./routes/cartRoutes");
-app.use("/api/cart", cartRoutes);
+    process.exit(1);
 
-// ORDER ROUTES
-const orderRoutes = require("./routes/orderRoutes");
-app.use("/api/orders", orderRoutes);
+  });
 
-// WISHLIST ROUTES (NEW)
-const wishlistRoutes = require("./routes/wishlistRoutes");
-app.use("/api/wishlist", wishlistRoutes);
 
-// ================= TEST ROUTE =================
+// ======================
+// ROUTES
+// ======================
+
+// auth routes
+app.use(
+  "/api/auth",
+  require("./routes/authRoutes")
+);
+
+// product routes
+app.use(
+  "/api/products",
+  require("./routes/productRoutes")
+);
+
+// cart routes
+app.use(
+  "/api/cart",
+  require("./routes/cartRoutes")
+);
+
+// order routes
+app.use(
+  "/api/orders",
+  require("./routes/orderRoutes")
+);
+
+// wishlist routes
+app.use(
+  "/api/wishlist",
+  require("./routes/wishlistRoutes")
+);
+
+
+// ======================
+// HEALTH CHECK
+// ======================
+
 app.get("/", (req, res) => {
-  res.send("GoGrab Backend Running 🚀");
+
+  res.status(200).json({
+
+    success: true,
+
+    message:
+      "GoGrab Backend Running 🚀",
+
+  });
+
 });
 
-// ================= SERVER =================
-const PORT = process.env.PORT || 5000;
+
+// ======================
+// 404 HANDLER
+// ======================
+
+app.use((req, res) => {
+
+  res.status(404).json({
+
+    success: false,
+
+    message:
+      "API Route Not Found",
+
+  });
+
+});
+
+
+// ======================
+// SERVER
+// ======================
+
+const PORT =
+  process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+
+  console.log(
+    `Server Running On Port ${PORT} 🚀`
+  );
+
 });

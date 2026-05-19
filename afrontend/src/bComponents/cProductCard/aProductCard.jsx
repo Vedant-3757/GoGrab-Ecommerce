@@ -99,7 +99,6 @@ function ProductCard({ product }) {
       className="group bg-white rounded-2xl shadow-md hover:shadow-2xl hover:-translate-y-1 transition overflow-hidden relative"
     >
 
-      {/* HEART */}
       <motion.button
         whileTap={{
           scale: 0.8,

@@ -62,7 +62,7 @@ function Wishlist() {
                   className="w-32 h-32 object-cover rounded-xl"
                 />
 
-                {/* DETAILS */}
+                { /* info & actions */ }
                 <div className="flex-1 text-center sm:text-left">
 
                   <h2 className="text-xl font-semibold">
@@ -95,7 +95,7 @@ function Wishlist() {
 
                 </div>
 
-                {/* REMOVE */}
+                {/*remove*/}
                 <button
                   onClick={() => handleRemove(item)}
                   className="bg-red-500 text-white px-5 py-2 rounded-lg hover:bg-red-600"

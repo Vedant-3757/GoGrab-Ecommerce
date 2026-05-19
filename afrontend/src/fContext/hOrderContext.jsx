@@ -14,7 +14,7 @@ export function HOrderProvider({ children }) {
     }
   });
 
-  // ADD ORDER (SAFE + SYNC LOCALSTORAGE)
+  // add order 
   const addOrder = useCallback((order) => {
     setOrders((prev) => {
       const updated = [order, ...prev];

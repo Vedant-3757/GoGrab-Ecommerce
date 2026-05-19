@@ -68,7 +68,7 @@ function Home() {
       className="min-h-[calc(100vh-72px)] bg-gray-100"
     >
 
-      {/* HERO */}
+      {/* hero */}
       <div className="bg-gradient-to-r from-black via-gray-900 to-gray-800 text-white py-28 px-6">
 
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
@@ -133,7 +133,7 @@ function Home() {
 
       </div>
 
-      {/* CATEGORIES */}
+      {/* categories */}
       <div className="max-w-7xl mx-auto px-6 py-14">
 
         <h2 className="text-4xl font-bold mb-10">
@@ -186,7 +186,7 @@ function Home() {
 
       </div>
 
-      {/* PRODUCTS */}
+     {/* products */}
       <div
         id="products"
         className="max-w-7xl mx-auto px-6 py-20"
@@ -281,5 +281,4 @@ function Home() {
     </motion.div>
   );
 }
-
 export default Home;

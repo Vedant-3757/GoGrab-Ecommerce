@@ -9,13 +9,13 @@ const {
   removeFromWishlist,
 } = require("../controllers/wishlistController");
 
-// ADD PRODUCT
+// add to wishlist
 router.post("/", protect, addToWishlist);
 
-// GET WISHLIST
+// get wishlist
 router.get("/", protect, getWishlist);
 
-// REMOVE PRODUCT
+// remove product from wishlist
 router.delete("/:productId", protect, removeFromWishlist);
 
 module.exports = router;

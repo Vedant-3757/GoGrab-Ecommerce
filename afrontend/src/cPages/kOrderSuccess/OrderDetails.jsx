@@ -69,7 +69,7 @@ function OrderDetails() {
           Order Tracking
         </h1>
 
-        {/* INFO */}
+        {/*info*/}
         <div className="space-y-3 mb-10">
 
           <p className="break-all">
@@ -96,7 +96,7 @@ function OrderDetails() {
 
         </div>
 
-        {/* TRACKING */}
+        {/*tracking*/}
         <div className="overflow-x-auto pb-4 mb-10">
 
           <div className="flex min-w-[600px] justify-between gap-6">
@@ -136,7 +136,7 @@ function OrderDetails() {
 
         </div>
 
-        {/* ITEMS */}
+        {/*items*/}
         <div className="space-y-5">
 
           {(order.items || []).map((item) => (

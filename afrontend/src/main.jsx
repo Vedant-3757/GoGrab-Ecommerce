@@ -9,7 +9,7 @@ import App from "./App.jsx";
 import { WishlistProvider } from "./fContext/gWishlistContext.jsx";
 import CartProvider from "./fContext/bCartProvider.jsx";
 import SearchProvider from "./fContext/dSearchProvider.jsx";
-import AuthProvider from "./fContext/fAuthProvider.jsx";
+import { AuthProvider } from "./fContext/eAuthContext.jsx";
 import { HOrderProvider } from "./fContext/hOrderContext.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(

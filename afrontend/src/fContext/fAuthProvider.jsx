@@ -3,7 +3,7 @@ import AuthContext from "./eAuthContext.jsx";
 
 function AuthProvider({ children }) {
 
-  // LOAD USER DIRECTLY (SAFE PARSE)
+  // load user 
   const [user, setUser] = useState(() => {
     try {
       const savedUser = localStorage.getItem("gograb-user");
@@ -13,7 +13,7 @@ function AuthProvider({ children }) {
     }
   });
 
-  // REGISTER
+  // register
   const register = (userData) => {
     localStorage.setItem(
       "gograb-user",
@@ -23,7 +23,7 @@ function AuthProvider({ children }) {
     setUser(userData);
   };
 
-  // LOGIN (SAFE VERSION)
+  // login
   const login = (email, password) => {
     try {
       const savedUserRaw = localStorage.getItem("gograb-user");
@@ -43,7 +43,7 @@ function AuthProvider({ children }) {
     }
   };
 
-  // LOGOUT
+  // logout
   const logout = () => {
     localStorage.removeItem("gograb-user");
     setUser(null);

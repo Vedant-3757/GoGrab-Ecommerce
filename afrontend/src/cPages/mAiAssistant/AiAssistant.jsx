@@ -15,12 +15,12 @@ function AiAssistant() {
 
   const [input, setInput] = useState("");
 
-  // ✅ NEW
+  {/*new*/}
   const [loading, setLoading] = useState(false);
 
   const chatContainerRef = useRef(null);
 
-  // ✅ AUTO SCROLL
+  { /*scroll to bottom on new message*/ }
   useEffect(() => {
 
     const container =
@@ -51,7 +51,7 @@ function AiAssistant() {
       userMsg
     ]);
 
-    // ✅ NEW
+    {/*new*/}
     setLoading(true);
 
     try {
@@ -84,7 +84,7 @@ function AiAssistant() {
 
     } finally {
 
-      // ✅ NEW
+      {/*new*/}
       setLoading(false);
 
     }
@@ -108,7 +108,7 @@ function AiAssistant() {
 
       </div>
 
-      {/* CHAT AREA */}
+     {/*chat area*/}
       <div
         ref={chatContainerRef}
         className="flex-1 overflow-y-auto px-4 py-4 space-y-4"
@@ -160,7 +160,7 @@ function AiAssistant() {
 
         ))}
 
-        {/* ✅ LOADING MESSAGE */}
+        {/*loading message*/}
         {loading && (
 
           <div className="flex items-center gap-2 bg-white w-fit px-4 py-3 rounded-xl shadow">
@@ -177,7 +177,7 @@ function AiAssistant() {
 
       </div>
 
-      {/* INPUT FIXED BOTTOM */}
+      {/*input bottom */}
       <div className="p-3 bg-white border-t shadow-md shrink-0">
 
         <div className="max-w-2xl mx-auto flex gap-2">

@@ -41,8 +41,9 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
 
-    image: {
-      type: String,
+    // multi image field 
+    images: {
+      type: [String],
       required: true,
     },
 

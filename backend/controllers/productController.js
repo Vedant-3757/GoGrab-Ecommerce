@@ -1,9 +1,37 @@
 const Product = require("../models/Product");
 
-// ================= CREATE PRODUCT =================
+// create product
 exports.addProduct = async (req, res) => {
   try {
-    const product = await Product.create(req.body);
+    const {
+      name,
+      description,
+      price,
+      category,
+    } = req.body;
+
+    // use req.files to get the uploaded images
+    if (
+      !req.files ||
+      req.files.length === 0
+    ) {
+      return res.status(400).json({
+        message:
+          "At least one image is required",
+      });
+    }
+
+    const imageUrls = req.files.map(
+      (file) => file.path
+    );
+
+    const product = await Product.create({
+      name,
+      description,
+      price,
+      category,
+      images: imageUrls, 
+    });
 
     res.status(201).json(product);
   } catch (err) {
@@ -13,7 +41,7 @@ exports.addProduct = async (req, res) => {
   }
 };
 
-// ================= GET ALL PRODUCTS =================
+// get all products
 exports.getProducts = async (req, res) => {
   try {
     const {
@@ -26,7 +54,6 @@ exports.getProducts = async (req, res) => {
 
     let query = {};
 
-    // SEARCH BY NAME
     if (keyword) {
       query.name = {
         $regex: keyword,
@@ -34,7 +61,6 @@ exports.getProducts = async (req, res) => {
       };
     }
 
-    // FILTER BY CATEGORY
     if (category) {
       query.category = {
         $regex: category,
@@ -42,33 +68,32 @@ exports.getProducts = async (req, res) => {
       };
     }
 
-    // FILTER BY PRICE
     if (minPrice || maxPrice) {
       query.price = {};
 
-      if (minPrice) {
+      if (minPrice)
         query.price.$gte = Number(minPrice);
-      }
 
-      if (maxPrice) {
+      if (maxPrice)
         query.price.$lte = Number(maxPrice);
-      }
     }
 
     let products = Product.find(query);
 
-    // SORTING
-    if (sort === "low") {
-      products = products.sort({ price: 1 });
-    }
+    if (sort === "low")
+      products = products.sort({
+        price: 1,
+      });
 
-    if (sort === "high") {
-      products = products.sort({ price: -1 });
-    }
+    if (sort === "high")
+      products = products.sort({
+        price: -1,
+      });
 
-    if (sort === "latest") {
-      products = products.sort({ createdAt: -1 });
-    }
+    if (sort === "latest")
+      products = products.sort({
+        createdAt: -1,
+      });
 
     const finalProducts = await products;
 
@@ -80,10 +105,11 @@ exports.getProducts = async (req, res) => {
   }
 };
 
-// ================= GET SINGLE PRODUCT =================
+// get single product
 exports.getProduct = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product =
+      await Product.findById(req.params.id);
 
     res.json(product);
   } catch (err) {
@@ -93,10 +119,12 @@ exports.getProduct = async (req, res) => {
   }
 };
 
-// ================= DELETE PRODUCT =================
+// delete product
 exports.deleteProduct = async (req, res) => {
   try {
-    await Product.findByIdAndDelete(req.params.id);
+    await Product.findByIdAndDelete(
+      req.params.id
+    );
 
     res.json({
       message: "Product deleted",
@@ -108,12 +136,18 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
-// ================= ADD REVIEW =================
+// add review
 exports.addReview = async (req, res) => {
   try {
-    const { rating, comment } = req.body;
+    const {
+      rating,
+      comment,
+    } = req.body;
 
-    const product = await Product.findById(req.params.id);
+    const product =
+      await Product.findById(
+        req.params.id
+      );
 
     if (!product) {
       return res.status(404).json({
@@ -121,14 +155,16 @@ exports.addReview = async (req, res) => {
       });
     }
 
-    // CHECK IF USER ALREADY REVIEWED
-    const alreadyReviewed = product.reviews.find(
-      (review) => review.user.toString() === req.user._id.toString()
-    );
+    const alreadyReviewed =
+      product.reviews.find(
+        (r) =>
+          r.user.toString() ===
+          req.user._id.toString()
+      );
 
     if (alreadyReviewed) {
       return res.status(400).json({
-        message: "Product already reviewed",
+        message: "Already reviewed",
       });
     }
 
@@ -141,16 +177,21 @@ exports.addReview = async (req, res) => {
 
     product.reviews.push(review);
 
-    product.numReviews = product.reviews.length;
+    product.numReviews =
+      product.reviews.length;
 
     product.ratings =
-      product.reviews.reduce((acc, item) => item.rating + acc, 0) /
-      product.reviews.length;
+      product.reviews.reduce(
+        (acc, item) =>
+          acc + item.rating,
+        0
+      ) / product.reviews.length;
 
     await product.save();
 
     res.status(201).json({
-      message: "Review added",
+      message:
+        "Review added successfully",
     });
   } catch (err) {
     res.status(500).json({
