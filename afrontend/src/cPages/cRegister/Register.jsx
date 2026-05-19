@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import api from "../../eServices/api";
 import AuthContext from "../../fContext/eAuthContext.jsx";
@@ -34,8 +35,11 @@ function Register() {
       !password ||
       !confirmPassword
     ) {
-      alert("Please Fill All Fields");
+
+      toast.error("Please Fill All Fields");
+
       return;
+
     }
 
     const passwordRegex =
@@ -76,22 +80,20 @@ function Register() {
 
       const data = res.data;
 
-      // ✅ AUTO LOGIN AFTER REGISTER
       login?.(data.user, data.token);
 
-      alert(
+      toast.success(
         data.message ||
         "Registration Successful"
       );
 
-      // ✅ DIRECT PROFILE REDIRECT
       navigate("/profile");
 
     } catch (error) {
 
       console.log(error);
 
-      alert(
+      toast.error(
         error?.response?.data?.message ||
         "Server Error"
       );
@@ -177,12 +179,43 @@ function Register() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 transition active:scale-[0.98] disabled:opacity-60"
+            className="
+              w-full
+              bg-black
+              text-white
+              py-3
+              rounded-xl
+              hover:bg-gray-800
+              transition
+              active:scale-[0.98]
+              disabled:opacity-70
+              disabled:cursor-not-allowed
+              flex
+              items-center
+              justify-center
+              gap-2
+            "
           >
 
-            {loading
-              ? "Creating Account..."
-              : "Create Account"}
+            {loading ? (
+              <>
+                <div
+                  className="
+                    w-5
+                    h-5
+                    border-2
+                    border-white
+                    border-t-transparent
+                    rounded-full
+                    animate-spin
+                  "
+                />
+
+                Creating Account...
+              </>
+            ) : (
+              "Create Account"
+            )}
 
           </button>
 

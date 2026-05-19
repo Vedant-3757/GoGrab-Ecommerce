@@ -186,7 +186,7 @@ function Home() {
 
       </div>
 
-     {/* products */}
+      {/* products */}
       <div
         id="products"
         className="max-w-7xl mx-auto px-6 py-20"
@@ -226,17 +226,15 @@ function Home() {
 
         {loading ? (
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-            {Array(8)
-              .fill(0)
-              .map((_, i) => (
+            {[...Array(8)].map((_, i) => (
 
-                <ProductSkeleton
-                  key={i}
-                />
+              <ProductSkeleton
+                key={i}
+              />
 
-              ))}
+            ))}
 
           </div>
 
@@ -281,4 +279,5 @@ function Home() {
     </motion.div>
   );
 }
+
 export default Home;

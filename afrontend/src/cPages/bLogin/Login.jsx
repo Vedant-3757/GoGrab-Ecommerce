@@ -1,5 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
+
 import AuthContext from "../../fContext/eAuthContext.jsx";
 
 function Login() {
@@ -24,8 +26,11 @@ function Login() {
     e.preventDefault();
 
     if (!email || !password) {
-      alert("Please Fill All Fields");
+
+      toast.error("Please Fill All Fields");
+
       return;
+
     }
 
     setLoading(true);
@@ -52,7 +57,6 @@ function Login() {
 
       if (res.ok) {
 
-        // save instantly
         localStorage.setItem(
           "user",
           JSON.stringify(data.user)
@@ -63,15 +67,13 @@ function Login() {
           data.token
         );
 
-        // sync context
         login?.(
           data.user,
           data.token
         );
 
-        alert("Login Successful");
+        toast.success("Login Successful");
 
-        // small delay for context update
         setTimeout(() => {
 
           navigate(
@@ -85,7 +87,7 @@ function Login() {
 
       } else {
 
-        alert(
+        toast.error(
           data.message ||
           "Invalid Email Or Password"
         );
@@ -96,7 +98,7 @@ function Login() {
 
       console.log(error);
 
-      alert("Server Error");
+      toast.error("Server Error");
 
     }
 
@@ -142,14 +144,40 @@ function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-black text-white py-3 rounded-xl"
+            className="
+              w-full
+              bg-black
+              text-white
+              py-3
+              rounded-xl
+              flex
+              items-center
+              justify-center
+              gap-2
+              disabled:opacity-70
+              disabled:cursor-not-allowed
+            "
           >
 
-            {
-              loading
-                ? "Logging In..."
-                : "Login"
-            }
+            {loading ? (
+              <>
+                <div
+                  className="
+                    w-5
+                    h-5
+                    border-2
+                    border-white
+                    border-t-transparent
+                    rounded-full
+                    animate-spin
+                  "
+                />
+
+                Logging In...
+              </>
+            ) : (
+              "Login"
+            )}
 
           </button>
 
