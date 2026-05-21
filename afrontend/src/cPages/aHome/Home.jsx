@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import SearchContext from "../../fContext/cSearchContext.jsx";
 import ProductCard from "../../bComponents/cProductCard/aProductCard.jsx";
 import ProductSkeleton from "../../bComponents/cProductCard/bProductSkeleton.jsx";
-import products from "../../jData/Products.js";
+import api from "../../eServices/api";
 
 function Home() {
 
@@ -15,16 +15,35 @@ function Home() {
 
   const [loading, setLoading] = useState(true);
 
+  const [products, setProducts] =
+    useState([]);
+
   const [sortBy, setSortBy] =
     useState("default");
 
   useEffect(() => {
 
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 800);
+    const fetchProducts = async () => {
 
-    return () => clearTimeout(timer);
+      try {
+
+        const res = await api.get(
+          "/products"
+        );
+
+        setProducts(res.data);
+
+      } catch (error) {
+
+        console.log(error);
+
+      }
+
+      setLoading(false);
+
+    };
+
+    fetchProducts();
 
   }, []);
 
@@ -264,7 +283,7 @@ function Home() {
             {filteredProducts.map((p) => (
 
               <ProductCard
-                key={p.id}
+                key={p._id || p.id}
                 product={p}
               />
 

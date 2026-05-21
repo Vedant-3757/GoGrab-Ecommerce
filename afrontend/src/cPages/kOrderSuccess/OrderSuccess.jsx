@@ -26,7 +26,7 @@ function OrderSuccess() {
           Order Placed Successfully 🎉
         </h1>
 
-        <p><b>Order ID:</b> {order.id}</p>
+        <p><b>Order ID:</b> {order._id}</p>
         <p><b>Total:</b> ₹ {order.total}</p>
         <p><b>Status:</b> {order.status}</p>
 
@@ -35,7 +35,7 @@ function OrderSuccess() {
 
           {order.items?.map((item) => (
             <div
-              key={item.id}
+              key={item._id}
               className="text-sm text-gray-600"
             >
               • {item.name} × {item.quantity}

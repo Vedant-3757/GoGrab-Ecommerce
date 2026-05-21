@@ -78,12 +78,12 @@ function Cart() {
               {cartItems.map((item) => (
 
                 <div
-                  key={item.id}
+                  key={item._id}
                   className="bg-white rounded-3xl shadow-md p-4 sm:p-5 flex flex-col lg:flex-row items-center gap-6"
                 >
 
                   <img
-                    src={item.image}
+                    src={item.images?.[0] }
                     alt={item.name}
                     className="w-32 h-32 sm:w-40 sm:h-40 object-cover rounded-2xl"
                   />
@@ -103,7 +103,7 @@ function Cart() {
                       <button
                         onClick={() =>
                           decreaseQuantity(
-                            item.id
+                            item._id
                           )
                         }
                         className="bg-gray-200 px-4 py-2 rounded-xl hover:bg-gray-300 transition"
@@ -118,7 +118,7 @@ function Cart() {
                       <button
                         onClick={() =>
                           increaseQuantity(
-                            item.id
+                            item._id
                           )
                         }
                         className="bg-gray-200 px-4 py-2 rounded-xl hover:bg-gray-300 transition"
@@ -132,7 +132,7 @@ function Cart() {
 
                   <button
                     onClick={() =>
-                      removeItem(item.id)
+                      removeItem(item._id)
                     }
                     className="bg-red-500 text-white px-5 py-2 rounded-xl hover:bg-red-600 transition"
                   >

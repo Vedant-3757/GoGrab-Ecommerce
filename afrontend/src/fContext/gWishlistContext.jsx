@@ -3,23 +3,16 @@ import {
   useState,
   useEffect,
 } from "react";
-
 const WishlistContext = createContext(null);
-
 export function WishlistProvider({ children }) {
-
   const [wishlistItems, setWishlistItems] = useState(() => {
-
     try {
       const saved = localStorage.getItem("gograb-wishlist");
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
     }
-
   });
-
-  
   useEffect(() => {
     try {
       localStorage.setItem(
@@ -30,38 +23,28 @@ export function WishlistProvider({ children }) {
       // ignore storage errors
     }
   }, [wishlistItems]);
-
-  // add / remove
   const toggleWishlist = (product) => {
-
     const exists = wishlistItems.find(
-      (item) => item.id === product.id
+      (item) => item._id === product._id
     );
-
     if (exists) {
       setWishlistItems(
         wishlistItems.filter(
-          (item) => item.id !== product.id
+          (item) => item._id !== product._id
         )
       );
     } else {
       setWishlistItems([...wishlistItems, product]);
     }
-
   };
-
-  // remove directly
-  const removeFromWishlist = (id) => {
+  const removeFromWishlist = (_id) => {
     setWishlistItems(
-      wishlistItems.filter((item) => item.id !== id)
+      wishlistItems.filter((item) => item._id !== _id)
     );
   };
-
-  // check
-  const isInWishlist = (id) => {
-    return wishlistItems.some((item) => item.id === id);
+  const isInWishlist = (_id) => {
+    return wishlistItems.some((item) => item._id === _id);
   };
-
   return (
     <WishlistContext.Provider
       value={{
@@ -75,5 +58,4 @@ export function WishlistProvider({ children }) {
     </WishlistContext.Provider>
   );
 }
-
 export default WishlistContext;

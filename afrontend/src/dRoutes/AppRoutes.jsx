@@ -6,7 +6,7 @@ import {
 
 import { AnimatePresence } from "framer-motion";
 
-{/*pages*/}
+/* pages */
 import Home from "../cPages/aHome/Home.jsx";
 import Login from "../cPages/bLogin/Login.jsx";
 import Register from "../cPages/cRegister/Register.jsx";
@@ -32,6 +32,13 @@ import Stores from "../cPages/hProfile/Stores.jsx";
 import Devices from "../cPages/hProfile/Devices.jsx";
 import Feedback from "../cPages/hProfile/Feedback.jsx";
 
+/* admin */
+import AdminRoute from "../lGuards/AdminRoute.jsx";
+import AdminDashboard from "../cPages/admin/AdminnDashboard.jsx";
+import AdminProducts from "../cPages/admin/AdminProducts.jsx";
+import CreateProduct from "../cPages/admin/CreateProduct.jsx";
+import EditProduct from "../cPages/admin/EditProduct.jsx";
+
 import PageTransition from "../kAnimation/PageTransition.jsx";
 
 import ProtectedRoute from "../lGuards/ProtectedRoute.jsx";
@@ -51,7 +58,7 @@ function AppRoutes() {
           key={location.pathname}
         >
 
-         {/*public routes*/}
+          {/* public routes */}
           <Route
             path="/"
             element={
@@ -106,7 +113,22 @@ function AppRoutes() {
             }
           />
 
-          {/*protected routes*/}
+          {/* admin route */}
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          >
+            <Route index element={<AdminProducts />} />
+            <Route path="products" element={<AdminProducts />} />
+            <Route path="add-product" element={<CreateProduct />} />
+            <Route path="edit-product/:id" element={<EditProduct />} />
+          </Route>
+
+          {/* protected routes */}
           <Route
             path="/cart"
             element={
@@ -162,7 +184,7 @@ function AppRoutes() {
             }
           />
 
-          {/*profile routes*/}
+          {/* profile routes */}
           <Route
             path="/profile/edit"
             element={
@@ -229,7 +251,7 @@ function AppRoutes() {
             }
           />
 
-          {/*orders*/}
+          {/* orders */}
           <Route
             path="/order-success"
             element={
@@ -248,7 +270,7 @@ function AppRoutes() {
             }
           />
 
-          {/*404*/}
+          {/* 404 */}
           <Route
             path="*"
             element={

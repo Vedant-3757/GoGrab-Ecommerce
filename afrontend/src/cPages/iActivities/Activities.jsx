@@ -1,8 +1,4 @@
-import {
-  useEffect,
-  useState,
-  useContext,
-} from "react";
+import { useEffect, useState, useContext,} from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -155,7 +151,7 @@ function Activities() {
                   whileHover={{
                     y: -3,
                   }}
-                  key={order.id}
+                  key={order._id}
                   className="bg-white rounded-3xl shadow-md p-5 sm:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-5"
                 >
 
@@ -163,7 +159,7 @@ function Activities() {
 
                     <h2 className="text-xl font-bold mb-2">
                       Order #
-                      {order.id}
+                      {order._id}
                     </h2>
 
                     <p className="text-gray-500">
@@ -189,7 +185,7 @@ function Activities() {
                   <button
                     onClick={() =>
                       navigate(
-                        `/order/${order.id}`
+                        `/order/${order._id}`
                       )
                     }
                     className="bg-black text-white px-5 py-3 rounded-2xl hover:bg-gray-800 transition w-full md:w-auto"
@@ -238,7 +234,7 @@ function Activities() {
                   whileHover={{
                     y: -3,
                   }}
-                  key={item.id}
+                  key={item._id}
                   className="bg-white rounded-3xl shadow-md p-5 flex flex-col sm:flex-row gap-5 sm:items-center sm:justify-between"
                 >
 
@@ -270,7 +266,7 @@ function Activities() {
                     <button
                       onClick={() =>
                         navigate(
-                          `/product/${item.id}`
+                          `/product/${item._id}`
                         )
                       }
                       className="border border-black px-5 py-3 rounded-2xl hover:bg-black hover:text-white transition"
@@ -281,7 +277,7 @@ function Activities() {
                     <button
                       onClick={() =>
                         removeFromWishlist?.(
-                          item.id
+                          item._id
                         )
                       }
                       className="bg-red-500 text-white px-5 py-3 rounded-2xl hover:bg-red-600 transition"

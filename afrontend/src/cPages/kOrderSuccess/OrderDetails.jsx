@@ -74,7 +74,7 @@ function OrderDetails() {
 
           <p className="break-all">
             <b>Order ID:</b>{" "}
-            {order.id}
+            {order._id}
           </p>
 
           <p>
@@ -143,7 +143,7 @@ function OrderDetails() {
 
             <motion.div
               whileHover={{ y: -2 }}
-              key={item.id}
+              key={item._id}
               className="border rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row gap-5 sm:items-center"
             >
 

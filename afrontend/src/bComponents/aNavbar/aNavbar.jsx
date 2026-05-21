@@ -155,6 +155,17 @@ function Navbar() {
 
               <>
 
+                {user?.role === "admin" && (
+
+                  <Link
+                    to="/admin"
+                    className={linkClass("/admin")}
+                  >
+                    Admin Panel
+                  </Link>
+
+                )}
+
                 <Link
                   to="/profile"
                   className={linkClass("/profile")}
@@ -168,33 +179,24 @@ function Navbar() {
                 >
                   Logout
                 </button>
-
               </>
-
             ) : (
-
               <>
-
                 <Link
                   to="/login"
                   className={linkClass("/login")}
                 >
                   Login
                 </Link>
-
                 <Link
                   to="/register"
                   className={linkClass("/register")}
                 >
                   Register
                 </Link>
-
               </>
-
             )}
-
             {user?.name && (
-
               <div
                 className="
                 px-4 py-2
@@ -209,114 +211,92 @@ function Navbar() {
                 animate-pulse
               "
               >
-
                 <p className="text-sm text-gray-300 font-medium">
-
                   👋 Hi,{" "}
-
                   <span className="text-white">
                     {user.name}
                   </span>
-
                 </p>
-
               </div>
-
             )}
-
           </div>
-
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden"
           >
-
             {
               menuOpen
                 ? <X size={28} />
                 : <Menu size={28} />
             }
-
           </button>
-
         </div>
-
         {menuOpen && (
-
           <div className="md:hidden flex flex-col gap-5 mt-6 pb-4">
-
             <Link
               to="/"
               onClick={() => setMenuOpen(false)}
             >
               Home
             </Link>
-
             <Link
               to="/ai"
               onClick={() => setMenuOpen(false)}
             >
               AI Assistant
             </Link>
-
             <Link
               to="/activities"
               onClick={() => setMenuOpen(false)}
             >
               Activities
             </Link>
-
             <Link
               to="/cart"
               onClick={() => setMenuOpen(false)}
             >
               Cart ({totalItems})
             </Link>
-
             {user ? (
-
               <>
-
+                {user?.role === "admin" && (
+                  <Link
+                    to="/admin"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Admin Panel
+                  </Link>
+                )}
                 <Link
                   to="/profile"
                   onClick={() => setMenuOpen(false)}
                 >
                   Profile
                 </Link>
-
                 <button
                   onClick={handleLogout}
                   className="text-left text-red-400"
                 >
                   Logout
                 </button>
-
               </>
-
             ) : (
-
               <>
-
                 <Link
                   to="/login"
                   onClick={() => setMenuOpen(false)}
                 >
                   Login
                 </Link>
-
                 <Link
                   to="/register"
                   onClick={() => setMenuOpen(false)}
                 >
                   Register
                 </Link>
-
               </>
-
             )}
-
             {user?.name && (
-
               <div
                 className="
                 px-4 py-2
@@ -327,23 +307,13 @@ function Navbar() {
                 animate-pulse
               "
               >
-
                 👋 Hi, {user.name}
-
               </div>
-
             )}
-
           </div>
-
         )}
-
       </div>
-
     </nav>
-
   );
-
 }
-
 export default Navbar;

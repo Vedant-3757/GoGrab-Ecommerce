@@ -27,9 +27,9 @@ function ProductCard({ product }) {
     wishlistContext?.isInWishlist;
 
   const liked =
-    product?.id &&
+    product?._id &&
     isInWishlist
-      ? isInWishlist(product.id)
+      ? isInWishlist(product._id)
       : false;
 
   const handleAddToCart = () => {
@@ -113,7 +113,7 @@ function ProductCard({ product }) {
       </motion.button>
 
       <img
-        src={product.image}
+        src={product.images?.[0]}
         alt={product.name}
         className="h-52 w-full object-cover transition duration-300 group-hover:scale-105"
       />
@@ -152,7 +152,7 @@ function ProductCard({ product }) {
             }}
             onClick={() =>
               navigate(
-                `/product/${product.id}`
+                `/product/${product._id || product._id}`
               )
             }
             className="border border-black px-4 py-2 rounded-xl hover:bg-black hover:text-white transition w-full"

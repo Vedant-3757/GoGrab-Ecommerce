@@ -51,13 +51,13 @@ function Wishlist() {
             {wishlistItems.map((item) => (
 
               <div
-                key={item.id}
+                key={item._id}
                 className="bg-white rounded-2xl shadow-md p-4 flex flex-col sm:flex-row items-center gap-6"
               >
 
                 {/* IMAGE */}
                 <img
-                  src={item.image}
+                  src={item.images?.[0]}
                   alt={item.name}
                   className="w-32 h-32 object-cover rounded-xl"
                 />
@@ -84,7 +84,7 @@ function Wishlist() {
 
                     <button
                       onClick={() =>
-                        navigate(`/product/${item.id}`)
+                        navigate(`/product/${item._id}`)
                       }
                       className="border border-black px-4 py-2 rounded-lg hover:bg-black hover:text-white"
                     >

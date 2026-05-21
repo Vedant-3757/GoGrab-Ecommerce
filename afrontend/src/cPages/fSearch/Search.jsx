@@ -1,10 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import SearchContext from "../../fContext/cSearchContext.jsx";
 
-import products from "../../jData/Products.js";
-
 import ProductCard from "../../bComponents/cProductCard/aProductCard.jsx";
+
+import api from "../../eServices/api";
 
 function Search() {
 
@@ -13,6 +13,28 @@ function Search() {
 
   const searchTerm =
     searchContext?.searchTerm || "";
+
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+
+    const fetchProducts = async () => {
+
+      try {
+
+        const res = await api.get("/products");
+
+        setProducts(res.data);
+
+      } catch (err) {
+        console.log(err);
+      }
+
+    };
+
+    fetchProducts();
+
+  }, []);
 
   const filteredProducts =
     products.filter(
@@ -67,7 +89,7 @@ function Search() {
               (product) => (
 
                 <ProductCard
-                  key={product.id}
+                  key={product._id}
                   product={product}
                 />
 

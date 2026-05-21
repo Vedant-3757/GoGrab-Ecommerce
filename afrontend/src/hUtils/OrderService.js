@@ -74,6 +74,6 @@ export const getOrderById = (id) => {
 
   return orders.find(
     (order) =>
-      String(order.id) === String(id)
+      String(order._id) === String(id)
   );
 };

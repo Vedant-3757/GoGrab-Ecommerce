@@ -144,7 +144,7 @@ function AiAssistant() {
                   {msg.products.map((p) => (
 
                     <ProductCard
-                      key={p.id}
+                      key={p._id}
                       product={p}
                     />
 

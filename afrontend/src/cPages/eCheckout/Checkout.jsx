@@ -105,7 +105,7 @@ function Checkout() {
     setLoading(true);
 
     const order = {
-      id: Date.now(),
+      _id: Date.now(),
 
       items:
         itemsToCheckout,
@@ -138,7 +138,7 @@ function Checkout() {
       cartItems.forEach(
         (item) =>
           removeItem?.(
-            item.id
+            item._id
           )
       );
 
@@ -229,7 +229,7 @@ function Checkout() {
                 (item) => (
 
                   <div
-                    key={item.id}
+                    key={item._id}
                     className="flex justify-between items-center gap-4 border-b pb-4"
                   >
 
