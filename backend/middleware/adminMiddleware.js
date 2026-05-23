@@ -3,7 +3,7 @@ const User = require("../models/User");
 const adminOnly = async (req, res, next) => {
   try {
     // req.user comes from authMiddleware
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user._id);
 
     if (!user) {
       return res.status(404).json({

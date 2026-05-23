@@ -14,8 +14,11 @@ function ProductCard({ product }) {
   const user =
     useContext(AuthContext)?.user;
 
-  const { addToCart } =
-    useContext(CartContext);
+  const cartContext =
+  useContext(CartContext);
+
+  const addToCart =
+    cartContext?.addToCart;
 
   const wishlistContext =
     useContext(WishlistContext);

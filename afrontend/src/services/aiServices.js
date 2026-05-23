@@ -1,21 +1,10 @@
-import products from "../jData/Products.js";
+import api from "../eServices/api";
 
-export const getAIResponse = async (input) => {
-  const query = input.toLowerCase();
-
-  const matchedProducts = products.filter((p) =>
-    p.name.toLowerCase().includes(query)
-  );
-
-  if (matchedProducts.length > 0) {
-    return {
-      text: `Found ${matchedProducts.length} product(s)`,
-      products: matchedProducts
-    };
-  }
+export const getAIResponse = async (prompt) => {
+  const res = await api.post("/ai/chat", { prompt });
 
   return {
-    text: "Sorry 😢 I couldn't find matching products",
-    products: []
+    text: res.data.text,
+    products: res.data.products || [],
   };
 };

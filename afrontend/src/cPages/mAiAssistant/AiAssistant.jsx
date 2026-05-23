@@ -56,14 +56,13 @@ function AiAssistant() {
 
     try {
 
-      const response =
-        await getAIResponse(input);
+      const response = await getAIResponse(input);
 
+      // normalize backend response
       const botMsg = {
         role: "bot",
-        text: response.text,
-        products:
-          response.products || []
+        text: response.text || "No response from AI",
+        products: response.products || []
       };
 
       setMessages((prev) => [
@@ -134,7 +133,7 @@ function AiAssistant() {
                     : "bg-white text-gray-800"
                 }`}
               >
-                {msg.text}
+                {msg.text || "..."}
               </div>
 
               {msg.products?.length > 0 && (

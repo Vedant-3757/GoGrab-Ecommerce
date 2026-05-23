@@ -3,9 +3,11 @@ import {
   useNavigate,
 } from "react-router-dom";
 
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
-import { getOrderById } from "../../hUtils/OrderService.js";
+import api from "../../eServices/api";
+
+import { motion } from "framer-motion";
 
 function OrderDetails() {
 
@@ -13,31 +15,35 @@ function OrderDetails() {
 
   const navigate = useNavigate();
 
-  const order =
-    getOrderById(id);
+  const [order, setOrder] = useState(null);
+
+  useEffect(() => {
+
+    const fetchOrder = async () => {
+
+      try {
+
+        const res = await api.get(`/orders/${id}`);
+
+        setOrder(res.data);
+
+      } catch (err) {
+
+        console.log(err);
+
+      }
+
+    };
+
+    fetchOrder();
+
+  }, [id]);
 
   if (!order) {
 
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center">
-
-        <div className="text-6xl mb-4">
-          😢
-        </div>
-
-        <h1 className="text-3xl font-bold mb-4">
-          Order Not Found
-        </h1>
-
-        <button
-          onClick={() =>
-            navigate("/activities")
-          }
-          className="bg-black text-white px-6 py-3 rounded-2xl"
-        >
-          Back
-        </button>
-
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
       </div>
     );
 
@@ -69,7 +75,6 @@ function OrderDetails() {
           Order Tracking
         </h1>
 
-        {/*info*/}
         <div className="space-y-3 mb-10">
 
           <p className="break-all">
@@ -96,7 +101,6 @@ function OrderDetails() {
 
         </div>
 
-        {/*tracking*/}
         <div className="overflow-x-auto pb-4 mb-10">
 
           <div className="flex min-w-[600px] justify-between gap-6">
@@ -136,7 +140,6 @@ function OrderDetails() {
 
         </div>
 
-        {/*items*/}
         <div className="space-y-5">
 
           {(order.items || []).map((item) => (
@@ -148,7 +151,7 @@ function OrderDetails() {
             >
 
               <img
-                src={item.image}
+                src={item.images?.[0]}
                 alt={item.name}
                 className="w-full sm:w-28 h-52 sm:h-28 object-cover rounded-2xl"
               />

@@ -1,10 +1,10 @@
-import { useEffect, useState, useContext,} from "react";
+import { useEffect, useState, useContext, } from "react";
 
 import { useNavigate } from "react-router-dom";
 
 import WishlistContext from "../../fContext/gWishlistContext.jsx";
 
-import { getOrders } from "../../hUtils/OrderService.js";
+import api from "../../eServices/api";
 
 import { motion } from "framer-motion";
 
@@ -27,23 +27,33 @@ function Activities() {
   const [orders, setOrders] =
     useState([]);
 
- {/*new*/}
+  {/*new*/}
   const [loading, setLoading] =
     useState(true);
 
   useEffect(() => {
 
-    const storedOrders =
-      getOrders();
+    const fetchOrders = async () => {
 
-    Promise.resolve().then(() => {
+      try {
 
-      setOrders(storedOrders);
+        const res = await api.get("/orders");
 
-      {/*new*/}
-      setLoading(false);
+        setOrders(res.data);
 
-    });
+      } catch (err) {
+
+        console.log(err);
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
+
+    fetchOrders();
 
   }, []);
 
@@ -65,7 +75,6 @@ function Activities() {
             Activities
           </h1>
 
-         {/*new*/}
           <div className="text-sm text-gray-500">
             {tab === "orders"
               ? `${orders.length} Orders`
@@ -110,7 +119,6 @@ function Activities() {
 
           <div className="space-y-5">
 
-            {/*new loading state*/}
             {loading ? (
 
               <div className="bg-white rounded-3xl p-10 text-center shadow-md">
