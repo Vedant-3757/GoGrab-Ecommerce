@@ -1,16 +1,12 @@
-import { useState, useContext } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import  { useState, useContext } from "react";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import toast from "react-hot-toast";
-
 import AuthContext from "../../fContext/eAuthContext.jsx";
 
 function Login() {
-
   const navigate = useNavigate();
   const location = useLocation();
-
-  const authContext = useContext(AuthContext);
-  const login = authContext?.login;
+  const { login } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,92 +18,69 @@ function Login() {
       : "/profile";
 
   const handleLogin = async (e) => {
-
     e.preventDefault();
 
-    if (!email || !password) {
-
+    if (!email.trim() || !password) {
       toast.error("Please Fill All Fields");
-
       return;
-
     }
 
     setLoading(true);
 
     try {
-
-      const res = await fetch(
+      const response = await fetch(
         "http://localhost:5000/api/auth/login",
         {
           method: "POST",
-
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json"
           },
-
           body: JSON.stringify({
             email: email.trim(),
-            password,
-          }),
+            password: password
+          })
         }
       );
 
-      const data = await res.json();
+      const data = await response.json();
 
-      if (res.ok) {
-
-        localStorage.setItem(
-          "user",
-          JSON.stringify(data.user)
-        );
-
-        localStorage.setItem(
-          "token",
-          data.token
-        );
-
-        login?.(
-          data.user,
-          data.token
-        );
-
-        toast.success("Login Successful");
-
-        setTimeout(() => {
-
-          navigate(
-            redirectPath,
-            {
-              replace: true,
-            }
-          );
-
-        }, 100);
-
-      } else {
-
+      if (!response.ok) {
         toast.error(
-          data.message ||
-          "Invalid Email Or Password"
+          data.message || "Invalid Email Or Password"
         );
-
+        return;
       }
 
+      localStorage.setItem(
+        "user",
+        JSON.stringify(data.user)
+      );
+
+      localStorage.setItem(
+        "token",
+        data.token
+      );
+
+      if (login) {
+        login(data.user, data.token);
+      }
+
+      toast.success("Login Successful");
+
+      navigate(redirectPath, {
+        replace: true
+      });
+
     } catch (error) {
+      console.error("LOGIN ERROR:", error);
+      toast.error("Unable to connect to server");
 
-      console.log(error);
-
-      toast.error("Server Error");
-
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
-
   };
 
   return (
-
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
 
       <div className="bg-white p-10 rounded-3xl shadow-lg w-full max-w-md">
@@ -125,54 +98,27 @@ function Login() {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={(e) =>
-              setEmail(e.target.value)
-            }
-            className="w-full px-4 py-3 rounded-xl border"
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl border outline-none focus:border-black"
           />
 
           <input
             type="password"
             placeholder="Password"
             value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
-            className="w-full px-4 py-3 rounded-xl border"
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-3 rounded-xl border outline-none focus:border-black"
           />
 
           <button
             type="submit"
             disabled={loading}
-            className="
-              w-full
-              bg-black
-              text-white
-              py-3
-              rounded-xl
-              flex
-              items-center
-              justify-center
-              gap-2
-              disabled:opacity-70
-              disabled:cursor-not-allowed
-            "
+            className="w-full bg-black text-white py-3 rounded-xl flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
           >
 
             {loading ? (
               <>
-                <div
-                  className="
-                    w-5
-                    h-5
-                    border-2
-                    border-white
-                    border-t-transparent
-                    rounded-full
-                    animate-spin
-                  "
-                />
-
+                <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
                 Logging In...
               </>
             ) : (
@@ -183,12 +129,22 @@ function Login() {
 
         </form>
 
+        <p className="text-center mt-6 text-gray-600 text-sm">
+          Don't have an account?{" "}
+
+          <Link
+            to="/register"
+            className="text-black font-semibold hover:underline"
+          >
+            Register
+          </Link>
+
+        </p>
+
       </div>
 
     </div>
-
   );
-
 }
 
 export default Login;

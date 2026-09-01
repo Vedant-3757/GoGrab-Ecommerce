@@ -188,12 +188,7 @@ function Navbar() {
                 >
                   Login
                 </Link>
-                <Link
-                  to="/register"
-                  className={linkClass("/register")}
-                >
-                  Register
-                </Link>
+                
               </>
             )}
             {user?.name && (
