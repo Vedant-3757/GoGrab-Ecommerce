@@ -81,6 +81,8 @@ function Checkout() {
       shippingAddress:
         form.address.trim(),
 
+      phoneNumber: form.phone.trim(),
+
       paymentMethod:
         paymentMethod === "online"
           ? "ONLINE"

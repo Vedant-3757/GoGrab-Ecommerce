@@ -26,6 +26,11 @@ function AdminSidebar() {
       <Link to="/admin/add-product" className="block hover:text-gray-300">
         Add Product
       </Link>
+   
+      <Link to="/admin/orders" className="block hover:text-gray-300">
+        Orders
+      </Link>
+
 
     </div>
   );

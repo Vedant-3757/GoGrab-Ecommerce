@@ -42,6 +42,8 @@ import EditProduct from "../cPages/admin/EditProduct.jsx";
 import PageTransition from "../kAnimation/PageTransition.jsx";
 
 import ProtectedRoute from "../lGuards/ProtectedRoute.jsx";
+import CategoryProducts from "../cPages/nCategoryProducts/CategoryProducts.jsx";
+import AdminOrders from "../cPages/admin/AdminOrders.jsx";
 
 function AppRoutes() {
 
@@ -125,6 +127,7 @@ function AppRoutes() {
             <Route index element={<AdminProducts />} />
             <Route path="products" element={<AdminProducts />} />
             <Route path="add-product" element={<CreateProduct />} />
+            <Route path="orders" element={<AdminOrders />} />
             <Route path="edit-product/:id" element={<EditProduct />} />
           </Route>
 
@@ -267,6 +270,14 @@ function AppRoutes() {
               <PageTransition>
                 <OrderDetails />
               </PageTransition>
+            }
+          />
+          <Route
+              path="/category/:category"
+              element={
+                <PageTransition>
+                  <CategoryProducts />
+                </PageTransition>
             }
           />
 

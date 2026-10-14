@@ -210,18 +210,13 @@ function CreateProduct() {
               Electronics
             </option>
 
-            <option value="Accessories">
-              Accessories
+            <option value="Clothing">
+              Clothing
             </option>
 
-            <option value="Laptops">
-              Laptops
+            <option value="Food">
+              Food
             </option>
-
-            <option value="Smart Gadgets">
-              Smart Gadgets
-            </option>
-
           </select>
 
           <input

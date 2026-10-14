@@ -25,6 +25,8 @@ const orderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    
+    phoneNumber: { type: String, required: true },
 
     shippingAddress: {
       type: String,

@@ -5,8 +5,9 @@ import SearchContext from "../../fContext/cSearchContext.jsx";
 import ProductCard from "../../bComponents/cProductCard/aProductCard.jsx";
 import ProductSkeleton from "../../bComponents/cProductCard/bProductSkeleton.jsx";
 import api from "../../eServices/api";
-
+import { useNavigate } from "react-router-dom";
 function Home() {
+  const navigate = useNavigate();
 
   const searchContext = useContext(SearchContext);
 
@@ -161,45 +162,43 @@ function Home() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
 
-          <motion.div
-            whileHover={{
-              y: -6,
-              scale: 1.03,
-            }}
-            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
-          >
-            📱 Electronics
-          </motion.div>
+          
+    <motion.div
+      whileHover={{ y: -6, scale: 1.03 }}
+      onClick={() => navigate("/category/Electronics")}
+      className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
+    >
+      <div className="text-3xl mb-3">📱</div>
+      Electronics
+    </motion.div>
 
-          <motion.div
-            whileHover={{
-              y: -6,
-              scale: 1.03,
-            }}
-            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
-          >
-            🎧 Accessories
-          </motion.div>
+    <motion.div
+      whileHover={{ y: -6, scale: 1.03 }}
+      onClick={() => navigate("/category/Clothing")}
+      className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
+    >
+      <div className="text-3xl mb-3">👕</div>
+      Clothing
+    </motion.div>
 
-          <motion.div
-            whileHover={{
-              y: -6,
-              scale: 1.03,
-            }}
-            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
-          >
-            💻 Laptops
-          </motion.div>
+    <motion.div
+      whileHover={{ y: -6, scale: 1.03 }}
+      onClick={() => navigate("/category/Food")}
+      className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
+    >
+      <div className="text-3xl mb-3">🍎</div>
+      Food
+    </motion.div>
 
-          <motion.div
-            whileHover={{
-              y: -6,
-              scale: 1.03,
-            }}
-            className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
-          >
-            ⌚ Smart Gadgets
-          </motion.div>
+    <motion.div
+      whileHover={{ y: -6, scale: 1.03 }}
+      onClick={() => navigate("/category/New%20Arrivals")}
+      className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-center cursor-pointer"
+    >
+      <div className="text-3xl mb-3">✨</div>
+      New Arrivals
+    
+    </motion.div>
 
         </div>
 

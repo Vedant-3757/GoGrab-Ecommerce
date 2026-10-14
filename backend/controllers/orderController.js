@@ -7,6 +7,7 @@ exports.placeOrder = async (req, res) => {
       products,
       totalAmount,
       shippingAddress,
+      phoneNumber,
       paymentMethod,
     } = req.body;
 
@@ -17,7 +18,7 @@ exports.placeOrder = async (req, res) => {
       });
     }
 
-    if (!totalAmount || !shippingAddress) {
+    if (!totalAmount || !shippingAddress || !phoneNumber) {
       return res.status(400).json({
         message: "Missing required fields",
       });
@@ -28,6 +29,7 @@ exports.placeOrder = async (req, res) => {
       products,
       totalAmount,
       shippingAddress,
+      phoneNumber,
       paymentMethod: paymentMethod || "COD",
       orderStatus: "Pending",
     });
@@ -102,6 +104,45 @@ exports.updateOrderStatus = async (req, res) => {
     res.json({
       message: "Order status updated",
       order,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+ // Admin: get all customer orders
+exports.getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .populate("userId", "name email")
+      .populate("products.productId")
+      .sort({ createdAt: -1 });
+
+    res.json({
+      count: orders.length,
+      orders,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
+ // Admin: delete an order
+exports.deleteOrder = async (req, res) => {
+  try {
+    const order = await Order.findByIdAndDelete(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    res.json({
+      message: "Order deleted successfully",
     });
   } catch (err) {
     res.status(500).json({
