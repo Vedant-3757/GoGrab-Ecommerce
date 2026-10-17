@@ -11,6 +11,13 @@ Currently, two official plugins are available:
 
 The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
+## GitHub Pages deployment
+
+The `static.yml` workflow builds this app and deploys `dist` to GitHub Pages when
+changes are pushed to `main`. In the repository settings, set **Pages → Build
+and deployment → Source** to **GitHub Actions**. The Vite base path and router
+basename are configured for the `/GoGrab-Ecommerce/` project site.
+
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
